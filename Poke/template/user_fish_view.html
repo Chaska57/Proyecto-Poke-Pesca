@@ -33,23 +33,28 @@
 
             <div class="head-title sidebar ">
                 <img class="head-img" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}" width="150">
-                <div>
+                <div class="info">
                     <h3>{{ user.name }}</h3>
                     <p>{{ user.description }}</p>
-                </div>
-                <div>
+            
                     <p>Total de Peces: {{ total_count }}</p>
                     <p>Peces Capturados: {{ captured_count }}</p>
                 </div>
             
             </div>
-            <div class="contenedor">
+
+           <div class="contenedor">
                 {% for fish_data in user_fishes %}
                 <div class="carta-pez {% if fish_data.captured and fish_data.captured.captured %}capturado{% else %}no-capturado{% endif %}">
                     <strong>{{ fish_data.fish.name }}</strong>
-                    <img class="img-pez" src="{{ fish_data.fish.image.url }}" alt="{{ fish_data.fish.name }}">
 
-                    <form method="post" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
+                    {% if fish_data.captured and fish_data.captured.image %}
+                        <img class="img-pez" src="{{ fish_data.captured.image.url }}" alt="{{ fish_data.fish.name }}">
+                    {% else %}
+                        <img class="img-pez" src="{{ fish_data.fish.image.url }}" alt="{{ fish_data.fish.name }}">
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
                         {% csrf_token %}
                         
                         <label>
@@ -60,18 +65,24 @@
                         <!-- Tamaño (cm) -->
                         <label>
                             Tamaño (cm):
-                            <input type="number" step="0.1" name="size" 
+                            <input id="numeros" type="number" step="0.1" name="size" 
                                 value="{% if fish_data.captured %}{{ fish_data.captured.size }}{% else %}{{ '' }}{% endif %}">
                         </label>
 
                         <!-- Peso (kg) -->
                         <label>
                             Peso (kg):
-                            <input type="number" step="0.01" name="weight" 
+                            <input id="numeros" type="number" step="0.01" name="weight" 
                                 value="{% if fish_data.captured %}{{ fish_data.captured.weight }}{% else %}{{ '' }}{% endif %}">
                         </label>
+                        
+                        <!-- Foto del pez capturado -->
+                        <label>
+                            Foto del pez capturado:
+                            <input type="file" name="image">
+                        </label>
 
-                        <button class="btn-capturado" type="submit">
+                        <button class="btn-capturado" type="submit">Actualizar
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
                                 <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
                                 <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
@@ -80,9 +91,8 @@
                     </form>
                 </div>
                 {% endfor %}
-
-
             </div>
+
 
             
             

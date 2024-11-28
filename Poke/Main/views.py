@@ -87,12 +87,15 @@ def capture_fish(request, fish_id, user_id):
         # Obtener el tamaño y peso desde el formulario y convertirlos a decimales
         size = request.POST.get('size')
         weight = request.POST.get('weight')
+        image = request.FILES.get('image')
 
         if size:
             user_fish.size = Decimal(size)  # Asegurarse de que se guarde como decimal
         if weight:
             user_fish.weight = Decimal(weight)  # Asegurarse de que se guarde como decimal
-        
+        if image:  # Si hay imagen, actualízala
+            user_fish.image = image  # Guardar la foto subida
+
         # Guardar la relación actualizada
         user_fish.save()
 

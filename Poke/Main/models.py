@@ -1,5 +1,7 @@
 from django.db import models
 from PIL import Image
+from django.contrib.auth.models import User
+
 
 class Distribution(models.Model):
     description = models.CharField(max_length=500, verbose_name="Descripción de la Distribución")
@@ -88,6 +90,7 @@ class UserFish(models.Model):
     captured = models.BooleanField(default=False, verbose_name="Capturado")
     size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño (cm)")  # Tamaño en cm
     weight = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, verbose_name="Peso (kg)")  # Peso en kg
+    image = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez capturado")  # Nueva foto
 
 
     class Meta:

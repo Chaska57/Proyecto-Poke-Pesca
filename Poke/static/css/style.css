@@ -5,19 +5,19 @@
 }
 
 body{
-    background: #9ff5ff;
+    background: white;
     /* background-image: url(../img/fondo.jpg); */
     
 }
 
 
 header{
+    color: white;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    background: #f28b6a;
-    border: 2px solid black;
+    background: #5f5f5f;
     padding: 8px 0px;
 }
 
@@ -25,7 +25,7 @@ footer{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background: #47c1c1;
+    background: #5f5f5f;
     align-items: center;
     position: absolute;
     bottom: 0;
@@ -58,6 +58,7 @@ a{
     justify-content: center;
     align-items: center;
     padding: 1rem ;
+   
 
 }
 
@@ -65,13 +66,11 @@ a{
 .carta-usuarios{
     width: 7rem;
     height: 9rem;
-    background: #EF6E43;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 20px;
-    border: 3px solid #00DCF5;
     padding-top: 0.5rem;
 }
 
@@ -96,6 +95,7 @@ a{
     display: flex;
     justify-content: center;
     align-items: center;
+    
     /* Esto asegura que cada contenedor pueda girar individualmente */
   }
 
@@ -105,7 +105,8 @@ a{
     position: relative;
     transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
     transition: transform 0.6s; /* Transición suave para el efecto de volteo */
-  }
+   
+}
 .img-pez{
     object-fit: cover;
     width: 14rem;
@@ -123,7 +124,8 @@ a{
   }
 .carta-main .front,
 .carta-main .back {
-    background: #79B4B0;
+    color: white;
+    background: #5f5f5f;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -132,9 +134,9 @@ a{
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #000;
     border-radius: 10px;
     padding: 1rem;
+    box-shadow: 3px 3px 5px 3px #888;
 }
   
 
@@ -155,10 +157,6 @@ a{
 .card-container:hover .carta-main {
     transform: rotateY(180deg); /* Gira la carta cuando se pasa el mouse o se hace clic */
   }
-
-
-
-
 
 
 

@@ -1,6 +1,7 @@
 *{
     margin: 0px;
     padding: 0px;
+    utline: 2px dashed black;
 }
 
 
@@ -20,7 +21,7 @@ body{
 }
 
 main{
-    padding: 16px;
+    padding: 0px 16px;
     display: flex;
     flex-direction: row;
 }
@@ -75,6 +76,12 @@ main{
 
 }
 
+.info{
+
+    width: 300px;
+
+}
+
 .img-pez{
     object-fit: cover;
     width: 150px;
@@ -86,15 +93,15 @@ main{
 .carta-pez{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    width:200px;
-    height: 400px;
+    width:400px;
+    height: 450px;
     background: #f28b6a;
-    padding: 8px;
+    padding: 16px;
     border-radius: 10px;
     transition: background 0.3s ease;
-    gap: 16px;
+   
 }
 .carta-pez.capturado {
     background-color: #4CAF50;  /* Color verde */
@@ -113,7 +120,8 @@ form{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: start;
+    gap: 8px;
 }
 
 .btn-capturado{
@@ -124,5 +132,13 @@ form{
     background:#9ff5ff ;
     border-radius: 5px;
     border: #EF6E43;
-    padding: 4px;
+    padding: 8px;
+    gap: 8px;
+}
+
+
+#numeros{
+
+    width: 80px;
+
 }

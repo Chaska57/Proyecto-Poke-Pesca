@@ -39,8 +39,8 @@
                             <div class="imagen-container ">
                                 <img class="picture" src="{{ data.info.photo.url }}" alt="{{ data.info.name }}" width="100">
                             </div>
-                            <p><strong>Peces capturados:</strong> {{ data.captured_count }}</p>
                             <p><strong>Total de peces:</strong> {{ data.total_count }}</p>  <!-- Mostrar total de peces -->
+                            <p><strong>Peces capturados:</strong> {{ data.captured_count }}</p>
 
                         </div>
                         
@@ -51,7 +51,11 @@
                                         
                                         <p class="centrar"><strong>{{ fish_data.fish.name }}</strong></p>
                                         <div class="centrar">
-                                            <img class="img-pez" src="{{ fish_data.fish.image.url }}" alt="{{ fish_data.fish.name }}">
+                                            {% if fish_data.captured and fish_data.captured.image %}
+                                                <img class="img-pez" src="{{ fish_data.captured.image.url }}" alt="{{ fish_data.fish.name }}">
+                                            {% else %}
+                                                <img class="img-pez" src="{{ fish_data.fish.image.url }}" alt="{{ fish_data.fish.name }}">
+                                            {% endif %}
                                         </div>
                             
                                         {% if fish_data.captured and fish_data.captured.weight %}

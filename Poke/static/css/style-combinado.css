@@ -1,9 +1,14 @@
 *{
     margin: 0px;
     padding: 0px;
-    
+    utline: 2px dashed black;
 }
 
+body {
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
 
 header{
     display: flex;
@@ -54,6 +59,7 @@ label {
     max-height: 300px;
     object-fit: cover; /* Hace que la imagen cubra el contenedor sin distorsionar */
     border-radius: 5px;
+    background: white;
 }
 
 
