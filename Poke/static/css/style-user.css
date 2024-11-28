@@ -1,0 +1,128 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+
+header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background: #f28b6a;
+    border: 2px solid black;
+    padding: 8px 0px;
+    height: 120px;
+}
+
+body{
+    background: #9ff5ff;
+}
+
+main{
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+}
+
+.contenedor{
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 16px;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-left: 350px;
+}
+
+.sidebar {
+    position: fixed; /* Fijo en la pantalla */
+    top: 0;
+    left: 0;
+    width: 200px; /* Ancho del sidebar */
+    height: 600px; /* Altura completa de la pantalla */
+    background-color: #333; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 20px;
+    box-sizing: border-box;
+    margin-top: 136px; 
+    margin-left: 16px;
+}
+
+
+
+
+.head-title{
+    background: #EF6E43;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 16px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 2px solid black;
+    width: 350px;
+   
+}
+
+.head-img{
+    object-fit: cover;
+    border-radius: 8px;
+    width: 300px;
+    height: 300px;
+
+}
+
+.img-pez{
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+}
+
+
+.carta-pez{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:200px;
+    height: 400px;
+    background: #f28b6a;
+    padding: 8px;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+    gap: 16px;
+}
+.carta-pez.capturado {
+    background-color: #4CAF50;  /* Color verde */
+}
+
+/* Fondo rojo cuando no está capturado */
+.carta-pez.no-capturado {
+    background-color: #F44336;  /* Color rojo */
+}
+
+strong{
+    font-size: 24px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-capturado{
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:#9ff5ff ;
+    border-radius: 5px;
+    border: #EF6E43;
+    padding: 4px;
+}

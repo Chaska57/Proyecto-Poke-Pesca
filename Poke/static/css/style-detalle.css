@@ -1,0 +1,85 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+
+header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background: #f28b6a;
+    border: 2px solid black;
+    padding: 8px 0px;
+}
+
+body{
+    background: #9ff5ff;
+    /* background-image: url(../img/fondo.jpg); */
+    background-size: cover;
+}
+main{
+    margin: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 16px;
+}
+
+footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background: #47c1c1;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+}
+
+.img-laterales{
+    width: 200px;
+
+}
+
+
+
+/* CARTA PEZ */
+
+.contenido{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.carta{
+    max-width: 1000px;
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    box-shadow: 3px 3px 5px 3px #888;
+
+}
+
+.carta p{
+    font-size: 18px;
+}
+
+
+.img-pez-dtl{
+    object-fit: cover;
+    width: 50%;
+    border-radius: 5px;
+    border: 2px solid black;
+
+}

@@ -5,9 +5,9 @@
 }
 
 body{
-    background: #000000;
-    background-image: url(../img/fondo.jpg);
-    background-size: cover;
+    background: #9ff5ff;
+    /* background-image: url(../img/fondo.jpg); */
+    
 }
 
 
@@ -16,20 +16,28 @@ header{
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    background: rgba(255,255,255,0.2);
+    background: #f28b6a;
     border: 2px solid black;
+    padding: 8px 0px;
 }
 
 footer{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     background: #47c1c1;
     align-items: center;
     position: absolute;
     bottom: 0;
     width: 100%;
+    padding-top: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
 
+}
+
+a{
+    color: #000;
 }
 
 .contenedor{
@@ -57,21 +65,24 @@ footer{
 .carta-usuarios{
     width: 7rem;
     height: 9rem;
-    background: rgba(77, 218, 195, 0.801);
+    background: #EF6E43;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 20px;
-    border: 3px solid rgba(77, 218, 195, 0.911);
+    border: 3px solid #00DCF5;
+    padding-top: 0.5rem;
 }
 
+
+
 .user-img{
-    object-fit: cover;
-    width: 6rem;
     height: 6rem;
+    width: 6rem;
     border-radius: 50%;
     border: 3px solid black;
+    background: white;
 }
 
 
@@ -110,51 +121,36 @@ footer{
 .hover-item:hover {
     transform: translate(0, -10px);
   }
-
-.carta-main .front {
-    background-color: lightblue;
-    background: rgba(255, 255, 255);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  
+.carta-main .front,
 .carta-main .back {
-    background-color: lightblue;
-    background: rgba(255, 255, 255);
-    transform: rotateY(180deg); /* El reverso empieza girado */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: start;
-  }
-
-.carta-main .front{
+    background: #79B4B0;
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden; /* Oculta la parte de atrás cuando está volteada */
+    backface-visibility: hidden; /* Oculta el reverso cuando está volteado */
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     border: 1px solid #000;
     border-radius: 10px;
     padding: 1rem;
 }
+  
+
+.carta-main .front {
+    align-items: center; /* Centrado para elementos en el frente */
+}
+  
 .carta-main .back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden; /* Oculta la parte de atrás cuando está volteada */
-    display: flex;
-    justify-content: space-around;
+    transform: rotateY(180deg); /* El reverso empieza girado */
+    justify-content: space-around; /* Distribución especial para el reverso */
     align-items: start;
-    border: 1px solid #000;
-    border-radius: 10px;
-    padding: 1rem;
 }
 
+.carta-main .back div {
+    width: 100%;
+}
 
 .card-container:hover .carta-main {
     transform: rotateY(180deg); /* Gira la carta cuando se pasa el mouse o se hace clic */

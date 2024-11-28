@@ -27,17 +27,20 @@
           <h1>POKEVNECA</h1>
           <img src="{% static 'img/pokeveneca.png' %}" alt="" style="height: 100px;">
           
-
         </header>
 
         <main>
           <div class="usuarios">
             {% for user in usuarios %}
             <div class="carta-usuarios">
-              <a href=""><img class="user-img" src="{{ user.photo.url }}" alt=""></a>
+              <a href="/user/{{user.id}}"><img class="user-img" src="{{ user.photo.url }}" alt=""></a>
               <h4>{{user.name}}</h4>
             </div>
             {% endfor %}
+            <div class="carta-usuarios">
+              <a href="/todos"><img class="user-img" src="{% static 'img/mifi.png' %}" alt=""></a>
+              <h4>Todos</h4>
+            </div>
           </div>
           
 
@@ -56,7 +59,11 @@
                   <p><strong>Dieta: </strong>{{pez.diet}}</p>
                   <p><strong>Tamaño promedio(cm): </strong>{{pez.average_size}}</p>
                   <p><strong>Temporada: </strong>{{pez.fishing_season}}</p>
+                  <div class="d-flex justify-content-center">
+                    <a class="btn btn-primary" href="/detalle/{{pez.id}}">Ver +</a>
                   </div>
+                  
+                </div>
               </div>
             </div>
             {% endfor %}
@@ -66,7 +73,16 @@
 
         </main>
         <footer>
-            <a href="/admin">Admin</a>
+          <div></div>
+          <p>Todos los derechos reservados Chaska57</p>
+          <p>
+            <a href="/admin">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+              <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+              </svg>
+            </a>
+          </p>
         </footer>
         <!-- Bootstrap JavaScript Libraries -->
         <script

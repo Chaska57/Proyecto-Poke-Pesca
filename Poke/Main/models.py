@@ -1,4 +1,6 @@
 from django.db import models
+from PIL import Image
+
 class Distribution(models.Model):
     description = models.CharField(max_length=500, verbose_name="Descripción de la Distribución")
 
@@ -36,16 +38,33 @@ class Fish(models.Model):
             ('EW', 'Extinto en Estado Silvestre'),
             ('EX', 'Extinto')
         ],
-        verbose_name="Estado de Conservación"
-    )
+        verbose_name="Estado de Conservación")
+
+    sexual_dimorphism = models.CharField(
+        max_length=50, 
+        choices=[
+            ('Si','Si'),
+            ('No','No'),
+            
+        ],
+        verbose_name="Dismofirmo sexual")
     fishing_season = models.CharField(max_length=255, verbose_name="Estación de Temporada de Pesca")
     fishing_bans = models.CharField(max_length=500, verbose_name="Vedas")
     water_temperature = models.CharField(max_length=100, verbose_name="Temperatura del Agua que Habita")
     image = models.ImageField(upload_to='fish_images', null=True, blank=True, verbose_name="Imagen del Pez")
-
+    
     class Meta:
         verbose_name = "Pez"
         verbose_name_plural = "Peces"
+
+    def save(self, *args, **kwargs):
+        # Redimensionar la imagen antes de guardarla
+        if self.image:
+            img = Image.open(self.image)
+            img = img.resize((500, 500))  # Cambiar el tamaño a 800x800 píxeles
+            img.save(self.image.path)
+        
+        super().save(*args, **kwargs)  # Guardar el modelo
 
     def __str__(self):
         return self.name
@@ -67,6 +86,9 @@ class UserFish(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuario")
     fish = models.ForeignKey(Fish, on_delete=models.CASCADE, verbose_name="Pez")
     captured = models.BooleanField(default=False, verbose_name="Capturado")
+    size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño (cm)")  # Tamaño en cm
+    weight = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, verbose_name="Peso (kg)")  # Peso en kg
+
 
     class Meta:
         verbose_name = "Relación Usuario-Pez"
