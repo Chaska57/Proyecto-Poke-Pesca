@@ -9,16 +9,12 @@ header{
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    background: #f28b6a;
-    border: 2px solid black;
+    background: #5f5f5f;
+  
     padding: 8px 0px;
 }
 
-body{
-    background: #9ff5ff;
-    /* background-image: url(../img/fondo.jpg); */
-    background-size: cover;
-}
+
 main{
     margin: 16px;
     display: flex;
@@ -60,7 +56,7 @@ footer{
 .carta{
     max-width: 1000px;
     width: 100%;
-    background: white;
+    background: rgba(255, 180, 93, 0.795);
     border-radius: 20px;
     display: flex;
     flex-direction: column;
