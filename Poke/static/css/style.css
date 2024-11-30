@@ -101,7 +101,7 @@ footer{
   padding:1rem ;
   display: flex;
   flex-wrap: wrap; /* Asegura que los elementos bajen si no hay espacio */
-  justify-content: center; /* Centra las tarjetas en su contenedor */
+  justify-content: space-around; /* Centra las tarjetas en su contenedor */
   gap: 12px; 
   height: 100%;
 }
@@ -115,6 +115,7 @@ footer{
   align-items: center;
   
   
+  
   /* Esto asegura que cada contenedor pueda girar individualmente */
 }
 
@@ -124,11 +125,29 @@ footer{
   position: relative;
   transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
   transition: transform 0.6s; /* Transición suave para el efecto de volteo */
-  background: var(--metal);
+  background-image: url("../img/grano/wave.png"), 
+      url(../img/grano/glitter.png), 
+      linear-gradient(120deg,#ff0084a0 10%,  /* Rosa vibrante */
+      #fca40080 20%,  /* Naranja dorado */
+      #ffff0040 30%,  /* Amarillo translúcido */
+      #00ff8a50 40%,  /* Verde brillante */
+      #00cfff60 50%,  /* Azul cian */
+      #8a2be240 60%,  /* Púrpura profundo */
+      #cc4cfa70 70%,  /* Morado pastel */
+      #ff0084a0 80%,  /* Volvemos al rosa vibrante */
+      #fca40080 90%   /* Terminamos con el dorado */);
+  background-blend-mode: overlay;
   display: flex;
+  background-size: 160%;
   justify-content: center;
   align-items: center;
+  
+
+
   border-radius: 15px;
+  
+  
+  
 }
 
 .img-pez{
@@ -148,7 +167,12 @@ footer{
 
 .carta-main .front{
   color: white;
-  background: #5f5f5f;
+  background-color: #666666; /* Color sólido gris */
+  background-image: linear-gradient(125deg,rgba(255, 255, 255, 0.274), rgba(255, 255, 255, 0.226),rgba(255, 255, 255, 0.438)), /* Más énfasis en el gris */
+                  url("../img/grano/grain.webp");
+                  
+  background-blend-mode: hard-light;
+  background-size: 160%;
   position: absolute;
   width: 95%;
   height: 95%;
@@ -159,12 +183,13 @@ footer{
   align-items: center;
   border-radius: 15px;
   padding: 1rem; 
+  
+  
 
 }
 
 .carta-main .back {
   color: white;
-  background: #1a7bfa;
   position: absolute;
   width: 95%;
   height: 95%;
@@ -290,7 +315,103 @@ opacity: .75;
 
 /* EFECTOS */
 
+.text-tier{
+  position: absolute;
+  top: 50%;         /* Lleva al hijo al 50% de la altura del padre */
+  left: 50%;        /* Lleva al hijo al 50% del ancho del padre */
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-weight: lighter;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  
+  
+ 
+}
 
+.tier-SS {
+  position: relative;
+  background: rgb(198, 252, 3);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tier-S {
+  position: relative;
+  background: rgb(255, 61, 61);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.tier-A {
+  position: relative;
+  background: rgb(255, 45, 244);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;  
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.tier-B {
+  position: relative;
+  background: rgb(143, 17, 143);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.tier-C {
+  position: relative;
+  background: rgb(0, 119, 255);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px; 
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.tier-D {
+  position: relative;
+  background: rgb(39, 183, 240);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 /* botones etc */
 
 a{

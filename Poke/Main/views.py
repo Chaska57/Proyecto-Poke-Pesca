@@ -8,6 +8,10 @@ def Mainmenu(request):
     peces = Fish.objects.all()
     usuarios = User.objects.all()
 
+    peces_ordenados_nombre = peces.order_by('name')  # Orden alfabético
+    peces_ordenados_nombre_inverso = peces.order_by('-name')  # Orden alfabético inverso
+    peces_ordenados_tier = peces.order_by('tier__name')  
+
      # Obtener la captura de cada pez para todos los usuarios
     fish_data = []
     for fish in peces:
@@ -28,6 +32,7 @@ def Mainmenu(request):
     data = {
         'peces': fish_data,  # Usamos fish_data en lugar de peces
         'usuarios': usuarios
+        
     }
     
 

@@ -1,0 +1,61 @@
+:root{
+
+    --color1: #ff0084;
+    --color2: #ff0084;
+    --front:;
+
+}
+
+body{
+    background: #040712;
+}
+
+.contenedor{
+    height: fit-content;
+    width: fit-content;
+    padding: 50px ;
+    background: #cc4cfa;
+}
+
+.holo {
+
+    position: relative;
+    overflow: hidden;
+    overflow: hidden;
+    z-index: 10;
+    touch-action: none;
+    transition: transform 0.5s ease, box-shadow 0.2s ease;
+    background-color: #040712;
+    background-image: var(--front);
+    background-size: cover;
+    width: 100%;
+    border-radius: 5px;
+    
+    
+    }
+    
+
+.holo:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-repeat: no-repeat;
+    opacity: .5;
+    mix-blend-mode: color-dodge;
+    transition: all .33s ease;
+    opacity: 1;
+    background-image: url("../img/grano/wave.png"), 
+      url(../img/grano/glitter.png), 
+      linear-gradient(125deg, #ff0084 15%, #fca40040 30%, #ffff0030 40%, #00ff8a20 60%, #00cfff40 70%, #cc4cfa 85%);
+    background-position: 50% 50%;
+    background-blend-mode: overlay;
+    z-index: 2;
+    filter: brightness(2) contrast(3);
+    transition: all .33s ease;
+    mix-blend-mode: color-dodge;
+    opacity: .2;
+    }
+    

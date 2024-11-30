@@ -48,16 +48,23 @@
             {% for fish_data in peces %}
                 <div class="card-container hover-item">
                     <div class="carta-main">
+                      <div>
+                        
+                      </div>
                         <div class="front">
                             <div class="titulo-carta">
+                              
                                 <span>{{ fish_data.fish.name }}</span>
+                                <div class="tier-{{ fish_data.fish.tier }}">
+                                  <p class="text-tier">{{ fish_data.fish.tier }}</p>
+                                </div>
                                 
                             </div>
                             <div class="holo">
                                 <img class="img-pez" src="{% if fish_data.fish.image %}{{ fish_data.fish.image.url }}{% else %}{{ 'path/to/default/image.jpg' }}{% endif %}" alt="{{ fish_data.fish.name }}">
                             </div>
                             <div class="bottom-carta">
-                                <p>Rareza: Shinny</p>
+                                
                                 <p>{{ fish_data.fish.description }}</p>
                             </div>
                         </div>
@@ -71,7 +78,7 @@
                               </a>
                             </div>
                              
-                            <img class="" src="{% static 'img/mifi.png' %}" alt="" style="width: 150px;">
+                            <img class="" src="{% static '/img/IMG_0604.png' %}" alt="" style="width: 250px;">
                             <div class="users-poke">
                                 
                                 {% for user_capture in fish_data.captured_by_users %}
