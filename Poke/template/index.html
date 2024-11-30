@@ -33,7 +33,7 @@
           <div class="usuarios">
             {% for user in usuarios %}
             <div class="carta-usuarios">
-              <a href="/user/{{user.id}}">
+              <a href="/detalle/usuario/{{user.id}}">
                 <img class="user-img" src="{{ user.photo.url }}" alt="">
               </a>
               <h4>{{user.name}}</h4>
@@ -54,34 +54,37 @@
             <div class="card-container hover-item">
               <div class="carta-main">
                 <div class="front">
-                  <h1>{{pez.name}}</h1>
-                 
-                    <div class="card eevee">
-                      <img class="img-pez" src="{{ pez.image.url }}" alt="">
-
-                    </div>
-                    
-                </div>
-                <div class="back">
-                  <p><strong>Nombre cientifico: </strong>{{pez.scientific_name}}</p>
-                  <p><strong>Distribucion: </strong>{{pez.distribution}}</p>
-                  <p><strong>Dieta: </strong>{{pez.diet}}</p>
-                  <p><strong>Tamaño promedio(cm): </strong>{{pez.average_size}}</p>
-                  <p><strong>Temporada: </strong>{{pez.fishing_season}}</p>
-                  <div class="d-flex justify-content-center">
-                    <a class="btn btn-primary" href="/detalle/{{pez.id}}">Ver +</a>
+                  <div class="titulo-carta">
+                    <span>{{pez.name}}</span>
+                    <a href="/detalle/{{pez.id}}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="holo">
+                    <img class="img-pez" src="{{ pez.image.url }}" alt="">
+                  </div>
+                  <div class="bottom-carta">
+                    <p>Rareza: Shinny</p>
+                    <p>{{pez.description}}</p>
                   </div>
                   
+                </div>
+                <div class="back">
+                  <img class="" src="{% static 'img/mifi.png' %}" alt="" style="width: 180px;">
                 </div>
               </div>
             </div>
             {% endfor %}
             
           </div>
-          <img class="fixed-bottom" src="{% static 'img/mifi.png' %}" alt="" style="width: 180px;">
+
+          <img class="fixed-bottom mifi" src="{% static 'img/mifi.png' %}" alt="" style="width: 180px;">
 
         </main>
-        <footer>
+        <footer  class="fixed-bottom">
           <div></div>
           <p>Todos los derechos reservados Chaska57</p>
           <p>
@@ -93,6 +96,14 @@
             </a>
           </p>
         </footer>
+
+        <script>
+          document.querySelectorAll('.carta-main').forEach((carta) => {
+            carta.addEventListener('click', () => {
+              carta.classList.toggle('volteada');
+            });
+          });
+        </script>
         <!-- Bootstrap JavaScript Libraries -->
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

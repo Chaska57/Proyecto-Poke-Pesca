@@ -26,33 +26,7 @@ class Diet(models.Model):
 class Fish(models.Model):
     name = models.CharField(max_length=255, verbose_name="Nombre")
     scientific_name = models.CharField(max_length=255, verbose_name="Nombre Científico")
-    distribution = models.ForeignKey(Distribution, on_delete=models.CASCADE, verbose_name="Distribución")
-    diet = models.ForeignKey(Diet, on_delete=models.CASCADE, verbose_name="Alimentación")
-    average_size = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="Talla Promedio (cm)")
-    conservation_status = models.CharField(
-        max_length=50, 
-        choices=[
-            ('LC', 'Menor Preocupación'),
-            ('NT', 'Casi Amenazado'),
-            ('VU', 'Vulnerable'),
-            ('EN', 'En Peligro'),
-            ('CR', 'En Peligro Crítico'),
-            ('EW', 'Extinto en Estado Silvestre'),
-            ('EX', 'Extinto')
-        ],
-        verbose_name="Estado de Conservación")
-
-    sexual_dimorphism = models.CharField(
-        max_length=50, 
-        choices=[
-            ('Si','Si'),
-            ('No','No'),
-            
-        ],
-        verbose_name="Dismofirmo sexual")
-    fishing_season = models.CharField(max_length=255, verbose_name="Estación de Temporada de Pesca")
-    fishing_bans = models.CharField(max_length=500, verbose_name="Vedas")
-    water_temperature = models.CharField(max_length=100, verbose_name="Temperatura del Agua que Habita")
+    description = models.CharField(max_length=500, verbose_name="Descripción")
     image = models.ImageField(upload_to='fish_images', null=True, blank=True, verbose_name="Imagen del Pez")
     
     class Meta:

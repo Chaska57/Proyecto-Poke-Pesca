@@ -1,15 +1,30 @@
+/* DEFAULT */
+
 *{
     margin: 0px;
     padding: 0px;
-    utline: 2px dashed black;
+  utline: 2px dashed black;
+}
+
+:root{
+
+--metal: linear-gradient(
+  45deg,
+  #999 5%,
+  #fff 10%,
+  #ccc 30%,
+  #ddd 50%,
+  #ccc 70%,
+  #fff 80%,
+  #999 95%
+);
+
 }
 
 body{
     background: white;
-    /* background-image: url(../img/fondo.jpg); */
     
 }
-
 
 header{
     color: white;
@@ -22,311 +37,251 @@ header{
 }
 
 footer{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background: #5f5f5f;
-    align-items: center;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding-top: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
-
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  bottom: 0;
+  width: 100%;
+  padding-top: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  z-index:0;
 }
 
-a{
-    color: #000;
-}
+/* DEFAULT */
 
-.contenedor{
-    padding:1rem ;
-    display: flex;
-    flex-wrap: wrap; /* Asegura que los elementos bajen si no hay espacio */
-    justify-content: center; /* Centra las tarjetas en su contenedor */
-    gap: 12px; 
-    height: 100%;
-}
-
-/* CARTA DE Usuarios */
+/* USUARIOS */
 
 .usuarios{
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem ;
-   
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem ;
+ 
 
 }
-
 
 .carta-usuarios{
-    width: 7rem;
-    height: 9rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 20px;
-    padding-top: 0.5rem;
+  width: 7rem;
+  height: 9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  padding-top: 0.5rem;
 }
-
 
 .user-img{
-    height: 6rem;
-    width: 6rem;
-    border-radius: 50%;
-    border: 3px solid black;
-    background: white;
+  height: 6rem;
+  width: 6rem;
+  border-radius: 50%;
+  border: 3px solid black;
+  background: white;
+  
 }
 
 
+/* USUARIOS */
 
-/* CARTA DE PEZ */
+/* PECES */
+
+
+.bottom-carta{
+  width: 100%;
+  height: 125px;
+
+}
+
+
+.contenedor{
+  padding:1rem ;
+  display: flex;
+  flex-wrap: wrap; /* Asegura que los elementos bajen si no hay espacio */
+  justify-content: center; /* Centra las tarjetas en su contenedor */
+  gap: 12px; 
+  height: 100%;
+}
 
 .card-container {
-    perspective: 60rem; /* Esto crea una perspectiva de 3D */
-    width: 21rem;
-    height: 21rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    /* Esto asegura que cada contenedor pueda girar individualmente */
-  }
+  perspective: 60rem; /* Esto crea una perspectiva de 3D */
+  width: 300px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  
+  /* Esto asegura que cada contenedor pueda girar individualmente */
+}
 
 .carta-main {
-    width: 16rem;
-    height: 20rem;
-    position: relative;
-    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
-    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
-    z-index: 1;
+  width: 300px;
+  height: 400px;
+  position: relative;
+  transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
+  transition: transform 0.6s; /* Transición suave para el efecto de volteo */
+  background: var(--metal);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
 }
+
 .img-pez{
-    object-fit: cover;
-    width: 14rem;
-    height: 14rem;
-    object-position: center;
+  object-fit: cover;
+  width: 100%;
+  height: 180px;
+  object-position: center;
 }
-
-
 
 .hover-item {
-    transition: 0.3s;
-  }
-.hover-item:hover {
-    transform: translate(0, -10px);
-  }
-.carta-main .front,
-.carta-main .back {
-    color: white;
-    background: #5f5f5f;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden; /* Oculta el reverso cuando está volteado */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 10px;
-    padding: 1rem;
-   
+  transition: 0.3s;
 }
-  
 
-.carta-main .front {
-    align-items: center; /* Centrado para elementos en el frente */
+.hover-item:hover {
+  transform: translate(0, -10px);
 }
-  
+
+.carta-main .front{
+  color: white;
+  background: #5f5f5f;
+  position: absolute;
+  width: 95%;
+  height: 95%;
+  backface-visibility: hidden; /* Oculta el reverso cuando está volteado */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 15px;
+  padding: 1rem; 
+
+}
+
 .carta-main .back {
-    transform: rotateY(180deg); /* El reverso empieza girado */
-    justify-content: space-around; /* Distribución especial para el reverso */
-    align-items: start;
+  color: white;
+  background: #1a7bfa;
+  position: absolute;
+  width: 95%;
+  height: 95%;
+  backface-visibility: hidden; /* Oculta el reverso cuando está volteado */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  padding: 1rem;
+  transform: rotateY(180deg); /* El reverso empieza girado */
+
+}
+
+.titulo-carta{
+  width: 100%;
+  font-size: 20px;
+  display: flex;
+  font-weight: bold;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
 }
 
 .carta-main .back div {
-    width: 100%;
+  width: 100%;
 }
 
 .card-container:hover .carta-main {
-    transform: rotateY(180deg); /* Gira la carta cuando se pasa el mouse o se hace clic */
-  }
+  transform: rotateY(180deg); /* Gira la carta cuando se pasa el mouse o se hace clic */
+}
+
+.holo {
+
+position: relative;
+overflow: hidden;
+overflow: hidden;
+z-index: 10;
+touch-action: none;
+transition: transform 0.5s ease, box-shadow 0.2s ease;
+background-color: #040712;
+background-image: var(--front);
+background-size: cover;
+width: 100%;
+border-radius: 5px;
 
 
+}
 
-  .card {
-  
-    position: relative;
-    overflow: hidden;
-    overflow: hidden;
-    z-index: 10;
-    touch-action: none;
-    transition: transform 0.5s ease, box-shadow 0.2s ease;
-    will-change: transform, filter;
-    background-color: #040712;
-    background-image: var(--front);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    transform-origin: center;
-    
-  }
-  
+.holo:before,
+.holo:after {
+content: "";
+position: absolute;
+left: 0;
+right: 0;
+bottom: 0;
+top: 0;
+background-repeat: no-repeat;
+opacity: .5;
+mix-blend-mode: color-dodge;
+transition: all .33s ease;
+}
 
-  .card.eevee {
-    --color1: #ec9bb6;
-    --color2: #ccac6f;
-    --color3: #69e4a5;
-    --color4: #8ec5d6;
-    --color5: #b98cce;
-    --front: var(--eeveefront);
-  }
-  
-  .card:before,
-  .card:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    background-repeat: no-repeat;
-    opacity: .5;
-    mix-blend-mode: color-dodge;
-    transition: all .33s ease;
-  }
-  
-  .card:before {
-    background-position: 50% 50%;
-    background-size: 300% 300%;
-    background-image: linear-gradient(
-      115deg,
-      transparent 0%,
-      var(--color1) 25%,
-      transparent 47%,
-      transparent 53%,
-      var(--color2) 75%,
-      transparent 100%
-    );
-    opacity: .5;
-    filter: brightness(.5) contrast(1);
-    z-index: 1;
-  }
-  
-  .card:after {
-    opacity: 1;
-    background-image: url("https://assets.codepen.io/13471/sparkles.gif"), 
-      url(https://assets.codepen.io/13471/holo.png), 
-      linear-gradient(125deg, #ff008450 15%, #fca40040 30%, #ffff0030 40%, #00ff8a20 60%, #00cfff40 70%, #cc4cfa50 85%);
-    background-position: 50% 50%;
-    background-size: 160%;
-    background-blend-mode: overlay;
-    z-index: 2;
-    filter: brightness(1.5) contrast(1);
-    transition: all .33s ease;
-    mix-blend-mode: color-dodge;
-    opacity: .75;
+.holo:before {
+background-position: 50% 50%;
+background-size: 300% 300%;
+background-image: linear-gradient(
+  115deg,
+  transparent 0%,
+  var(--color1) 25%,
+  transparent 47%,
+  transparent 53%,
+  var(--color2) 75%,
+  transparent 100%
+);
+opacity: .5;
+filter: brightness(.5) contrast(1);
+z-index: 1;
+}
+
+.holo:after {
+opacity: 1;
+background-image: url("https://assets.codepen.io/13471/sparkles.gif"), 
+  url(https://assets.codepen.io/13471/holo.png), 
+  linear-gradient(125deg, #ff008450 15%, #fca40040 30%, #ffff0030 40%, #00ff8a20 60%, #00cfff40 70%, #cc4cfa50 85%);
+background-position: 50% 50%;
+background-size: 160%;
+background-blend-mode: overlay;
+z-index: 2;
+filter: brightness(2) contrast(6);
+transition: all .33s ease;
+mix-blend-mode: color-dodge;
+opacity: .75;
+}
+
+
+/* PECES */
+
+
+/* EFECTOS */
+
+
+/* botones etc */
+
+a{
+  display: flex;
+  color: #000;
+  justify-content: center;
+  align-items: center;
   }
 
- 
-  
-  
-  @keyframes holoSparkle {
-    0%, 100% {
-      opacity: .75; background-position: 50% 50%; filter: brightness(1.2) contrast(1.25);
-    }
-    5%, 8% {
-      opacity: 1; background-position: 40% 40%; filter: brightness(.8) contrast(1.2);
-    }
-    13%, 16% {
-      opacity: .5; background-position: 50% 50%; filter: brightness(1.2) contrast(.8);
-    }
-    35%, 38% {
-      opacity: 1; background-position: 60% 60%; filter: brightness(1) contrast(1);
-    }
-    55% {
-      opacity: .33; background-position: 45% 45%; filter: brightness(1.2) contrast(1.25);
-    }
-  }
-  
-  @keyframes holoGradient {
-    0%, 100% {
-      opacity: 0.5;
-      background-position: 50% 50%;
-      filter: brightness(.5) contrast(1);
-    }
-    5%, 9% {
-      background-position: 100% 100%;
-      opacity: 1;
-      filter: brightness(.75) contrast(1.25);
-    }
-    13%, 17% {
-      background-position: 0% 0%;
-      opacity: .88;
-    }
-    35%, 39% {
-      background-position: 100% 100%;
-      opacity: 1;
-      filter: brightness(.5) contrast(1);
-    }
-    55% {
-      background-position: 0% 0%;
-      opacity: 1;
-      filter: brightness(.75) contrast(1.25);
-    }
-  }
-  
-  @keyframes holoCard {
-    0%, 100% {
-      transform: rotateZ(0deg) rotateX(0deg) rotateY(0deg);
-    }
-    5%, 8% {
-      transform: rotateZ(0deg) rotateX(6deg) rotateY(-20deg);
-    }
-    13%, 16% {
-      transform: rotateZ(0deg) rotateX(-9deg) rotateY(32deg);
-    }
-    35%, 38% {
-      transform: rotateZ(3deg) rotateX(12deg) rotateY(20deg);
-    }
-    55% {
-      transform: rotateZ(-3deg) rotateX(-12deg) rotateY(-27deg);
-    }
-  }
- 
-  
-  @keyframes rubberBand {
-    from {
-      transform: scale3d(1, 1, 1);
-    }
-  
-    30% {
-      transform: scale3d(1.25, 0.75, 1);
-    }
-  
-    40% {
-      transform: scale3d(0.75, 1.25, 1);
-    }
-  
-    50% {
-      transform: scale3d(1.15, 0.85, 1);
-    }
-  
-    65% {
-      transform: scale3d(0.95, 1.05, 1);
-    }
-  
-    75% {
-      transform: scale3d(1.05, 0.95, 1);
-    }
-  
-    to {
-      transform: scale3d(1, 1, 1);
-    }
-  }
+.p{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 
+  }

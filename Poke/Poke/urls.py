@@ -27,7 +27,9 @@ urlpatterns = [
     path("todos", views.combined_view, name="combined_view"),
     path("user/<int:user_id>/", views.user_fish_view, name="user_fish_view"),
     path("capture/<int:fish_id>/<int:user_id>/", views.capture_fish, name="capture_fish"),
+    path("detalle/usuario/<int:user_id>/", views.user_fish_poke,name="user_fish_poke"),
 
+    
    
 ]
 

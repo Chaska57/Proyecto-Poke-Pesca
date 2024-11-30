@@ -130,3 +130,31 @@ def user_fish_view(request, user_id):
 
 
 
+
+def user_fish_poke(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    fishes = Fish.objects.all()
+
+    user_fishes = [
+        {
+            "fish": fish,
+            "captured": UserFish.objects.filter(user=user, fish=fish).first()
+        }
+        for fish in fishes
+    ]
+
+    captured_count = sum(1 for data in user_fishes if data["captured"] and data["captured"].captured)
+
+    return render(
+        request,
+        "user_pokedex.html",
+        {
+            "user": user,
+            "user_fishes": user_fishes,
+            "captured_count": captured_count,
+            "total_count": len(user_fishes),
+        },
+    )
+
+
+

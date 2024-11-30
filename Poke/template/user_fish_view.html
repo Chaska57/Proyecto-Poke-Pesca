@@ -23,13 +23,15 @@
 
     <body>
         <header>
-  
             <a class="image-container" href="/"><img src="{% static 'img/pokeveneca.png' %}" alt="" style="height: 100px;"></a>
             <h1>Pokédex de {{ user.name }}</h1>
-            <img src="{% static 'img/pokeveneca.png' %}" alt="" style="height: 100px;">
-            
+            <a href="/detalle/usuario/{{user.id}}">
+                <img src="{% static 'img/juego.png' %}" alt="" style="height: 100px;">
+
+            </a>
           </header>
         <main>
+            
 
             <div class="head-title sidebar ">
                 <img class="head-img" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}" width="150">
