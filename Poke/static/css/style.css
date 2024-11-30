@@ -171,12 +171,37 @@ footer{
   backface-visibility: hidden; /* Oculta el reverso cuando está volteado */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border-radius: 15px;
   padding: 1rem;
   transform: rotateY(180deg); /* El reverso empieza girado */
 
+}
+
+.users-poke{
+
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  flex-wrap: wrap;
+  
+  }
+  
+.users-poke-img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border:3px solid yellow ;
+  }
+
+
+.users-poke-info{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
 }
 
 .titulo-carta{
@@ -190,9 +215,7 @@ footer{
 
 }
 
-.carta-main .back div {
-  width: 100%;
-}
+
 
 .card-container:hover .carta-main {
   transform: rotateY(180deg); /* Gira la carta cuando se pasa el mouse o se hace clic */

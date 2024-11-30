@@ -28,6 +28,18 @@ class Fish(models.Model):
     scientific_name = models.CharField(max_length=255, verbose_name="Nombre Científico")
     description = models.CharField(max_length=500, verbose_name="Descripción")
     image = models.ImageField(upload_to='fish_images', null=True, blank=True, verbose_name="Imagen del Pez")
+    tier = models.CharField(
+        max_length=50, 
+        choices=[
+            ('SS', 'SS'),
+            ('S', 'S'),
+            ('A', 'A'),
+            ('B', 'B'),
+            ('C', 'C'),
+            ('D', 'D'),
+            
+        ],
+        verbose_name="Tiers")
     
     class Meta:
         verbose_name = "Pez"

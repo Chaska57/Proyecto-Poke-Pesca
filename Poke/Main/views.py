@@ -8,10 +8,28 @@ def Mainmenu(request):
     peces = Fish.objects.all()
     usuarios = User.objects.all()
 
-    data ={
-        'peces' : peces,
-        'usuarios' : usuarios
+     # Obtener la captura de cada pez para todos los usuarios
+    fish_data = []
+    for fish in peces:
+        captured_by_users = []
+        for user in usuarios:
+            # Verificar si este usuario ha capturado este pez
+            captured = UserFish.objects.filter(user=user, fish=fish).first()
+            captured_by_users.append({
+                'user': user,
+                'captured': captured and captured.captured  # Capturado o no capturado
+            })
+        
+        fish_data.append({
+            'fish': fish,
+            'captured_by_users': captured_by_users
+        })
+
+    data = {
+        'peces': fish_data,  # Usamos fish_data en lugar de peces
+        'usuarios': usuarios
     }
+    
 
     return render(request,'index.html',data)
 
