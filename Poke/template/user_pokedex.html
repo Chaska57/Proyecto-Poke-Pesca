@@ -104,12 +104,12 @@
                         <div class="info">
                             Ubicacion: 
                             {% if fish_data.captured %}
-                            {% if fish_data.captured.location %}
-                                {{ fish_data.captured.location }} <!-- O si quieres formatear, usa floatformat -->
+                                {% if fish_data.captured.location %}
+                                    {{ fish_data.captured.location }} <!-- O si quieres formatear, usa floatformat -->
+                                {% else %}
+                                    S/I
+                                {% endif %}
                             {% else %}
-                                S/I
-                            {% endif %}
-                        {% else %}
                             <img class="icon" src="{% static 'img/la-medida.png' %}" alt="">:  S/I
                         {% endif %}
                         </div>

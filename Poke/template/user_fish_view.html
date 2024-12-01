@@ -18,6 +18,10 @@
             crossorigin="anonymous"
         />
         <link rel="stylesheet" href="{% static 'css/style-user.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.css">
+
+    <!-- Scripts de Cropper.js -->
+        <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.js"></script>
 
     </head>
 
@@ -81,8 +85,9 @@
                         <!-- Ubicación -->
                         <label>
                             Ubicación:
-                            <input type="text" name="location" 
-                                value="{% if fish_data.captured %}{{ fish_data.captured.location }}{% else %}{{ '' }}{% endif %}">
+                            <input placeholder="{% if fish_data.captured %}{{ fish_data.captured.location }}{% else %}{{ '' }}{% endif %}" 
+                                 type="text" name="location" 
+                                 value="{% if fish_data.captured %}{{ fish_data.captured.location }}{% else %}{{ '' }}{% endif %}">
                         </label>
                         
                         <!-- Foto del pez capturado -->
@@ -90,7 +95,14 @@
                             Foto del pez capturado:
                             <input type="file" name="image">
                         </label>
-                    
+
+                        {% if fish_data.captured and fish_data.captured.image %}
+                        <label>
+                            Borrar foto:
+                            <input type="checkbox" name="delete_image" value="true"> Sí
+                        </label>
+                        {% endif %}
+
                         <button class="btn-capturado" type="submit">Actualizar
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
                                 <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
@@ -107,6 +119,74 @@
         <footer>
             <!-- place footer here -->
         </footer>
+        <script>
+            let cropper;
+            let imagePreview = document.getElementById('imagePreview');
+            let imageInput = document.getElementById('imageInput');
+        
+            // Muestra la imagen seleccionada y habilita el recorte
+            imageInput.addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';  // Muestra la vista previa de la imagen
+        
+                        // Si ya existe un Cropper, lo destruye
+                        if (cropper) {
+                            cropper.destroy();
+                        }
+        
+                        // Inicializa Cropper.js con la imagen cargada
+                        cropper = new Cropper(imagePreview, {
+                            aspectRatio: 1,  // Aspecto cuadrado, puedes cambiarlo si es necesario
+                            viewMode: 1,
+                            preview: '.preview', // Si quieres una vista previa
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        
+            // Función para obtener la imagen recortada
+            function getCroppedImage() {
+                const canvas = cropper.getCroppedCanvas();
+                const croppedImage = canvas.toDataURL();
+                return croppedImage;
+            }
+        
+            // Al enviar el formulario, procesamos la imagen recortada
+            document.querySelector('form').onsubmit = function (e) {
+                e.preventDefault();
+        
+                const croppedImage = getCroppedImage();
+        
+                // Convertimos la imagen recortada en un archivo (base64 a file)
+                const formData = new FormData();
+                formData.append('image', dataURLtoFile(croppedImage, 'image.png'));
+        
+                // Enviar el formulario con AJAX o como un POST tradicional
+                fetch('/capture/{{ fish_data.fish.id }}/{{ user.id }}/', {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json())
+                  .then(data => {
+                    // Hacer algo con la respuesta
+                    console.log(data);
+                });
+            };
+        
+            // Convertir base64 a archivo
+            function dataURLtoFile(dataurl, filename) {
+                const arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+                while(n--){
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                return new File([u8arr], filename, {type:mime});
+            }
+        </script>
 
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

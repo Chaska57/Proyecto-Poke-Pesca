@@ -80,38 +80,47 @@ def detalle_pez(request, id):
     return render(request, 'detalle-pez.html', data)
 
 def capture_fish(request, fish_id, user_id):
-      if request.method == "POST":
-        captured = request.POST.get("captured") == "true"
-        user = get_object_or_404(User, id=user_id)
-        fish = get_object_or_404(Fish, id=fish_id)
-        
-        # Obtener o crear la relación entre el usuario y el pez
-        user_fish, created = UserFish.objects.get_or_create(user=user, fish=fish)
-        
-        # Actualizar el estado de capturado
-        user_fish.captured = captured
+    user = get_object_or_404(User, id=user_id)
+    fish = get_object_or_404(Fish, id=fish_id)
+    user_fish, created = UserFish.objects.get_or_create(user=user, fish=fish)
 
-        # Obtener el tamaño y peso desde el formulario
+    if request.method == "POST":
+        captured = request.POST.get("captured") == "true"
         size = request.POST.get('size')
         weight = request.POST.get('weight')
         image = request.FILES.get('image')
+        location = request.POST.get('location')  # Obtener la ubicación
+        delete_image = request.POST.get('delete_image') == "true"
 
+        # Actualizar el estado de 'capturado'
+        user_fish.captured = captured
+
+        # Actualizar tamaño y peso
         if size:
-            user_fish.size = Decimal(size)  # Asegurarse de que se guarde como decimal
+            user_fish.size = Decimal(size)
         if weight:
-            # Convertir el peso a entero (en gramos), eliminando los decimales
-            try:
-                user_fish.weight = int(float(weight))  # Convierte a float primero y luego a entero
-            except ValueError:
-                user_fish.weight = None  # Si el valor no es un número válido, asigna None
-        if image:  # Si hay imagen, actualízala
-            user_fish.image = image  # Guardar la foto subida
+            user_fish.weight = int(weight)  # Convertir el peso a entero
 
-        # Guardar la relación actualizada
+        # Borrar la imagen si el usuario lo marca
+        if delete_image and user_fish.image:
+            user_fish.image.delete()  # Eliminar la imagen física
+            user_fish.image = None  # Eliminar la referencia en el modelo
+
+        # Si hay una nueva imagen, se actualiza
+        if image:
+            user_fish.image = image
+
+        # Actualizar ubicación
+        if location:
+            user_fish.location = location
+
+        # Guardar los cambios
         user_fish.save()
 
-        # Redirigir a la vista para mostrar los cambios
+        # Redirigir a la vista de usuario-pez
         return redirect("user_fish_view", user_id=user.id)
+
+    return render(request, 'your_template.html', {'fish_data': user_fish})
     
 def user_fish_view(request, user_id):
     user = get_object_or_404(User, id=user_id)
@@ -142,14 +151,35 @@ def user_fish_poke(request, user_id):
     user = get_object_or_404(User, id=user_id)
     fishes = Fish.objects.all()
 
-    user_fishes = [
-        {
-            "fish": fish,
-            "captured": UserFish.objects.filter(user=user, fish=fish).first()
-        }
-        for fish in fishes
-    ]
+    # Filtro de captura
+    captura = request.GET.get('capturados', '')  # "capturados", "no_capturados" o "" para todos
+    if captura == 'capturados':
+        user_fishes = [
+            {
+                "fish": fish,
+                "captured": UserFish.objects.filter(user=user, fish=fish, captured=True).first()
+            }
+            for fish in fishes
+        ]
+    elif captura == 'no_capturados':
+        user_fishes = [
+            {
+                "fish": fish,
+                "captured": UserFish.objects.filter(user=user, fish=fish, captured=False).first()
+            }
+            for fish in fishes
+        ]
+    else:
+        # Si no se filtra por captura, se muestran todos los peces
+        user_fishes = [
+            {
+                "fish": fish,
+                "captured": UserFish.objects.filter(user=user, fish=fish).first()
+            }
+            for fish in fishes
+        ]
 
+    # Contar los peces capturados
     captured_count = sum(1 for data in user_fishes if data["captured"] and data["captured"].captured)
 
     # Manejo del parámetro de orden
