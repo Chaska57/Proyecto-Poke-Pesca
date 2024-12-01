@@ -22,21 +22,74 @@
 
     <body>
         <header>
-            <a href="/user/{{user.id}}">
-                <img class="user-pic" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}" width="150">
-            </a>
-            <div>
+            <div class="titulo-pokedex">
                 <h1>Pokédex de {{ user.name }}</h1>
-                <p>{{ user.description }}</p>
             </div>
-            
-            
+            <div class="titulo-foto_prestigo">
+                <a href="/user/{{user.id}}">
+                    <img class="user-pic" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}" width="150">
+                </a>
+                <div class="prestigios">
+                    {% if captured_count >= 0 %}
+                        <img src="{% static '/img/prestigios/prestige_1.png' %}" alt="Prestigio 1">
+                    {% endif %}
+                    {% if captured_count >= 4 %}
+                        <img src="{% static '/img/prestigios/prestige_2.png' %}" alt="Prestigio 2">
+                    {% endif %}
+                    {% if captured_count >= 8 %}
+                        <img src="{% static '/img/prestigios/prestige_3.png' %}" alt="Prestigio 3">
+                    {% endif %}
+                    {% if captured_count >= 12 %}
+                        <img src="{% static '/img/prestigios/prestige_4.png' %}" alt="Prestigio 4">
+                    {% endif %}
+                    {% if captured_count >= 16 %}
+                        <img src="{% static '/img/prestigios/prestige_5.png' %}" alt="Prestigio 5">
+                    {% endif %}
+                    {% if captured_count >= 20 %}
+                        <img src="{% static '/img/prestigios/prestige_6.png' %}" alt="Prestigio 6">
+                    {% endif %}
+                    {% if captured_count >= 24 %}
+                        <img src="{% static '/img/prestigios/prestige_7.png' %}" alt="Prestigio 7">
+                    {% endif %}
+                    {% if captured_count >= 28 %}
+                        <img src="{% static '/img/prestigios/prestige_8.png' %}" alt="Prestigio 8">
+                    {% endif %}
+                    {% if captured_count >= 32 %}
+                        <img src="{% static '/img/prestigios/prestige_9.png' %}" alt="Prestigio 9">
+                    {% endif %}
+                    {% if captured_count >= 36 %}
+                        <img src="{% static '/img/prestigios/prestige_10.png' %}" alt="Prestigio 10">
+                    {% endif %}
+                </div>
+                
+            </div>
+            <p class="titulo-pokedex" >{{ user.description }}</p>
+
 
         </header>
+
         <main>
+            <div class="totales">
+                <P>Peces totales capturados: {{captured_count}}</P>
+                <div class="ordenar-peces">
+                    <form method="GET" action="">
+                        <select class="form-select" name="orden" onchange="this.form.submit()">
+                            <option value="nombre_asc" {% if request.GET.orden == 'nombre_asc' %}selected{% endif %}>Nombre A-Z</option>
+                            <option value="nombre_desc" {% if request.GET.orden == 'nombre_desc' %}selected{% endif %}>Nombre Z-A</option>
+                            <option value="tier_asc" {% if request.GET.orden == 'tier_asc' %}selected{% endif %}>Tier Ascendente</option>
+                            <option value="tier_desc" {% if request.GET.orden == 'tier_desc' %}selected{% endif %}>Tier Descendente</option>
+                            <option value="peso_asc" {% if request.GET.orden == 'peso_asc' %}selected{% endif %}>Peso Ascendente</option>
+                            <option value="peso_desc" {% if request.GET.orden == 'peso_desc' %}selected{% endif %}>Peso Descendente</option>
+                            <option value="tamaño_asc" {% if request.GET.orden == 'tamaño_asc' %}selected{% endif %}>Tamaño Ascendente</option>
+                            <option value="tamaño_desc" {% if request.GET.orden == 'tamaño_desc' %}selected{% endif %}>Tamaño Descendente</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+          
             <div class="contenedor">
                 {% for fish_data in user_fishes %}
-                <div class="contenedor-pez">
+                <div class="contenedor-pez  {{ fish_data.fish.tier }} ">
                     <div class="carta-pez">
                         <div class="info">
                             {{ fish_data.fish.name }}
@@ -45,26 +98,45 @@
                         {% if fish_data.captured and fish_data.captured.image %}
                             <img class="img-pez" src="{{ fish_data.captured.image.url }}" alt="{{ fish_data.fish.name }}">
                         {% else %}
-                            <img class="img-pregunta" src="{% static 'img/pregunta.webp' %}" alt="{{ fish_data.fish.name }}">
+                            <img class="img-pregunta" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="{{ fish_data.fish.name }}">
                         {% endif %}
     
                         <div class="info">
-                            Ubicacion: XDXXDXDXDXD
+                            Ubicacion: 
+                            {% if fish_data.captured %}
+                            {% if fish_data.captured.location %}
+                                {{ fish_data.captured.location }} <!-- O si quieres formatear, usa floatformat -->
+                            {% else %}
+                                S/I
+                            {% endif %}
+                        {% else %}
+                            <img class="icon" src="{% static 'img/la-medida.png' %}" alt="">:  S/I
+                        {% endif %}
                         </div>
     
                         <div class="info-bottom">
                             <div>
                                 {% if fish_data.captured %}
-                                <img class="icon" src="{% static 'img/peso.png' %}" alt="">: {{ fish_data.captured.weight }}
+                                    <img class="icon" src="{% static 'img/peso.png' %}" alt="">: 
+                                    {% if fish_data.captured.weight %}
+                                        {{ fish_data.captured.weight }} gr
+                                    {% else %}
+                                        S/I
+                                    {% endif %}
                                 {% else %}
-                                    <img class="icon" src="{% static 'img/peso.png' %}" alt=""> S/I {{ '' }}
+                                    <img class="icon" src="{% static 'img/peso.png' %}" alt="">: S/I
                                 {% endif %}
                             </div>
                             <div>
                                 {% if fish_data.captured %}
-                                    <img class="icon" src="{% static 'img/la-medida.png' %}" alt="">: {{ fish_data.captured.size }} cm
+                                    <img class="icon" src="{% static 'img/la-medida.png' %}" alt="">: 
+                                    {% if fish_data.captured.size %}
+                                        {{ fish_data.captured.size|floatformat:1 }} cm
+                                    {% else %}
+                                        S/I
+                                    {% endif %}
                                 {% else %}
-                                 <img class="icon" src="{% static 'img/la-medida.png' %}" alt="">:  S/I{{ '' }} 
+                                    <img class="icon" src="{% static 'img/la-medida.png' %}" alt="">:  S/I
                                 {% endif %}
                             </div>
                         </div>
@@ -76,6 +148,7 @@
                 {% endfor %}
             </div>
         </main>
+
         <footer>
             <!-- place footer here -->
         </footer>

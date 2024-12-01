@@ -3,40 +3,56 @@ from .models import Fish, User ,UserFish
 from django.shortcuts import get_object_or_404, render
 from decimal import Decimal
 
-def Mainmenu(request):
+TIER_ORDER = {
+    'SS': 1,
+    'S': 2,
+    'A': 3,
+    'B': 4,
+    'C': 5
+}
 
+def Mainmenu(request):
     peces = Fish.objects.all()
     usuarios = User.objects.all()
 
-    peces_ordenados_nombre = peces.order_by('name')  # Orden alfabético
-    peces_ordenados_nombre_inverso = peces.order_by('-name')  # Orden alfabético inverso
-    peces_ordenados_tier = peces.order_by('tier__name')  
+    # Obtener el parámetro de ordenación de la solicitud GET (si existe)
+    orden = request.GET.get('orden', 'nombre_asc')  # Por defecto se ordena por nombre ascendente
 
-     # Obtener la captura de cada pez para todos los usuarios
-    fish_data = []
-    for fish in peces:
-        captured_by_users = []
-        for user in usuarios:
-            # Verificar si este usuario ha capturado este pez
-            captured = UserFish.objects.filter(user=user, fish=fish).first()
-            captured_by_users.append({
-                'user': user,
-                'captured': captured and captured.captured  # Capturado o no capturado
+    if orden == 'nombre_asc':
+        peces_ordenados = peces.order_by('name')
+    elif orden == 'nombre_desc':
+        peces_ordenados = peces.order_by('-name')
+    elif orden == 'tier_asc':
+        peces_ordenados = sorted(peces, key=lambda fish: TIER_ORDER.get(fish.tier, float('inf')))
+    elif orden == 'tier_desc':
+        peces_ordenados = sorted(peces, key=lambda fish: TIER_ORDER.get(fish.tier, float('inf')), reverse=True)
+    else:
+        peces_ordenados = peces  # Orden por defecto
+    def preparar_datos(peces):
+        fish_data = []
+        for fish in peces:
+            captured_by_users = []
+            for user in usuarios:
+                # Verificar si este usuario ha capturado este pez
+                captured = UserFish.objects.filter(user=user, fish=fish).first()
+                captured_by_users.append({
+                    'user': user,
+                    'captured': captured and captured.captured  # Capturado o no capturado
+                })
+
+            fish_data.append({
+                'fish': fish,
+                'captured_by_users': captured_by_users
             })
-        
-        fish_data.append({
-            'fish': fish,
-            'captured_by_users': captured_by_users
-        })
+        return fish_data
 
+    # Datos ordenados
     data = {
-        'peces': fish_data,  # Usamos fish_data en lugar de peces
-        'usuarios': usuarios
-        
+        'peces_nombre': preparar_datos(peces_ordenados),  # Usamos peces_ordenados aquí
+        'usuarios': usuarios,
     }
-    
 
-    return render(request,'index.html',data)
+    return render(request, 'index.html', data)
 
 def detalle_pez(request, id):
     # Obtener el pez según el ID o realizar búsqueda
@@ -63,40 +79,8 @@ def detalle_pez(request, id):
     # Renderizar la plantilla con los datos
     return render(request, 'detalle-pez.html', data)
 
-
-def combined_view(request):
-    users = User.objects.all()
-    fishes = Fish.objects.all()
-
-    user_fishes = {
-        user: {
-            "info": user,
-            "fish": [
-                {
-                    "fish": fish,
-                    "captured": UserFish.objects.filter(user=user, fish=fish).first()
-                }
-                for fish in fishes
-            ],
-            "captured_count": sum(
-                1 for fish_data in [
-                    {
-                        "fish": fish,
-                        "captured": UserFish.objects.filter(user=user, fish=fish).first()
-                    }
-                    for fish in fishes
-                ] if fish_data["captured"] and fish_data["captured"].captured
-            ),  # Cuenta los peces capturados
-            "total_count": len(fishes)  # Total de peces disponibles
-        }
-        for user in users
-    }
-
-    return render(request, "combined_view.html", {"user_fishes": user_fishes})
-
-
 def capture_fish(request, fish_id, user_id):
-    if request.method == "POST":
+      if request.method == "POST":
         captured = request.POST.get("captured") == "true"
         user = get_object_or_404(User, id=user_id)
         fish = get_object_or_404(Fish, id=fish_id)
@@ -107,7 +91,7 @@ def capture_fish(request, fish_id, user_id):
         # Actualizar el estado de capturado
         user_fish.captured = captured
 
-        # Obtener el tamaño y peso desde el formulario y convertirlos a decimales
+        # Obtener el tamaño y peso desde el formulario
         size = request.POST.get('size')
         weight = request.POST.get('weight')
         image = request.FILES.get('image')
@@ -115,7 +99,11 @@ def capture_fish(request, fish_id, user_id):
         if size:
             user_fish.size = Decimal(size)  # Asegurarse de que se guarde como decimal
         if weight:
-            user_fish.weight = Decimal(weight)  # Asegurarse de que se guarde como decimal
+            # Convertir el peso a entero (en gramos), eliminando los decimales
+            try:
+                user_fish.weight = int(float(weight))  # Convierte a float primero y luego a entero
+            except ValueError:
+                user_fish.weight = None  # Si el valor no es un número válido, asigna None
         if image:  # Si hay imagen, actualízala
             user_fish.image = image  # Guardar la foto subida
 
@@ -125,7 +113,6 @@ def capture_fish(request, fish_id, user_id):
         # Redirigir a la vista para mostrar los cambios
         return redirect("user_fish_view", user_id=user.id)
     
-
 def user_fish_view(request, user_id):
     user = get_object_or_404(User, id=user_id)
     fishes = Fish.objects.all()
@@ -151,9 +138,6 @@ def user_fish_view(request, user_id):
         },
     )
 
-
-
-
 def user_fish_poke(request, user_id):
     user = get_object_or_404(User, id=user_id)
     fishes = Fish.objects.all()
@@ -168,6 +152,36 @@ def user_fish_poke(request, user_id):
 
     captured_count = sum(1 for data in user_fishes if data["captured"] and data["captured"].captured)
 
+    # Manejo del parámetro de orden
+    orden = request.GET.get('orden', 'nombre_asc')  # Valor por defecto
+
+    if orden == 'peso_desc':
+        # Ordenar por peso, de mayor a menor
+        user_fishes.sort(key=lambda x: x['captured'].weight if x['captured'] and x['captured'].weight is not None else -float('inf'), reverse=True)
+    elif orden == 'peso_asc':
+        # Ordenar por peso, de menor a mayor
+        user_fishes.sort(key=lambda x: x['captured'].weight if x['captured'] and x['captured'].weight is not None else float('inf'))
+    elif orden == 'tamaño_desc':
+        # Ordenar por tamaño, de mayor a menor
+        user_fishes.sort(key=lambda x: x['captured'].size if x['captured'] and x['captured'].size is not None else -float('inf'), reverse=True)
+    elif orden == 'tamaño_asc':
+        # Ordenar por tamaño, de menor a mayor
+        user_fishes.sort(key=lambda x: x['captured'].size if x['captured'] and x['captured'].size is not None else float('inf'))
+    elif orden == 'nombre_asc':
+        # Ordenar por nombre, A-Z
+        user_fishes.sort(key=lambda x: x['fish'].name)
+    elif orden == 'nombre_desc':
+        # Ordenar por nombre, Z-A
+        user_fishes.sort(key=lambda x: x['fish'].name, reverse=True)
+    elif orden == 'tier_asc':
+        # Ordenar por tier ascendente
+        tier_order = {'SS': 1, 'S': 2, 'A': 3, 'B': 4, 'C': 5, 'D': 6}
+        user_fishes.sort(key=lambda x: tier_order.get(x['fish'].tier, float('inf')))
+    elif orden == 'tier_desc':
+        # Ordenar por tier descendente
+        tier_order = {'SS': 1, 'S': 2, 'A': 3, 'B': 4, 'C': 5, 'D': 6}
+        user_fishes.sort(key=lambda x: tier_order.get(x['fish'].tier, float('inf')), reverse=True)
+
     return render(
         request,
         "user_pokedex.html",
@@ -178,6 +192,3 @@ def user_fish_poke(request, user_id):
             "total_count": len(user_fishes),
         },
     )
-
-
-

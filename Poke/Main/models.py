@@ -75,9 +75,8 @@ class UserFish(models.Model):
     fish = models.ForeignKey(Fish, on_delete=models.CASCADE, verbose_name="Pez")
     captured = models.BooleanField(default=False, verbose_name="Capturado")
     size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño (cm)")  # Tamaño en cm
-    weight = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, verbose_name="Peso (kg)")  # Peso en kg
-    image = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez capturado")  # Nueva foto
-
+    weight = models.IntegerField(null=True, blank=True, verbose_name="Peso (gramos)")  # Peso en gramos (enteros)
+    image = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez capturado")  # Foto
 
     class Meta:
         verbose_name = "Relación Usuario-Pez"

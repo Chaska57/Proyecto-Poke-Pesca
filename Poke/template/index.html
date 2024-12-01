@@ -23,13 +23,24 @@
     <body>
         <header>
   
-          <img src="{% static 'img/pokeveneca.png' %}" alt="" style="height: 100px;">
-          <h1><strong>POKEVNECA</strong></h1>
+          <div class="ordenar-peces">
+            <form method="GET" action="{% url 'mainmenu' %}">
+                <select class="form-select" name="orden" onchange="this.form.submit()">
+                    <option value="nombre_asc" {% if request.GET.orden == 'nombre_asc' %}selected{% endif %}>Nombre A-Z</option>
+                    <option value="nombre_desc" {% if request.GET.orden == 'nombre_desc' %}selected{% endif %}>Nombre Z-A</option>
+                    <option value="tier_asc" {% if request.GET.orden == 'tier_asc' %}selected{% endif %}>Tier Ascendente</option>
+                    <option value="tier_desc" {% if request.GET.orden == 'tier_desc' %}selected{% endif %}>Tier Descendente</option>
+                </select>
+            </form>
+          </div>
+          
+          <h1><strong>Pokedex Peces NG</strong></h1>
           <img src="{% static 'img/pokeveneca.png' %}" alt="" style="height: 100px;">
           
         </header>
 
         <main>
+
           <div class="usuarios">
             {% for user in usuarios %}
             <div class="carta-usuarios">
@@ -45,9 +56,9 @@
           <div class="contenedor">
             
 
-            {% for fish_data in peces %}
+            {% for fish_data in peces_nombre %}
                 <div class="card-container hover-item">
-                    <div class="carta-main">
+                    <div class="carta-main {{ fish_data.fish.tier }}">s
                       <div>
                         
                       </div>
@@ -64,14 +75,13 @@
                                 <img class="img-pez" src="{% if fish_data.fish.image %}{{ fish_data.fish.image.url }}{% else %}{{ 'path/to/default/image.jpg' }}{% endif %}" alt="{{ fish_data.fish.name }}">
                             </div>
                             <div class="bottom-carta">
-                                
                                 <p>{{ fish_data.fish.description }}</p>
                             </div>
                         </div>
                         <div class="back">
                             <div class="users-poke-info">
                               <a href="/detalle/{{ fish_data.fish.id }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16"  style="color: white;">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                                     <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
                                 </svg>
@@ -98,29 +108,21 @@
             
           </div>
 
-          <img class="fixed-bottom mifi" src="{% static 'img/mifi.png' %}" alt="" style="width: 180px;">
 
         </main>
         <footer  class="fixed-bottom">
           <div></div>
-          <p>Todos los derechos reservados Chaska57</p>
           <p>
             <a href="/admin">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
-              <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
               </svg>
             </a>
           </p>
         </footer>
 
-        <script>
-          document.querySelectorAll('.carta-main').forEach((carta) => {
-            carta.addEventListener('click', () => {
-              carta.classList.toggle('volteada');
-            });
-          });
-        </script>
+       
         <!-- Bootstrap JavaScript Libraries -->
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
