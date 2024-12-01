@@ -46,7 +46,9 @@ header{
 }
 
 .user-pic{
-
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
     border-radius: 10%;
     border: 3px solid black;
 
@@ -97,7 +99,7 @@ header{
 }
 
 .img-pez{
-    height: 180px;
+    height: 145px;
     width: 234px;
     object-fit: cover;
     border-radius: 5px;
@@ -328,6 +330,23 @@ header{
 p{
     margin: 0;
 }
+
 h1{
+    margin: 0;
+}
+
+.boton-regresar{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: fit-content;
+    
+
+}
+
+.boton-regresar a{
+    color: white;
     margin: 0;
 }

@@ -27,27 +27,52 @@
 
     <body>
         <header>
-            <a class="image-container" href="/"><img src="{% static 'img/pokeveneca.png' %}" alt="" style="height: 100px;"></a>
-            <h1>Pokédex de {{ user.name }}</h1>
-            <a href="/detalle/usuario/{{user.id}}">
-                <img src="{% static 'img/juego.png' %}" alt="" style="height: 100px;">
-
-            </a>
-          </header>
-        <main>
-            
-
-            <div class="head-title sidebar ">
-                <img class="head-img" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}" width="150">
-                <div class="info">
-                    <h3>{{ user.name }}</h3>
-                    <p>{{ user.description }}</p>
-            
-                    <p>Total de Peces: {{ total_count }}</p>
-                    <p>Peces Capturados: {{ captured_count }}</p>
-                </div>
-            
+            <div class="boton-regresar">
+                <a href="/detalle/usuario/{{ user.id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply" viewBox="0 0 16 16">
+                        <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.7 8.7 0 0 0-1.921-.306 7 7 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254l-.042-.028a.147.147 0 0 1 0-.252l.042-.028zM7.8 10.386q.103 0 .223.006c.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96z" />
+                    </svg>
+                </a>
+                <div></div>
             </div>
+        
+            <div class="titulo-pokedex">
+                <form  class="titulo-pokedex" method="post" enctype="multipart/form-data" action="/update/usuario/{{ user.id }}/">
+                    {% csrf_token %}
+                    <!-- Nombre del usuario -->
+                    <label>
+                        Nombre:
+                        <input type="text" name="name" value="{{ user.name }}">
+                    </label>
+        
+                       <!-- Vista de la foto actual -->
+                    <div class="titulo-foto_prestigo">
+                        <img class="user-pic" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}" width="150">
+                    </div>
+                    <label>
+                        Foto del usuario:
+                        <input type="file" name="photo">
+                    </label>
+        
+                    <!-- Descripción -->
+                    <label>
+                        Descripción:
+                        <textarea name="description">{{ user.description }}</textarea>
+                    </label>
+        
+                    <!-- Botón para actualizar -->
+                    <button class="btn-capturado" type="submit">Actualizar
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                            <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+                            <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </header>
+        
+        
+        <main>
 
            <div class="contenedor">
                 {% for fish_data in user_fishes %}

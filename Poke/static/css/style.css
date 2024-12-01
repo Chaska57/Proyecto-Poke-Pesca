@@ -29,11 +29,27 @@ body{
 header{
     color: white;
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
     background: #5f5f5f;
-    padding: 8px 0px;
+    padding: 16px;
+}
+
+header p{
+  font-size: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: start;
+  margin: 0;
+  
+}
+
+header p button{
+  background: none;
+  border: none;
 }
 
 footer{
@@ -60,7 +76,7 @@ footer{
   justify-content: center;
   align-items: center;
   padding: 1rem ;
- 
+  flex-wrap: wrap ;
 
 }
 
@@ -222,7 +238,7 @@ footer{
   position: relative;
   transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
   transition: transform 0.6s; /* Transición suave para el efecto de volteo */
-  background-image:
+  background-image: url(../img/grano/ancient.png),
       url(../img/grano/glitter.png), 
       linear-gradient(120deg,
       #ffea00,       /* Amarillo chillón */
@@ -238,7 +254,7 @@ footer{
       #ffea00 100%   /* Amarillo chillón */);
   background-blend-mode: overlay;
   display: flex;
-  background-size: 160%;
+  background-size: 120%;
   justify-content: center;
   align-items: center;
   
@@ -284,7 +300,7 @@ footer{
   position: relative;
   transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
   transition: transform 0.6s; /* Transición suave para el efecto de volteo */
-  background-image:
+  background-image:url(../img/grano/stylish.png),
       url(../img/grano/grain.webp), 
       linear-gradient(120deg,#8c6239,       /* Marrón bronce opaco */
       #a57c52 20%,   /* Bronce claro apagado */
@@ -306,13 +322,14 @@ footer{
   
 }
 
-.D {
-  width: 300px;
+.D { width: 300px;
   height: 400px;
   position: relative;
   transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
   transition: transform 0.6s; /* Transición suave para el efecto de volteo */
-  background: var(--metal);
+  background-image:url(../img/grano/metal.png),
+      url(../img/grano/grain.webp), 
+      var(--metal);
   background-blend-mode: overlay;
   display: flex;
   background-size: 160%;
@@ -616,4 +633,30 @@ a{
 
 .white{
   color: white;
+}
+
+.ordenar-peces{
+width: 100%;
+padding: 16px;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: space-between;
+}
+
+.form-ordenar{
+  width: 200px;
+
+}
+
+
+.cantidad-tier{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+p{
+  margin: 0;
 }

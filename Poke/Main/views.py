@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import Fish, User ,UserFish
 from django.shortcuts import get_object_or_404, render
 from decimal import Decimal
+from .forms import UserProfileForm
+
 
 TIER_ORDER = {
     'SS': 1,
@@ -10,10 +12,16 @@ TIER_ORDER = {
     'B': 4,
     'C': 5
 }
-
 def Mainmenu(request):
     peces = Fish.objects.all()
     usuarios = User.objects.all()
+
+    # Contador total de peces
+    total_peces = peces.count()
+
+    # Contador de peces por cada tier (en orden específico SS, S, A, B, C)
+    TIER_ORDER = ['SS', 'S', 'A', 'B', 'C', 'D']
+    contador_tiers = {tier: peces.filter(tier=tier).count() for tier in TIER_ORDER if peces.filter(tier=tier).exists()}
 
     # Obtener el parámetro de ordenación de la solicitud GET (si existe)
     orden = request.GET.get('orden', 'nombre_asc')  # Por defecto se ordena por nombre ascendente
@@ -23,11 +31,12 @@ def Mainmenu(request):
     elif orden == 'nombre_desc':
         peces_ordenados = peces.order_by('-name')
     elif orden == 'tier_asc':
-        peces_ordenados = sorted(peces, key=lambda fish: TIER_ORDER.get(fish.tier, float('inf')))
+        peces_ordenados = sorted(peces, key=lambda fish: TIER_ORDER.index(fish.tier) if fish.tier in TIER_ORDER else float('inf'))
     elif orden == 'tier_desc':
-        peces_ordenados = sorted(peces, key=lambda fish: TIER_ORDER.get(fish.tier, float('inf')), reverse=True)
+        peces_ordenados = sorted(peces, key=lambda fish: TIER_ORDER.index(fish.tier) if fish.tier in TIER_ORDER else float('inf'), reverse=True)
     else:
         peces_ordenados = peces  # Orden por defecto
+
     def preparar_datos(peces):
         fish_data = []
         for fish in peces:
@@ -48,8 +57,10 @@ def Mainmenu(request):
 
     # Datos ordenados
     data = {
-        'peces_nombre': preparar_datos(peces_ordenados),  # Usamos peces_ordenados aquí
+        'peces_nombre': preparar_datos(peces_ordenados),
         'usuarios': usuarios,
+        'total_peces': total_peces,  # Total de peces
+        'contador_tiers': contador_tiers,  # Contador por tier
     }
 
     return render(request, 'index.html', data)
@@ -222,3 +233,16 @@ def user_fish_poke(request, user_id):
             "total_count": len(user_fishes),
         },
     )
+
+def edit_user_profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user_fish_view', user_id=user.id)  # Redirige al perfil del usuario
+    else:
+        form = UserProfileForm(instance=user)
+
+    return render(request, 'user_fish_view.html', {'form': form, 'user': user})
