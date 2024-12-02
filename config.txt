@@ -1,1 +1,3 @@
 todo menos setings y url
+
+template de album pes personal

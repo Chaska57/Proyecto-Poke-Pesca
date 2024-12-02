@@ -48,13 +48,21 @@
         <main>
 
           <div class="ordenar-peces">
+
             <div class="cantidad-tier">
               <p>Total de peces: {{ total_peces }}</p>
+
+              <div class="cantidades">
                 {% for tier, count in contador_tiers.items %}
-                <div>
-                  {{ tier }}: {{ count }} 
-                </div>
+                  <div class="tier-{{ tier }}">
+                    <p class="text-tier">{{ tier }} </p>
+                  </div>
+                <span>{{ count }}</span>
                 {% endfor %}
+              </div>
+              
+                
+                
               
             </div>
             

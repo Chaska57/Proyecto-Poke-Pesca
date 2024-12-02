@@ -1,0 +1,275 @@
+*{
+    outline: 2px dashed black;
+}
+
+:root{
+
+    --metal: linear-gradient(
+      45deg,
+      #999 5%,
+      #fff 10%,
+      #ccc 30%,
+      #ddd 50%,
+      #ccc 70%,
+      #fff 80%,
+      #999 95%
+    );
+}
+
+main {
+    position: relative;
+    background: url(../img/7-noise-texture-overlays-3.png), rgb(182, 182, 182);
+    background-blend-mode: overlay;
+    background-size: 150%;
+    padding: 16px;
+     
+  }
+  
+  main::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: inherit;  /* Hereda el fondo del body */
+      filter: blur(8px);  /* Aplica el desenfoque */
+      z-index: -1;  /* Asegura que el pseudo-elemento esté detrás del contenido */
+  }
+  
+header{
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: space-between;
+      background: #5f5f5f;
+      padding: 16px;
+  }
+  
+header p{
+    font-size: 48px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: start;
+    margin: 0;
+    
+  }
+  
+header p button{
+    background: none;
+    border: none;
+  }
+
+.prestigios{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+.prestigio{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-size: 18px;
+    
+  }
+
+.contenedor{
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.colores{
+
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.SS {
+    width: 150px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
+    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
+    background-image: url("../img/grano/vmaxbg.jpg"), 
+        url(../img/grano/glitter.png), 
+        linear-gradient(120deg,#ff0084a0 10%,  /* Rosa vibrante */
+        #fca40080 20%,  /* Naranja dorado */
+        #ffff0040 30%,  /* Amarillo translúcido */
+        #00ff8a50 40%,  /* Verde brillante */
+        #00cfff60 50%,  /* Azul cian */
+        #8a2be240 60%,  /* Púrpura profundo */
+        #cc4cfa70 70%,  /* Morado pastel */
+        #ff0084a0 80%,  /* Volvemos al rosa vibrante */
+        #fca40080 90%   /* Terminamos con el dorado */);
+    background-blend-mode: overlay;
+    display: flex;
+    background-size: 160%;
+    justify-content: center;
+    align-items: center;
+    
+  
+  
+    border-radius: 15px;
+    
+    
+    
+  }
+  
+  .S {
+    width: 150px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
+    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
+    background-image: url("../img/grano/angular.png"), 
+        url(../img/grano/glitter.png), 
+        linear-gradient(120deg,#fbf7fdec,       /* Blanco brillante */
+        #f8f8f8 10%,   /* Gris perla */
+        #ffe4f0 20%,   /* Rosa muy claro */
+        #e8d8ff 30%,   /* Morado perla */
+        #f0f0f5 40%,   /* Gris perlado claro */
+        #fff8f8e0 50%,   /* Blanco brillante */
+        #f8f8f8 60%,   /* Gris perla */
+        #ffe4f0 70%,   /* Rosa muy claro */
+        #e8d8ff 80%,   /* Morado perla */
+        #f0f0f5 90%,   /* Gris perlado claro */
+        #ffffff 100%   /* Blanco brillante */);
+    background-blend-mode: overlay;
+    display: flex;
+    background-size: 160%;
+    justify-content: center;
+    align-items: center;
+    
+  
+  
+    border-radius: 15px;
+    
+    
+    
+  }
+  
+  .A {
+    width: 150px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
+    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
+    background-image: url(../img/grano/ancient.png),
+        url(../img/grano/glitter.png), 
+        linear-gradient(120deg,
+        #ffea00,       /* Amarillo chillón */
+        #ffd700 10%,   /* Dorado brillante */
+        #ffc107 20%,   /* Amarillo dorado */
+        #ffbf00 30%,   /* Naranja dorado */
+        #ffe135 40%,   /* Amarillo claro */
+        #ffea00 50%,   /* Amarillo chillón */
+        #ffd700 60%,   /* Dorado brillante */
+        #ffc107 70%,   /* Amarillo dorado */
+        #ffbf00 80%,   /* Naranja dorado */
+        #ffe135 90%,   /* Amarillo claro */
+        #ffea00 100%   /* Amarillo chillón */);
+    background-blend-mode: overlay;
+    display: flex;
+    background-size: 120%;
+    justify-content: center;
+    align-items: center;
+    
+  
+  
+    border-radius: 15px;
+    
+    
+    
+  }
+  
+  .B {
+    width: 150px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
+    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
+    background-image: url("../img/grano/wave.png"), 
+        url(../img/grano/glitter.png), 
+        linear-gradient(120deg,  #d9d9d9,       /* Gris claro */
+        #c0c0c0 20%,   /* Plata */
+        #a6a6a6 40%,   /* Gris medio */
+        #e0e0e0 60%,   /* Gris perlado claro */
+        #b0b0b0 80%,   /* Plata opaca */
+        #d9d9d9 100%   /* Gris claro */);
+    background-blend-mode: overlay;
+    display: flex;
+    background-size: 160%;
+    justify-content: center;
+    align-items: center;
+    
+  
+  
+    border-radius: 15px;
+    
+    
+    
+  }
+  
+  .C {
+    width: 150px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
+    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
+    background-image:url(../img/grano/stylish.png),
+        url(../img/grano/grain.webp), 
+        linear-gradient(120deg,#8c6239,       /* Marrón bronce opaco */
+        #a57c52 20%,   /* Bronce claro apagado */
+        #6e4f33 40%,   /* Marrón oscuro */
+        #b08d57 60%,   /* Bronce mate */
+        #7c5635 80%,   /* Marrón bronce profundo */
+        #8c6239 100%   /* Marrón bronce opaco */);
+    background-blend-mode: overlay;
+    display: flex;
+    background-size: 160%;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 15px;
+    
+    
+    
+  }
+  
+  .D { 
+    width: 150px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
+    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
+    background-image:url(../img/grano/metal.png),
+        url(../img/grano/grain.webp), 
+        var(--metal);
+    background-blend-mode: overlay;
+    display: flex;
+    background-size: 160%;
+    justify-content: center;
+    align-items: center;
+ 
+    border-radius: 15px;
+    
+    
+    
+  }
+  

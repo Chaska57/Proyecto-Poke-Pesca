@@ -28,11 +28,9 @@ urlpatterns = [
     path("capture/<int:fish_id>/<int:user_id>/", views.capture_fish, name="capture_fish"),
     path("detalle/usuario/<int:user_id>/", views.user_fish_poke,name="user_fish_poke"),
     path('update/usuario/<int:user_id>/', views.edit_user_profile, name='edit_user_profile'),
+    path('info', views.info),
 
-    
-   
 ]
-
 
 
 if settings.DEBUG:

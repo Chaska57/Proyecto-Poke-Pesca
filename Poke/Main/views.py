@@ -246,3 +246,6 @@ def edit_user_profile(request, user_id):
         form = UserProfileForm(instance=user)
 
     return render(request, 'user_fish_view.html', {'form': form, 'user': user})
+
+def info(request):
+    return render(request, 'informacion.html')
