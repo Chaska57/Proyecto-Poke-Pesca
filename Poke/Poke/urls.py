@@ -29,6 +29,8 @@ urlpatterns = [
     path("detalle/usuario/<int:user_id>/", views.user_fish_poke,name="user_fish_poke"),
     path('update/usuario/<int:user_id>/', views.edit_user_profile, name='edit_user_profile'),
     path('info', views.info),
+    path('fish_detail/<int:user_id>/<int:fish_id>/', views.fish_detail, name='fish_detail'),
+
 
 ]
 

@@ -112,8 +112,8 @@ main{
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width:400px;
-    height: 500px;
+    width:fit-content;
+    height: fit-content;
     background: #f28b6a;
     padding: 16px;
     border-radius: 10px;
@@ -135,8 +135,18 @@ strong{
 
 form{
     display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.contenido-form{
+    border: 2px solid black;
+    display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: start;
     gap: 8px;
 }

@@ -113,17 +113,42 @@ class User(models.Model):
         super(User, self).save(*args, **kwargs)
 
 class UserFish(models.Model):
+    # Campos base
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuario")
     fish = models.ForeignKey(Fish, on_delete=models.CASCADE, verbose_name="Pez")
     captured = models.BooleanField(default=False, verbose_name="Capturado")
-    size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño (cm)")  # Tamaño en cm
-    weight = models.IntegerField(null=True, blank=True, verbose_name="Peso (gramos)")  # Peso en gramos (enteros)
-    location = models.CharField(max_length=255, null=True, blank=True)  # Ubicación
-    image = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez capturado")  # Foto
+    size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño (cm)")
+    weight = models.IntegerField(null=True, blank=True, verbose_name="Peso (gramos)")
+    location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación")
+    image = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez capturado")
+
+    # Nuevos campos para destacar capturas
+    biggest_fish_photo = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez más grande")
+    prettiest_fish_photo = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez más bonito")
+    smallest_fish_photo = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez más chico")
+   
+    biggest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más grande (gramos)")
+    biggest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más grande (cm)")
+    
+    smallest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más chico (gramos)")
+    smallest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más chico (cm)")
+
+    # Nuevos campos para equipo y señuelo para cada tipo de pez destacado
+    biggest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más grande")  # Ej: Caña, carrete, línea, etc.
+    biggest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más grande")  # Ej: Spinnerbait, crankbait, etc.
+    biggest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más grande")
+
+    prettiest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más bonito")
+    prettiest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más bonito")
+    prettiest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más bonito")
+
+    smallest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más chico")
+    smallest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más chico")
+    smallest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más chico")
 
     class Meta:
         verbose_name = "Relación Usuario-Pez"
         verbose_name_plural = "Relaciones Usuario-Pez"
 
     def __str__(self):
-        return f"{self.user.name} - {self.fish.name} - Capturado: {'Sí' if self.captured else 'No'}"
+        return f"{self.user.username} - {self.fish.name} - Capturado: {'Sí' if self.captured else 'No'}"

@@ -74,70 +74,134 @@
         
         <main>
 
-           <div class="contenedor">
+            <div class="contenedor">
                 {% for fish_data in user_fishes %}
                 <div class="carta-pez {% if fish_data.captured and fish_data.captured.captured %}capturado{% else %}no-capturado{% endif %}">
                     <strong>{{ fish_data.fish.name }}</strong>
-
-                    {% if fish_data.captured and fish_data.captured.image %}
-                        <img class="img-pez" src="{{ fish_data.captured.image.url }}" alt="{{ fish_data.fish.name }}">
-                    {% else %}
-                        <img class="img-pez" src="{{ fish_data.fish.image.url }}" alt="{{ fish_data.fish.name }}">
+                
+                    {% if fish_data.biggest_fish_photo %}
+                        <div class="foto-pez">
+                            <h4>Pez más grande</h4>
+                            <img class="img-pez" src="{{ fish_data.biggest_fish_photo.url }}" alt="Pez más grande: {{ fish_data.fish.name }}">
+                            <p>Peso: {{ fish_data.biggest_fish_weight }} g, Tamaño: {{ fish_data.biggest_fish_size }} cm</p>
+                        </div>
                     {% endif %}
-
+                    
+                    {% if fish_data.smallest_fish_photo %}
+                        <div class="foto-pez">
+                            <h4>Pez más chico</h4>
+                            <img class="img-pez" src="{{ fish_data.smallest_fish_photo.url }}" alt="Pez más chico: {{ fish_data.fish.name }}">
+                            <p>Peso: {{ fish_data.smallest_fish_weight }} g, Tamaño: {{ fish_data.smallest_fish_size }} cm</p>
+                        </div>
+                    {% endif %}
+                    
+                    {% if fish_data.prettiest_fish_photo %}
+                        <div class="foto-pez">
+                            <h4>Pez más bonito</h4>
+                            <img class="img-pez" src="{{ fish_data.prettiest_fish_photo.url }}" alt="Pez más bonito: {{ fish_data.fish.name }}">
+                            <p>Peso: {{ fish_data.prettiest_fish_weight }} g, Tamaño: {{ fish_data.prettiest_fish_size }} cm</p>
+                        </div>
+                    {% endif %}
+            
                     <form method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
                         {% csrf_token %}
-                        
                         <label>
                             Capturado:
                             <input type="checkbox" name="captured" value="true" {% if fish_data.captured and fish_data.captured.captured %}checked{% endif %}>
                         </label>
-                    
-                        <!-- Tamaño (cm) -->
-                        <label>
-                            Tamaño (cm):
-                            <input id="numeros" type="number" step="0.1" name="size" 
-                                value="{% if fish_data.captured %}{{ fish_data.captured.size }}{% else %}{{ '' }}{% endif %}">
-                        </label>
-                    
-                        <!-- Peso (kg) -->
-                        <label>
-                            Peso (gramos):
-                            <input id="numeros" type="number" step="1" name="weight" 
-                                value="{% if fish_data.captured %}{{ fish_data.captured.weight }}{% else %}{{ '' }}{% endif %}">
-                        </label>
-                    
-                        <!-- Ubicación -->
-                        <label>
-                            Ubicación:
-                            <input placeholder="{% if fish_data.captured %}{{ fish_data.captured.location }}{% else %}{{ '' }}{% endif %}" 
-                                 type="text" name="location" 
-                                 value="{% if fish_data.captured %}{{ fish_data.captured.location }}{% else %}{{ '' }}{% endif %}">
-                        </label>
-                        
-                        <!-- Foto del pez capturado -->
-                        <label>
-                            Foto del pez capturado:
-                            <input type="file" name="image">
-                        </label>
+                        <div class="contenido-form">
+                            
 
-                        {% if fish_data.captured and fish_data.captured.image %}
-                        <label>
-                            Borrar foto:
-                            <input type="checkbox" name="delete_image" value="true"> Sí
-                        </label>
-                        {% endif %}
-
-                        <button class="btn-capturado" type="submit">Actualizar
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
-                                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
-                            </svg>
-                        </button>
+                            <h3>Pez más grande</h3>
+                            <label>
+                                Foto del pez más grande:
+                                <input type="file" name="biggest_fish_photo">
+                            </label>
+                            <label>
+                                Peso del pez más grande (gramos):
+                                <input type="number" name="biggest_fish_weight" value="{{ user.biggest_fish_weight }}">
+                            </label>
+                            <label>
+                                Tamaño del pez más grande (cm):
+                                <input type="number" name="biggest_fish_size" step="0.01" value="{{ user.biggest_fish_size }}">
+                            </label>
+                            <label>
+                                Equipo con que se sacó el pez más grande:
+                                <input type="text" name="biggest_fish_equipment" value="{{ user.biggest_fish_equipment }}">
+                            </label>
+                            <label>
+                                Señuelo con que se sacó el pez más grande:
+                                <input type="text" name="biggest_fish_lure" value="{{ user.biggest_fish_lure }}">
+                            </label>
+                            <label>
+                                Ubicación del pez más grande:
+                                <input type="text" name="biggest_fish_location" value="{{ user.biggest_fish_location }}">
+                            </label>
+                        </div>
+            
+                        <div class="contenido-form">
+                            <h3>Pez más chico</h3>
+                            <label>
+                                Foto del pez más chico:
+                                <input type="file" name="smallest_fish_photo">
+                            </label>
+                            <label>
+                                Peso del pez más chico (gramos):
+                                <input type="number" name="smallest_fish_weight" value="{{ user.smallest_fish_weight }}">
+                            </label>
+                            <label>
+                                Tamaño del pez más chico (cm):
+                                <input type="number" name="smallest_fish_size" step="0.01" value="{{ user.smallest_fish_size }}">
+                            </label>
+                            <label>
+                                Equipo con que se sacó el pez más chico:
+                                <input type="text" name="smallest_fish_equipment" value="{{ user.smallest_fish_equipment }}">
+                            </label>
+                            <label>
+                                Señuelo con que se sacó el pez más chico:
+                                <input type="text" name="smallest_fish_lure" value="{{ user.smallest_fish_lure }}">
+                            </label>
+                            <label>
+                                Ubicación del pez más chico:
+                                <input type="text" name="smallest_fish_location" value="{{ user.smallest_fish_location }}">
+                            </label>
+                        </div>
+            
+                        <div class="contenido-form">
+                            <h3>Pez más bonito</h3>
+                            <label>
+                                Foto del pez más bonito:
+                                <input type="file" name="prettiest_fish_photo">
+                            </label>
+                            <label>
+                                Peso del pez más bonito (gramos):
+                                <input type="number" name="prettiest_fish_weight" value="{{ user.prettiest_fish_weight }}">
+                            </label>
+                            <label>
+                                Tamaño del pez más bonito (cm):
+                                <input type="number" name="prettiest_fish_size" step="0.01" value="{{ user.prettiest_fish_size }}">
+                            </label>
+                            <label>
+                                Equipo con que se sacó el pez más bonito:
+                                <input type="text" name="prettiest_fish_equipment" value="{{ user.prettiest_fish_equipment }}">
+                            </label>
+                            <label>
+                                Señuelo con que se sacó el pez más bonito:
+                                <input type="text" name="prettiest_fish_lure" value="{{ user.prettiest_fish_lure }}">
+                            </label>
+                            <label>
+                                Ubicación del pez más bonito:
+                                <input type="text" name="prettiest_fish_location" value="{{ user.prettiest_fish_location }}">
+                            </label>
+                        </div>
+            
+                        <button class="btn-capturado" type="submit">Actualizar</button>
                     </form>
+            
                 </div>
                 {% endfor %}
             </div>
+            
 
 
         </main>

@@ -125,14 +125,92 @@ def capture_fish(request, fish_id, user_id):
         if location:
             user_fish.location = location
 
+        # Actualizar los datos para el pez más grande
+        biggest_fish_photo = request.FILES.get("biggest_fish_photo")
+        biggest_fish_weight = request.POST.get("biggest_fish_weight")
+        biggest_fish_size = request.POST.get("biggest_fish_size")
+        biggest_fish_equipment = request.POST.get("biggest_fish_equipment")
+        biggest_fish_lure = request.POST.get("biggest_fish_lure")
+        biggest_fish_location = request.POST.get("biggest_fish_location")
+        delete_biggest_fish_photo = request.POST.get("delete_biggest_fish_photo") == "true"  # Eliminar foto
+
+        if delete_biggest_fish_photo and user_fish.biggest_fish_photo:
+            user_fish.biggest_fish_photo.delete()  # Eliminar la foto física
+            user_fish.biggest_fish_photo = None  # Eliminar la referencia en el modelo
+        elif biggest_fish_photo:
+            user_fish.biggest_fish_photo = biggest_fish_photo
+
+        if biggest_fish_weight:
+            user_fish.biggest_fish_weight = int(biggest_fish_weight)
+        if biggest_fish_size:
+            user_fish.biggest_fish_size = Decimal(biggest_fish_size)
+        if biggest_fish_equipment:
+            user_fish.biggest_fish_equipment = biggest_fish_equipment
+        if biggest_fish_lure:
+            user_fish.biggest_fish_lure = biggest_fish_lure
+        if biggest_fish_location:
+            user_fish.biggest_fish_location = biggest_fish_location
+
+        # Actualizar los datos para el pez más chico
+        smallest_fish_photo = request.FILES.get("smallest_fish_photo")
+        smallest_fish_weight = request.POST.get("smallest_fish_weight")
+        smallest_fish_size = request.POST.get("smallest_fish_size")
+        smallest_fish_equipment = request.POST.get("smallest_fish_equipment")
+        smallest_fish_lure = request.POST.get("smallest_fish_lure")
+        smallest_fish_location = request.POST.get("smallest_fish_location")
+        delete_smallest_fish_photo = request.POST.get("delete_smallest_fish_photo") == "true"  # Eliminar foto
+
+        if delete_smallest_fish_photo and user_fish.smallest_fish_photo:
+            user_fish.smallest_fish_photo.delete()  # Eliminar la foto física
+            user_fish.smallest_fish_photo = None  # Eliminar la referencia en el modelo
+        elif smallest_fish_photo:
+            user_fish.smallest_fish_photo = smallest_fish_photo
+
+        if smallest_fish_weight:
+            user_fish.smallest_fish_weight = int(smallest_fish_weight)
+        if smallest_fish_size:
+            user_fish.smallest_fish_size = Decimal(smallest_fish_size)
+        if smallest_fish_equipment:
+            user_fish.smallest_fish_equipment = smallest_fish_equipment
+        if smallest_fish_lure:
+            user_fish.smallest_fish_lure = smallest_fish_lure
+        if smallest_fish_location:
+            user_fish.smallest_fish_location = smallest_fish_location
+
+        # Actualizar los datos para el pez más bonito
+        prettiest_fish_photo = request.FILES.get("prettiest_fish_photo")
+        prettiest_fish_weight = request.POST.get("prettiest_fish_weight")
+        prettiest_fish_size = request.POST.get("prettiest_fish_size")
+        prettiest_fish_equipment = request.POST.get("prettiest_fish_equipment")
+        prettiest_fish_lure = request.POST.get("prettiest_fish_lure")
+        prettiest_fish_location = request.POST.get("prettiest_fish_location")
+        delete_prettiest_fish_photo = request.POST.get("delete_prettiest_fish_photo") == "true"  # Eliminar foto
+
+        if delete_prettiest_fish_photo and user_fish.prettiest_fish_photo:
+            user_fish.prettiest_fish_photo.delete()  # Eliminar la foto física
+            user_fish.prettiest_fish_photo = None  # Eliminar la referencia en el modelo
+        elif prettiest_fish_photo:
+            user_fish.prettiest_fish_photo = prettiest_fish_photo
+
+        if prettiest_fish_weight:
+            user_fish.prettiest_fish_weight = int(prettiest_fish_weight)
+        if prettiest_fish_size:
+            user_fish.prettiest_fish_size = Decimal(prettiest_fish_size)
+        if prettiest_fish_equipment:
+            user_fish.prettiest_fish_equipment = prettiest_fish_equipment
+        if prettiest_fish_lure:
+            user_fish.prettiest_fish_lure = prettiest_fish_lure
+        if prettiest_fish_location:
+            user_fish.prettiest_fish_location = prettiest_fish_location
+
         # Guardar los cambios
         user_fish.save()
 
         # Redirigir a la vista de usuario-pez
         return redirect("user_fish_view", user_id=user.id)
 
-    return render(request, 'your_template.html', {'fish_data': user_fish})
-    
+    return render(request, 'user_fish_view.html', {'fish_data': user_fish})
+
 def user_fish_view(request, user_id):
     user = get_object_or_404(User, id=user_id)
     fishes = Fish.objects.all()
@@ -249,3 +327,18 @@ def edit_user_profile(request, user_id):
 
 def info(request):
     return render(request, 'informacion.html')
+
+def fish_detail(request, fish_id, user_id):
+    user = get_object_or_404(User, id=user_id)
+    fish = get_object_or_404(Fish, id=fish_id)
+    user_fish = UserFish.objects.get(user=user, fish=fish)
+   
+    return render(
+        request,
+        "user_pokedex_detalle.html",
+        {
+            "user": user,
+            "user_fish": user_fish,
+            
+        },
+    )

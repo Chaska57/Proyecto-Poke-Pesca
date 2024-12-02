@@ -115,8 +115,11 @@
                             {{ fish_data.fish.name }}
                         </div>
     
-                        {% if fish_data.captured and fish_data.captured.image %}
-                            <img class="img-pez" src="{{ fish_data.captured.image.url }}" alt="{{ fish_data.fish.name }}">
+                        {% if fish_data.captured and fish_data.captured.prettiest_fish_photo %}
+                            <a href="/fish_detail/{{user.id}}/{{ fish_data.fish.id }}">
+                                <img class="img-pez" src="{{ fish_data.captured.prettiest_fish_photo.url }}" alt="{{ fish_data.fish.name }}">
+
+                            </a>
                         {% else %}
                             <img class="img-pez" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="{{ fish_data.fish.name }}">
                         {% endif %}
@@ -164,7 +167,6 @@
                         
                     </div>
                 </div>
-                
                 {% endfor %}
             </div>
         </main>

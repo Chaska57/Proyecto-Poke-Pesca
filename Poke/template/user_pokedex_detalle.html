@@ -17,13 +17,13 @@
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous"
         />
-        <link rel="stylesheet" href="{% static 'css/style-user-poke.css' %}">
+        <link rel="stylesheet" href="{% static 'css/detalle-poke.css' %}">
     </head>
 
     <body>
         <header>
             <div class="boton-regresar">
-                <a href="/">
+                <a href="/detalle/usuario/{{user.id}}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply" viewBox="0 0 16 16">
                         <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.7 8.7 0 0 0-1.921-.306 7 7 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254l-.042-.028a.147.147 0 0 1 0-.252l.042-.028zM7.8 10.386q.103 0 .223.006c.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96z"/>
                       </svg>
@@ -36,141 +36,130 @@
                 </a>
 
             </div>
-            <div class="titulo-pokedex">
-                <h1>Pokédex de {{ user.name }}</h1>
+            
+            <div class="titulo-foto">
+                
+                <div>
+                    <img class="user-pic" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}" >
+                    <h1>{{ user.name }}</h1>
+                    <span></span>
+                </div>
+
             </div>
-            <div class="titulo-foto_prestigo">
                
-                <img class="user-pic" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}" width="150">
-                
-                <div class="prestigios">
-                    {% if captured_count >= 0 %}
-                        <img src="{% static '/img/prestigios/prestige_1.png' %}" alt="Prestigio 1">
-                    {% endif %}
-                    {% if captured_count >= 4 %}
-                        <img src="{% static '/img/prestigios/prestige_2.png' %}" alt="Prestigio 2">
-                    {% endif %}
-                    {% if captured_count >= 8 %}
-                        <img src="{% static '/img/prestigios/prestige_3.png' %}" alt="Prestigio 3">
-                    {% endif %}
-                    {% if captured_count >= 12 %}
-                        <img src="{% static '/img/prestigios/prestige_4.png' %}" alt="Prestigio 4">
-                    {% endif %}
-                    {% if captured_count >= 16 %}
-                        <img src="{% static '/img/prestigios/prestige_5.png' %}" alt="Prestigio 5">
-                    {% endif %}
-                    {% if captured_count >= 20 %}
-                        <img src="{% static '/img/prestigios/prestige_6.png' %}" alt="Prestigio 6">
-                    {% endif %}
-                    {% if captured_count >= 24 %}
-                        <img src="{% static '/img/prestigios/prestige_7.png' %}" alt="Prestigio 7">
-                    {% endif %}
-                    {% if captured_count >= 28 %}
-                        <img src="{% static '/img/prestigios/prestige_8.png' %}" alt="Prestigio 8">
-                    {% endif %}
-                    {% if captured_count >= 32 %}
-                        <img src="{% static '/img/prestigios/prestige_9.png' %}" alt="Prestigio 9">
-                    {% endif %}
-                    {% if captured_count >= 36 %}
-                        <img src="{% static '/img/prestigios/prestige_10.png' %}" alt="Prestigio 10">
-                    {% endif %}
-                </div>
-                <a href="/info">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                      </svg>
-                </a>
-                
-            </div>
-            <p class="titulo-pokedex" >{{ user.description }}</p>
-
-
         </header>
-
+        
         <main>
-            <div class="totales">
-                <P>Peces totales capturados: {{captured_count}}</P>
-                <div class="ordenar-peces">
-                    <form method="GET" action="">
-                        <select class="form-select" name="orden" onchange="this.form.submit()">
-                            <option value="nombre_asc" {% if request.GET.orden == 'nombre_asc' %}selected{% endif %}>Nombre A-Z</option>
-                            <option value="nombre_desc" {% if request.GET.orden == 'nombre_desc' %}selected{% endif %}>Nombre Z-A</option>
-                            <option value="tier_asc" {% if request.GET.orden == 'tier_asc' %}selected{% endif %}>Tier Ascendente</option>
-                            <option value="tier_desc" {% if request.GET.orden == 'tier_desc' %}selected{% endif %}>Tier Descendente</option>
-                            <option value="peso_asc" {% if request.GET.orden == 'peso_asc' %}selected{% endif %}>Peso Ascendente</option>
-                            <option value="peso_desc" {% if request.GET.orden == 'peso_desc' %}selected{% endif %}>Peso Descendente</option>
-                            <option value="tamaño_asc" {% if request.GET.orden == 'tamaño_asc' %}selected{% endif %}>Tamaño Ascendente</option>
-                            <option value="tamaño_desc" {% if request.GET.orden == 'tamaño_desc' %}selected{% endif %}>Tamaño Descendente</option>
-                        </select>
-                    </form>
+        <h1>Pez {{user_fish.fish.name}}</h1>
+        <div class="contenedor">
+
+            <div class="carta">
+                <h2>Más Grande</h2>
+                <div class="{{ user_fish.fish.tier }}">
+                    <img class="pic" src="{{ user_fish.biggest_fish_photo.url }}" alt="">
                 </div>
-            </div>
+                <div class="carta-bottom">
+                    <p>
+                        Ubicación: {{ user_fish.biggest_fish_location }}
+                    </p>
+                    <p>
+                        Tier: {{ user_fish.fish.tier }}
+                    </p>
+                </div>
+                <div class="carta-bottom">
+                    <p>
+                        Equipo: {{ user_fish.biggest_fish_equipment }}
+                    </p>
+                    <p>
+                        Señuelo: {{ user_fish.biggest_fish_lure }}
+                    </p>
+                </div>
+                <div class="carta-bottom">
+                    <p>
+                        Peso:
+                        {{ user_fish.biggest_fish_location }}
+                    </p>
+                    <p>
+                        Tamaño:
+                        {{ user_fish.biggest_fish_location }}
+                    </p>
+                </div>
+              </div>
+    
+              <div class="carta">
+                <h2>Más Bonito</h2>
+                <div class="{{ user_fish.fish.tier }}">
+                    <img class="pic" src="{{ user_fish.prettiest_fish_photo.url }}" alt="">
+                </div>
+                <div class="carta-bottom">
+                    <p>
+                        Ubicación: {{ user_fish.prettiest_fish_location }}
+                    </p>
+                    <p>
+                        Tier: {{ user_fish.fish.tier }}
+                    </p>
+                </div>
+                <div class="carta-bottom">
+                    <p>
+                        Equipo: {{ user_fish.prettiest_fish_equipment }}
+                    </p>
+                    <p>
+                        Señuelo: {{ user_fish.prettiest_fish_lure }}
+                    </p>
+                </div>
+                <div class="carta-bottom">
+                    <p>
+                        Peso:
+                        {{ user_fish.prettiest_fish_location }}
+                    </p>
+                    <p>
+                        Tamaño:
+                        {{ user_fish.prettiest_fish_location }}
+                    </p>
+                </div>
+              </div>
+    
+              <div class="carta">
+                <h2>Más Pequeño</h2>
+                <div class="{{ user_fish.fish.tier }}">
+                    <img class="pic" src="{{ user_fish.smallest_fish_photo.url }}" alt="">
+                </div>
+                <div class="carta-bottom">
+                    <p>
+                        Ubicación: {{ user_fish.smallest_fish_location }}
+                    </p>
+                    <p>
+                        Tier: {{ user_fish.fish.tier }}
+                    </p>
+                </div>
+                <div class="carta-bottom">
+                    <p>
+                        Equipo: {{ user_fish.smallest_fish_equipment }}
+                    </p>
+                    <p>
+                        Señuelo: {{ user_fish.smallest_fish_lure }}
+                    </p>
+                </div>
+                <div class="carta-bottom">
+                    <p>
+                        Peso:
+                        {{ user_fish.smallest_fish_location }}
+                    </p>
+                    <p>
+                        Tamaño:
+                        {{ user_fish.smallest_fish_location }}
+                    </p>
+                </div>
+              </div>
+    
+        </div>
           
-            <div class="contenedor">
-                {% for fish_data in user_fishes %}
-                <div class="contenedor-pez  {{ fish_data.fish.tier }} ">
-                    <div class="carta-pez">
-                        <div class="info">
-                            {{ fish_data.fish.name }}
-                        </div>
-    
-                        {% if fish_data.captured and fish_data.captured.image %}
-                            <img class="img-pez" src="{{ fish_data.captured.image.url }}" alt="{{ fish_data.fish.name }}">
-                        {% else %}
-                            <img class="img-pez" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="{{ fish_data.fish.name }}">
-                        {% endif %}
-    
-                        <div class="info">
-                            Ubicacion: 
-                            {% if fish_data.captured %}
-                                {% if fish_data.captured.location %}
-                                    {{ fish_data.captured.location }}
-                                {% else %}
-                                    S/I
-                                {% endif %}
-                            {% else %}
-                                S/I
-                            {% endif %}
-                        </div>
-    
-                        <div class="info-bottom">
-                            <div>
-                                {% if fish_data.captured %}
-                                    <img class="icon" src="{% static 'img/peso.png' %}" alt="">: 
-                                    {% if fish_data.captured.weight %}
-                                        {{ fish_data.captured.weight }} gr
-                                    {% else %}
-                                        S/I
-                                    {% endif %}
-                                {% else %}
-                                    <img class="icon" src="{% static 'img/peso.png' %}" alt="">: S/I
-                                {% endif %}
-                            </div>
-                            <div>
-                                {% if fish_data.captured %}
-                                    <img class="icon" src="{% static 'img/la-medida.png' %}" alt="">: 
-                                    {% if fish_data.captured.size %}
-                                        {{ fish_data.captured.size|floatformat:1 }} cm
-                                    {% else %}
-                                        S/I
-                                    {% endif %}
-                                {% else %}
-                                    <img class="icon" src="{% static 'img/la-medida.png' %}" alt="">:  S/I
-                                {% endif %}
-                            </div>
-                        </div>
-                            
-                        
-                    </div>
-                </div>
-                
-                {% endfor %}
-            </div>
         </main>
 
         <footer>
-            <!-- place footer here -->
+            <div>
+                A
+            </div>
         </footer>
         <!-- Bootstrap JavaScript Libraries -->
         <script
