@@ -4,7 +4,9 @@ from django.shortcuts import get_object_or_404, render
 from decimal import Decimal
 from .forms import UserProfileForm
 from collections import OrderedDict
-
+import os
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 
 
 TIER_ORDER = {
@@ -172,6 +174,9 @@ def capture_fish(request, fish_id, user_id):
 
         if smallest_fish_weight:
             user_fish.smallest_fish_weight = int(smallest_fish_weight)
+
+        else:   
+            user_fish.smallest_fish_weight = 0
         if smallest_fish_size:
             user_fish.smallest_fish_size = Decimal(smallest_fish_size)
         if smallest_fish_equipment:
@@ -211,6 +216,8 @@ def capture_fish(request, fish_id, user_id):
 
         # Guardar los cambios
         user_fish.save()
+
+       
 
         # Redirigir a la vista de usuario-pez
         return redirect("user_fish_view", user_id=user.id)

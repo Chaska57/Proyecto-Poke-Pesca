@@ -154,7 +154,10 @@
                                 <input type="checkbox" name="delete_biggest_fish_location"> Borrar ubicación
                             </label>
                         </div>
-                    
+                        <button class="btn-capturado titulo-pokedex" type="submit">Actualizar</button>
+                    </form>
+                        <form method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
+                            {% csrf_token %}
                         <!-- Bloque Pez Más Chico -->
                         <div class="contenido-form">
                             <h3>Pez más chico</h3>
@@ -189,7 +192,10 @@
                                 <input type="checkbox" name="delete_smallest_fish_location"> Borrar ubicación
                             </label>
                         </div>
-                    
+                        <button class="btn-capturado titulo-pokedex" type="submit">Actualizar</button>
+                    </form>
+                        <form method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
+                            {% csrf_token %}
                         <!-- Bloque Pez Más Bonito -->
                         <div class="contenido-form">
                             <h3>Pez más bonito</h3>
