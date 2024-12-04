@@ -32,7 +32,42 @@ header{
 }
 
 .titulo-pokedex{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     width: 100%;
+    justify-content: space-between;
+}
+
+.circle-no {
+    position: absolute;
+    top: -10px; /* Ajusta para sobresalir por el borde superior */
+    right: -10px; /* Ajusta para sobresalir por el borde izquierdo */
+    width: 30px; /* Tamaño del círculo */
+    height: 30px;
+    background-color: red;
+    border-radius: 50%; /* Convierte el cuadrado en un círculo */
+    display: flex; /* Usamos Flexbox para centrar */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+}
+
+.circle-si {
+    position: absolute;
+    top: -10px; /* Ajusta para sobresalir por el borde superior */
+    right: -10px; /* Ajusta para sobresalir por el borde izquierdo */
+    width: 30px; /* Tamaño del círculo */
+    height: 30px;
+    background-color: green;
+    border-radius: 50%; /* Convierte el cuadrado en un círculo */
+    display: flex; /* Usamos Flexbox para centrar */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+}
+
+.titulo-pokedex a{
+    color: white;
+    margin: 0;
 }
 
 .titulo-foto_prestigo{
@@ -62,10 +97,11 @@ header{
     padding: 16px;
 
 }
-.totales p{
+
+.totales-p{
     margin: 0;
     font-size: 24px;
-    color: white;
+    color: rgb(0, 0, 0);
     font-weight: 500;
 }
 
@@ -73,7 +109,7 @@ header{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content:space-between;
+    justify-content:space-evenly;
     padding: 16px;
     gap: 32px;
     width: 100%;
@@ -117,6 +153,10 @@ header{
 }
 
 .info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     font-weight: bold;
     color: white;
     width: 100%;
@@ -350,3 +390,370 @@ h1{
     color: white;
     margin: 0;
 }
+
+
+.ordenar-peces{
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    }
+
+.cantidad-tier{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    background: white;
+    padding: 4px 16px;
+    border-radius: 6px;
+}
+      
+.cantidad-tier p{
+    font-weight: bold;
+}
+      
+.cantidades{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 16px;
+  }
+  
+
+.tier{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+     gap: 4px;
+}
+      
+.tier span{
+    font-weight: bold;
+    }
+
+.text-tier{
+    position: absolute;
+    top: 50%;         /* Lleva al hijo al 50% de la altura del padre */
+    left: 50%;        /* Lleva al hijo al 50% del ancho del padre */
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: bold;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;   
+      }
+      
+.tier-SS {
+    position: relative;
+    background: rgb(198, 252, 3);
+    padding: 4px;
+    border-radius: 50%;
+    border: 2px solid black;
+    height: 32px;
+    width: 32px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    }
+      
+.tier-S {
+        position: relative;
+        background: rgb(255, 61, 61);
+        padding: 4px;
+        border-radius: 50%;
+        border: 2px solid black;
+        height: 32px;
+        width: 32px;
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+      
+.tier-A {
+        position: relative;
+        background: rgb(255, 45, 244);
+        padding: 4px;
+        border-radius: 50%;
+        border: 2px solid black;
+        height: 32px;
+        width: 32px;  
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+      
+.tier-B {
+        position: relative;
+        background: rgb(143, 17, 143);
+        padding: 4px;
+        border-radius: 50%;
+        border: 2px solid black;
+        height: 32px;
+        width: 32px;
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+      
+.tier-C {
+        position: relative;
+        background: rgb(0, 119, 255);
+        padding: 4px;
+        border-radius: 50%;
+        border: 2px solid black;
+        height: 32px;
+        width: 32px; 
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+      
+.tier-D {
+        position: relative;
+        background: rgb(39, 183, 240);
+        padding: 4px;
+        border-radius: 50%;
+        border: 2px solid black;
+        height: 32px;
+        width: 32px;
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .tiers{
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+         gap: 4px;
+    }
+          
+    .tiers span{
+        font-weight: bold;
+        }
+    
+    .text-tiers{
+        position: absolute;
+        top: 50%;         /* Lleva al hijo al 50% de la altura del padre */
+        left: 50%;        /* Lleva al hijo al 50% del ancho del padre */
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+        font-weight: bold;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        color: #000;   
+          }
+          
+    .tiers-SS {
+        position: relative;
+        background: rgb(198, 252, 3);
+        padding: 4px;
+        border-radius: 50%;
+        border: 1px solid black;
+        height: 20px;
+        width: 20px;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        }
+          
+    .tiers-S {
+            position: relative;
+            background: rgb(255, 61, 61);
+            padding: 4px;
+            border-radius: 50%;
+            border: 1px solid black;
+            height: 20px;
+            width: 20px;
+            display:flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+          
+    .tiers-A {
+            position: relative;
+            background: rgb(255, 45, 244);
+            padding: 4px;
+            border-radius: 50%;
+            border: 1px solid black;
+            height: 20px;
+            width: 20px;  
+            display:flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+          
+    .tiers-B {
+            position: relative;
+            background: rgb(143, 17, 143);
+            padding: 4px;
+            border-radius: 50%;
+            border: 1px solid black;
+            height: 20px;
+            width: 20px;
+            display:flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+          
+    .tiers-C {
+            position: relative;
+            background: rgb(0, 119, 255);
+            padding: 4px;
+            border-radius: 50%;
+            border: 1px solid black;
+            height: 20px;
+            width: 20px; 
+            display:flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+          
+    .tiers-D {
+            position: relative;
+            background: rgb(39, 183, 240);
+            padding: 4px;
+            border-radius: 50%;
+            border: 1px solid black;
+            height: 20px;
+            width: 20px;
+            display:flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .holo {
+
+            position: relative;
+            overflow: hidden;
+            overflow: hidden;
+            z-index: 10;
+            touch-action: none;
+            transition: transform 0.5s ease, box-shadow 0.2s ease;
+            background-color: #040712;
+            background-size: cover;
+            height: 145px;
+            width: 234px;
+            border-radius: 5px;
+            
+            
+            }
+            
+            .holo:before,
+            .holo:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            background-repeat: no-repeat;
+            opacity: .5;
+            mix-blend-mode: color-dodge;
+            transition: all .33s ease;
+            }
+            
+            .holo:before {
+            background-position: 50% 50%;
+            background-size: 300% 300%;
+            background-image: linear-gradient(
+              115deg,
+              transparent 0%,
+              var(--color1) 25%,
+              transparent 47%,
+              transparent 53%,
+              var(--color2) 75%,
+              transparent 100%
+            );
+            opacity: .5;
+            filter: brightness(.5) contrast(1);
+            z-index: 1;
+            }
+            
+            .holo:after {
+            opacity: 1;
+            background-image: url("https://assets.codepen.io/13471/sparkles.gif"), 
+              url(https://assets.codepen.io/13471/holo.png), 
+              linear-gradient(125deg, #ff008450 15%, #fca40040 30%, #ffff0030 40%, #00ff8a20 60%, #00cfff40 70%, #cc4cfa50 85%);
+            background-position: 50% 50%;
+            background-size: 160%;
+            background-blend-mode: overlay;
+            z-index: 2;
+            filter: brightness(2) contrast(6);
+            transition: all .33s ease;
+            mix-blend-mode: color-dodge;
+            opacity: .75;
+            }
+p{
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
+/* Contenedor principal del carrusel */
+.carousel {
+    position: relative;
+    width: 100%;
+    height: 100%; /* Ajusta según tus necesidades */
+    overflow: hidden;
+  }
+  
+  /* Estilo de las diapositivas */
+  .carousel img{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    animation: swap 18s infinite;}
+  
+  
+/* Animación para mostrar cada imagen */
+.carousel img:nth-child(1) {
+    animation-delay: 0s;
+  }
+  
+  .carousel img:nth-child(2) {
+    animation-delay: 6s;
+  }
+  
+  .carousel img:nth-child(3) {
+    animation-delay: 12s;
+  }
+  
+  /* Keyframes para cambiar imágenes bruscamente */
+  @keyframes swap {
+    0% {
+        opacity: 0;
+    }
+    5% {
+        opacity: 1; /* Imagen visible */
+    }
+    33% {
+        opacity: 1; /* Permanece visible */
+    }
+    38% {
+        opacity: 0; /* Desvanecerse */
+    }
+    100% {
+        opacity: 0; /* Mantener oculta */}}

@@ -18,6 +18,8 @@
             crossorigin="anonymous"
         />
         <link rel="stylesheet" href="{% static 'css/detalle-poke.css' %}">
+        <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
     </head>
 
     <body>
@@ -35,130 +37,235 @@
                     </svg>
                 </a>
 
+
             </div>
             
-            <div class="titulo-foto">
-                
-                <div>
-                    <img class="user-pic" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}" >
-                    <h1>{{ user.name }}</h1>
-                    <span></span>
+            <div class="container-titulo">
+                <img class="user-pic" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}" >
+                <div class="titulo">
+                    <h1 class="titulo-nom">{{ user.name }}</h1>
+                    <h1 class="titulo-pez">Pez {{ user_fish.fish.name }}</h1>
                 </div>
-
             </div>
                
         </header>
         
         <main>
-        <h1>Pez {{user_fish.fish.name}}</h1>
         <div class="contenedor">
 
-            <div class="carta">
+            
+            <div>
+                <h2>Stock</h2>
+                <div class="{{ user_fish.fish.tier }}">
+                    <div id="content" class="carta">
+                    <div class="carta-bottom">
+                        <h2>{{user_fish.fish.name}}</h2>
+
+                        <div class="tier-{{ user_fish.fish.tier }}">
+                            <p class="text-tier">{{ user_fish.fish.tier }}</p>
+                        </div>
+                    </div>
+                        {% if user_fish.prettiest_fish_photo %}
+                            <img class="pic" src="{{ user_fish.prettiest_fish_photo.url }}" alt="">
+                        {% else %}
+                        <img class="pic" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="">
+                        {% endif %}                    
+                    
+                    <div class="carta-bottom">
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                              </svg>&nbsp;: {{user.name}}
+                        </p>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                                <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                              </svg> &nbsp;: {{ user_fish.prettiest_fish_location }} 
+                       
+                        </p>
+                            
+                        
+                    </div>
+                    <div class="carta-bottom">
+                        <p>
+                            {% if user_fish.prettiest_fish_equipment  %}
+                            <img class="icono-blanco" src="{% static 'img/iconos/pesca.png' %}" alt="" width="24px">
+                            &nbsp;: {{ user_fish.prettiest_fish_equipment }}
+                            {% else %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-ban" viewBox="0 0 16 16">
+                                        <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+                                        </svg>
+                                {% endif %}
+                        </p>
+                        <p> 
+                            <img class="icono-blanco" src="{% static 'img/iconos/lur.png' %}" alt="" width="24px" >
+                            &nbsp;: {{ user_fish.prettiest_fish_lure }}
+                        </p>
+                    </div>
+                    <div class="carta-bottom">
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
+                                <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+                              </svg> &nbsp;: {% if user_fish.prettiest_fish_weight %}
+                                        {{ user_fish.prettiest_fish_weight }} gr
+                                    {% else %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-ban" viewBox="0 0 16 16">
+                                        <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+                                        </svg>
+                                {% endif %}
+                        </p>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707m4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707"/>
+                            </svg> &nbsp; : {{ user_fish.prettiest_fish_size }}
+                        </p>
+                        
+                    </div>
+                    </div>
+                </div>
+                <button id="download-btn">Descargar Captura</button>
+            </div>
+
+            <div>
                 <h2>Más Grande</h2>
                 <div class="{{ user_fish.fish.tier }}">
-                    <img class="pic" src="{{ user_fish.biggest_fish_photo.url }}" alt="">
+                    <div id="content" class="carta">
+                    <div class="carta-bottom">
+                        <h2>{{user_fish.fish.name}}</h2>
+
+                        <div class="tier-{{ user_fish.fish.tier }}">
+                            <p class="text-tier">{{ user_fish.fish.tier }}</p>
+                        </div>
+                    </div>
+                        {% if user_fish.biggest_fish_photo %}
+                            <img class="pic" src="{{ user_fish.biggest_fish_photo.url }}" alt="">
+                        {% else %}
+                        <img class="pic" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="">
+                        {% endif %}                    
+                    
+                    <div class="carta-bottom">
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                              </svg>&nbsp;: {{user.name}}
+                        </p>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                                <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                              </svg> &nbsp;: {{ user_fish.biggest_fish_location }} 
+                       
+                        </p>
+                            
+                        
+                    </div>
+                    <div class="carta-bottom">
+                        <p>
+                            <img class="icono-blanco" src="{% static 'img/iconos/pesca.png' %}" alt="" width="24px">
+                            &nbsp;: {{ user_fish.biggest_fish_equipment }}
+                        </p>
+                        <p> 
+                            <img class="icono-blanco" src="{% static 'img/iconos/lur.png' %}" alt="" width="24px" >
+                            &nbsp;: {{ user_fish.biggest_fish_lure }}
+                        </p>
+                    </div>
+                    <div class="carta-bottom">
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
+                                <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+                              </svg> &nbsp;: 
+                              {% if user_fish.biggest_fish_weight %}
+                                    {{ user_fish.biggest_fish_weight }} gr
+                                {% else %}
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-ban" viewBox="0 0 16 16">
+                                  <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+                                  </svg>
+                          {% endif %}
+                        </p>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707m4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707"/>
+                            </svg> &nbsp; : {{ user_fish.biggest_fish_size }}
+                        </p>
+                        
+                    </div>
+                    </div>
                 </div>
-                <div class="carta-bottom">
-                    <p>
-                        Ubicación: {{ user_fish.biggest_fish_location }}
-                    </p>
-                    <p>
-                        Tier: {{ user_fish.fish.tier }}
-                    </p>
-                </div>
-                <div class="carta-bottom">
-                    <p>
-                        Equipo: {{ user_fish.biggest_fish_equipment }}
-                    </p>
-                    <p>
-                        Señuelo: {{ user_fish.biggest_fish_lure }}
-                    </p>
-                </div>
-                <div class="carta-bottom">
-                    <p>
-                        Peso:
-                        {{ user_fish.biggest_fish_location }}
-                    </p>
-                    <p>
-                        Tamaño:
-                        {{ user_fish.biggest_fish_location }}
-                    </p>
-                </div>
-              </div>
-    
-              <div class="carta">
-                <h2>Más Bonito</h2>
-                <div class="{{ user_fish.fish.tier }}">
-                    <img class="pic" src="{{ user_fish.prettiest_fish_photo.url }}" alt="">
-                </div>
-                <div class="carta-bottom">
-                    <p>
-                        Ubicación: {{ user_fish.prettiest_fish_location }}
-                    </p>
-                    <p>
-                        Tier: {{ user_fish.fish.tier }}
-                    </p>
-                </div>
-                <div class="carta-bottom">
-                    <p>
-                        Equipo: {{ user_fish.prettiest_fish_equipment }}
-                    </p>
-                    <p>
-                        Señuelo: {{ user_fish.prettiest_fish_lure }}
-                    </p>
-                </div>
-                <div class="carta-bottom">
-                    <p>
-                        Peso:
-                        {{ user_fish.prettiest_fish_location }}
-                    </p>
-                    <p>
-                        Tamaño:
-                        {{ user_fish.prettiest_fish_location }}
-                    </p>
-                </div>
-              </div>
-    
-              <div class="carta">
+                <button id="download-btn">Descargar Captura</button>
+            </div>
+
+            <div>
                 <h2>Más Pequeño</h2>
                 <div class="{{ user_fish.fish.tier }}">
-                    <img class="pic" src="{{ user_fish.smallest_fish_photo.url }}" alt="">
+                    <div id="content" class="carta">
+                    <div class="carta-bottom">
+                        <h2>{{user_fish.fish.name}}</h2>
+
+                        <div class="tier-{{ user_fish.fish.tier }}">
+                            <p class="text-tier">{{ user_fish.fish.tier }}</p>
+                        </div>
+                    </div>
+                        {% if user_fish.smallest_fish_photo %}
+                            <img class="pic" src="{{ user_fish.smallest_fish_photo.url }}" alt="">
+                        {% else %}
+                        <img class="pic" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="">
+                        {% endif %}                    
+                    
+                    <div class="carta-bottom">
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                              </svg>&nbsp;: {{user.name}}
+                        </p>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                                <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                              </svg> &nbsp;: {{ user_fish.smallest_fish_location }} 
+                       
+                        </p>
+                            
+                        
+                    </div>
+                    <div class="carta-bottom">
+                        <p>
+                            <img class="icono-blanco" src="{% static 'img/iconos/pesca.png' %}" alt="" width="24px">
+                            &nbsp;: {{ user_fish.smallest_fish_equipment }}
+                        </p>
+                        <p> 
+                            <img class="icono-blanco" src="{% static 'img/iconos/lur.png' %}" alt="" width="24px" >
+                            &nbsp;: {{ user_fish.smallest_fish_lure }}
+                        </p>
+                    </div>
+                    <div class="carta-bottom">
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-seam" viewBox="0 0 16 16">
+                                <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z"/>
+                              </svg> &nbsp;: {{ user_fish.smallest_fish_weight }}
+                        </p>
+                        <p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrows-angle-expand" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707m4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707"/>
+                            </svg> &nbsp; : {{ user_fish.smallest_fish_size }}
+                        </p>
+                        
+                    </div>
+                    </div>
                 </div>
-                <div class="carta-bottom">
-                    <p>
-                        Ubicación: {{ user_fish.smallest_fish_location }}
-                    </p>
-                    <p>
-                        Tier: {{ user_fish.fish.tier }}
-                    </p>
-                </div>
-                <div class="carta-bottom">
-                    <p>
-                        Equipo: {{ user_fish.smallest_fish_equipment }}
-                    </p>
-                    <p>
-                        Señuelo: {{ user_fish.smallest_fish_lure }}
-                    </p>
-                </div>
-                <div class="carta-bottom">
-                    <p>
-                        Peso:
-                        {{ user_fish.smallest_fish_location }}
-                    </p>
-                    <p>
-                        Tamaño:
-                        {{ user_fish.smallest_fish_location }}
-                    </p>
-                </div>
-              </div>
-    
+                <button id="download-btn">Descargar Captura</button>
+            </div>
+
         </div>
           
         </main>
 
         <footer>
             <div>
-                A
+
             </div>
         </footer>
         <!-- Bootstrap JavaScript Libraries -->
@@ -173,5 +280,18 @@
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"
         ></script>
+        <script>
+            document.getElementById("download-btn").addEventListener("click", function () {
+            const content = document.getElementById("content"); // Selecciona el área a capturar
+        
+            html2canvas(content, { backgroundColor: null }).then((canvas) => {
+            // Genera un enlace de descarga
+            const link = document.createElement("a");
+            link.download = "captura.png"; // Nombre del archivo descargado
+            link.href = canvas.toDataURL("image/png"); // Convierte el canvas en una imagen
+            link.click(); // Simula un clic para descargar
+            });
+        });
+          </script>
     </body>
 </html>

@@ -3,7 +3,7 @@
 *{
     margin: 0px;
     padding: 0px;
-  utline: 2px dashed black;
+  
 }
 
 :root{
@@ -28,7 +28,6 @@ main {
   background-size: 150%;
    
 }
-
 
 main::before {
     content: "";
@@ -113,6 +112,7 @@ footer{
   border-radius: 50%;
   border: 3px solid black;
   background: white;
+  object-fit: cover;
   
 }
 
@@ -123,39 +123,34 @@ footer{
 
 
 .bottom-carta{
-  width: 100%;
-  height: 125px;
+  width: 290px;
+  height: fit-content;
   font-size: 14px;
-  padding-top: 6px;
-
+ 
 }
-
 
 .contenedor{
   padding:1rem ;
   display: flex;
   flex-wrap: wrap; /* Asegura que los elementos bajen si no hay espacio */
-  justify-content: space-around; /* Centra las tarjetas en su contenedor */
+  justify-content: center; /* Centra las tarjetas en su contenedor */
   gap: 12px; 
   height: 100%;
 }
 
 .card-container {
   perspective: 60rem; /* Esto crea una perspectiva de 3D */
-  width: 300px;
-  height: 400px;
+  width: fit-content;
+  height: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  
-  
   /* Esto asegura que cada contenedor pueda girar individualmente */
 }
 
 .carta-main{
-  width: 300px;
-  height: 400px;
+  width: fit-content;
+  height: fit-content;
   position: relative;
   transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
   transition: transform 0.6s; /* Transición suave para el efecto de volteo */
@@ -175,18 +170,14 @@ footer{
   background-size: 160%;
   justify-content: center;
   align-items: center;
-  
-
-
   border-radius: 15px;
-  
-  
-  
+  padding: 16px;
+
 }
 
 .SS {
-  width: 300px;
-  height: 400px;
+  width: 354px;
+  height: 416px;
   position: relative;
   transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
   transition: transform 0.6s; /* Transición suave para el efecto de volteo */
@@ -206,18 +197,12 @@ footer{
   background-size: 160%;
   justify-content: center;
   align-items: center;
-  
-
-
   border-radius: 15px;
-  
-  
-  
 }
 
 .S {
-  width: 300px;
-  height: 400px;
+  width: 354px;
+  height: 416px;
   position: relative;
   transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
   transition: transform 0.6s; /* Transición suave para el efecto de volteo */
@@ -249,8 +234,8 @@ footer{
 }
 
 .A {
-  width: 300px;
-  height: 400px;
+  width: 354px;
+  height: 416px;
   position: relative;
   transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
   transition: transform 0.6s; /* Transición suave para el efecto de volteo */
@@ -283,8 +268,8 @@ footer{
 }
 
 .B {
-  width: 300px;
-  height: 400px;
+  width: 354px;
+  height: 416px;
   position: relative;
   transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
   transition: transform 0.6s; /* Transición suave para el efecto de volteo */
@@ -311,8 +296,8 @@ footer{
 }
 
 .C {
-  width: 300px;
-  height: 400px;
+  width: 354px;
+  height: 416px;
   position: relative;
   transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
   transition: transform 0.6s; /* Transición suave para el efecto de volteo */
@@ -338,8 +323,9 @@ footer{
   
 }
 
-.D { width: 300px;
-  height: 400px;
+.D { 
+  width: 354px;
+  height: 416px;
   position: relative;
   transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
   transition: transform 0.6s; /* Transición suave para el efecto de volteo */
@@ -361,15 +347,10 @@ footer{
 }
 
 
-
-
-
-
-
 .img-pez{
   object-fit: cover;
-  width: 100%;
   height: 180px;
+  width: 290px;
   object-position: center;
 }
 
@@ -385,23 +366,20 @@ footer{
   color: white;
   background-color: #666666; /* Color sólido gris */
   background-image: linear-gradient(125deg,rgba(255, 255, 255, 0.274), rgba(255, 255, 255, 0.226),rgba(255, 255, 255, 0.438)), /* Más énfasis en el gris */
-                  url("../img/grano/grain.webp");
-                  
+                  url("../img/grano/grain.webp");            
   background-blend-mode: hard-light;
   background-size: 160%;
   position: absolute;
-  width: 95%;
-  height: 95%;
+  width: 94%;
+  height: 94%;
   backface-visibility: hidden; /* Oculta el reverso cuando está volteado */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  border-radius: 15px;
-  padding: 1rem; 
-  
-  
-
+  border-radius: 12px;
+  padding: 16px;
+  gap: 16px;
 }
 
 .carta-main .back {
@@ -472,7 +450,8 @@ touch-action: none;
 transition: transform 0.5s ease, box-shadow 0.2s ease;
 background-color: #040712;
 background-size: cover;
-width: 100%;
+height: 180px;
+width: 290px;
 border-radius: 5px;
 
 
@@ -538,10 +517,11 @@ opacity: .75;
   left: 50%;        /* Lleva al hijo al 50% del ancho del padre */
   transform: translate(-50%, -50%);
   font-size: 18px;
-  font-weight: lighter;
+  font-weight: bold;
   display:flex;
   justify-content: center;
   align-items: center;
+  color: #000;
   
   
  
@@ -691,6 +671,28 @@ p{
   display: flex;
   flex-direction: row;
   justify-content: start;
+  gap: 16px;
+}
+
+.tier{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 4px;
+}
+
+.tier span{
+  font-weight: bold;
+}
 
 
+.div-multi-line {
+  width: 290px;
+  height: 110px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5; /* Limita a 2 líneas */
+  text-overflow: clip;
 }

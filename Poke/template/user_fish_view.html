@@ -21,7 +21,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.css">
 
     <!-- Scripts de Cropper.js -->
-        <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.js"></script>
 
     </head>
 
@@ -29,7 +28,7 @@
         <header>
             <div class="boton-regresar">
                 <a href="/detalle/usuario/{{ user.id }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-reply" viewBox="0 0 16 16">
                         <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.7 8.7 0 0 0-1.921-.306 7 7 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254l-.042-.028a.147.147 0 0 1 0-.252l.042-.028zM7.8 10.386q.103 0 .223.006c.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96z" />
                     </svg>
                 </a>
@@ -40,25 +39,24 @@
                 <form  class="titulo-pokedex" method="post" enctype="multipart/form-data" action="/update/usuario/{{ user.id }}/">
                     {% csrf_token %}
                     <!-- Nombre del usuario -->
-                    <label>
+                    <label class="titulo-pokedex">
                         Nombre:
                         <input type="text" name="name" value="{{ user.name }}">
                     </label>
         
                        <!-- Vista de la foto actual -->
-                    <div class="titulo-foto_prestigo">
                         <img class="user-pic" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}" width="150">
-                    </div>
-                    <label>
+                    
+                    <label class="titulo-pokedex">
                         Foto del usuario:
                         <input type="file" name="photo">
                     </label>
         
                     <!-- Descripción -->
-                    <label>
+                    <label class="titulo-pokedex">
                         Descripción:
                         <textarea name="description">{{ user.description }}</textarea>
-                    </label>
+                    </label class="titulo-pokedex">
         
                     <!-- Botón para actualizar -->
                     <button class="btn-capturado" type="submit">Actualizar
@@ -69,8 +67,16 @@
                     </button>
                 </form>
             </div>
+
+            <form method="GET" action="{% url 'user_fish_view' user.id %}">
+                <label for="orden">Ordenar por:</label>
+                <select name="orden" id="orden" onchange="this.form.submit()">
+                    <option value="nombre_desc" {% if request.GET.orden == 'nombre_desc' %}selected{% endif %}>A-Z</option>
+                    <option value="nombre_asc" {% if request.GET.orden == 'nombre_asc' %}selected{% endif %}>Z-A</option>
+                </select>
+            </form>
+
         </header>
-        
         
         <main>
 
@@ -79,130 +85,154 @@
                 <div class="carta-pez {% if fish_data.captured and fish_data.captured.captured %}capturado{% else %}no-capturado{% endif %}">
                     <strong>{{ fish_data.fish.name }}</strong>
                 
-                    {% if fish_data.biggest_fish_photo %}
+                    <div class="contenedor-img">
+                        <div class="foto-pez">
+                            <h4>Pez stock</h4>
+                            {% if  fish_data.captured.prettiest_fish_photo %}
+                                <img class="img-pez" src="{{ fish_data.captured.prettiest_fish_photo.url }}" alt="{{ fish_data.fish.name }}">
+                            {% else %}
+                                <img class="img-pez" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="{{ fish_data.fish.name }}">
+                            {% endif %}
+                        </div>
                         <div class="foto-pez">
                             <h4>Pez más grande</h4>
-                            <img class="img-pez" src="{{ fish_data.biggest_fish_photo.url }}" alt="Pez más grande: {{ fish_data.fish.name }}">
-                            <p>Peso: {{ fish_data.biggest_fish_weight }} g, Tamaño: {{ fish_data.biggest_fish_size }} cm</p>
+                            {% if  fish_data.captured.biggest_fish_photo %}
+                                <img class="img-pez" src="{{ fish_data.captured.biggest_fish_photo.url }}" alt="{{ fish_data.fish.name }}">
+                            {% else %}
+                                <img class="img-pez" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="{{ fish_data.fish.name }}">
+                            {% endif %}
                         </div>
-                    {% endif %}
-                    
-                    {% if fish_data.smallest_fish_photo %}
                         <div class="foto-pez">
-                            <h4>Pez más chico</h4>
-                            <img class="img-pez" src="{{ fish_data.smallest_fish_photo.url }}" alt="Pez más chico: {{ fish_data.fish.name }}">
-                            <p>Peso: {{ fish_data.smallest_fish_weight }} g, Tamaño: {{ fish_data.smallest_fish_size }} cm</p>
+                            <h4>Pez más pequeño</h4>
+                            {% if  fish_data.captured.smallest_fish_photo %}
+                                <img class="img-pez" src="{{ fish_data.captured.smallest_fish_photo.url }}" alt="{{ fish_data.fish.name }}">
+                            {% else %}
+                                <img class="img-pez" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="{{ fish_data.fish.name }}">
+                            {% endif %}
                         </div>
-                    {% endif %}
-                    
-                    {% if fish_data.prettiest_fish_photo %}
-                        <div class="foto-pez">
-                            <h4>Pez más bonito</h4>
-                            <img class="img-pez" src="{{ fish_data.prettiest_fish_photo.url }}" alt="Pez más bonito: {{ fish_data.fish.name }}">
-                            <p>Peso: {{ fish_data.prettiest_fish_weight }} g, Tamaño: {{ fish_data.prettiest_fish_size }} cm</p>
-                        </div>
-                    {% endif %}
+                    </div>
             
                     <form method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
                         {% csrf_token %}
-                        <label>
+                        <label class="titulo-pokedex">
                             Capturado:
                             <input type="checkbox" name="captured" value="true" {% if fish_data.captured and fish_data.captured.captured %}checked{% endif %}>
                         </label>
+                    
+                        <!-- Bloque Pez Más Grande -->
                         <div class="contenido-form">
-                            
-
                             <h3>Pez más grande</h3>
                             <label>
                                 Foto del pez más grande:
                                 <input type="file" name="biggest_fish_photo">
+                                <input type="checkbox" name="delete_biggest_fish_photo"> Borrar foto
+
                             </label>
                             <label>
                                 Peso del pez más grande (gramos):
-                                <input type="number" name="biggest_fish_weight" value="{{ user.biggest_fish_weight }}">
+                                <input placeholder="{{ fish_data.captured.biggest_fish_weight }}" type="number" name="biggest_fish_weight" value="{{ user.biggest_fish_weight }}">
+                                <input type="checkbox" name="delete_biggest_fish_weight"> Borrar peso
                             </label>
                             <label>
                                 Tamaño del pez más grande (cm):
-                                <input type="number" name="biggest_fish_size" step="0.01" value="{{ user.biggest_fish_size }}">
+                                <input placeholder="{{ fish_data.captured.biggest_fish_size }}" type="number" name="biggest_fish_size" step="0.01" value="{{ user.biggest_fish_size }}">
+                                <input type="checkbox" name="delete_biggest_fish_size"> Borrar tamaño
                             </label>
                             <label>
                                 Equipo con que se sacó el pez más grande:
-                                <input type="text" name="biggest_fish_equipment" value="{{ user.biggest_fish_equipment }}">
+                                <input placeholder="{{ fish_data.captured.biggest_fish_equipment }}" type="text" name="biggest_fish_equipment" value="{{ user.biggest_fish_equipment }}">
+                                <input type="checkbox" name="delete_biggest_fish_equipment"> Borrar equipo
                             </label>
                             <label>
                                 Señuelo con que se sacó el pez más grande:
-                                <input type="text" name="biggest_fish_lure" value="{{ user.biggest_fish_lure }}">
+                                <input placeholder="{{ fish_data.captured.biggest_fish_lure }}" type="text" name="biggest_fish_lure" value="{{ user.biggest_fish_lure }}">
+                                <input type="checkbox" name="delete_biggest_fish_lure"> Borrar señuelo
                             </label>
                             <label>
                                 Ubicación del pez más grande:
-                                <input type="text" name="biggest_fish_location" value="{{ user.biggest_fish_location }}">
+                                <input placeholder="{{ fish_data.captured.biggest_fish_location }}" type="text" name="biggest_fish_location" value="{{ user.biggest_fish_location }}">
+                                <input type="checkbox" name="delete_biggest_fish_location"> Borrar ubicación
                             </label>
                         </div>
-            
+                    
+                        <!-- Bloque Pez Más Chico -->
                         <div class="contenido-form">
                             <h3>Pez más chico</h3>
                             <label>
                                 Foto del pez más chico:
                                 <input type="file" name="smallest_fish_photo">
+                                <input type="checkbox" name="delete_smallest_fish_photo"> Borrar foto
                             </label>
                             <label>
                                 Peso del pez más chico (gramos):
-                                <input type="number" name="smallest_fish_weight" value="{{ user.smallest_fish_weight }}">
+                                <input placeholder="{{ fish_data.captured.smallest_fish_weight }}" type="number" name="smallest_fish_weight" value="{{ user.smallest_fish_weight }}">
+                                <input type="checkbox" name="delete_smallest_fish_weight"> Borrar peso
                             </label>
                             <label>
                                 Tamaño del pez más chico (cm):
-                                <input type="number" name="smallest_fish_size" step="0.01" value="{{ user.smallest_fish_size }}">
+                                <input placeholder="{{ fish_data.captured.smallest_fish_size }}" type="number" name="smallest_fish_size" step="0.01" value="{{ user.smallest_fish_size }}">
+                                <input type="checkbox" name="delete_smallest_fish_size"> Borrar tamaño
                             </label>
                             <label>
                                 Equipo con que se sacó el pez más chico:
-                                <input type="text" name="smallest_fish_equipment" value="{{ user.smallest_fish_equipment }}">
+                                <input placeholder="{{ fish_data.captured.smallest_fish_equipment }}" type="text" name="smallest_fish_equipment" value="{{ user.smallest_fish_equipment }}">
+                                <input type="checkbox" name="delete_smallest_fish_equipment"> Borrar equipo
                             </label>
                             <label>
                                 Señuelo con que se sacó el pez más chico:
-                                <input type="text" name="smallest_fish_lure" value="{{ user.smallest_fish_lure }}">
+                                <input placeholder="{{ fish_data.captured.smallest_fish_lure }}" type="text" name="smallest_fish_lure" value="{{ user.smallest_fish_lure }}">
+                                <input type="checkbox" name="delete_smallest_fish_lure"> Borrar señuelo
                             </label>
                             <label>
                                 Ubicación del pez más chico:
-                                <input type="text" name="smallest_fish_location" value="{{ user.smallest_fish_location }}">
+                                <input placeholder="{{ fish_data.captured.smallest_fish_location }}" type="text" name="smallest_fish_location" value="{{ user.smallest_fish_location }}">
+                                <input type="checkbox" name="delete_smallest_fish_location"> Borrar ubicación
                             </label>
                         </div>
-            
+                    
+                        <!-- Bloque Pez Más Bonito -->
                         <div class="contenido-form">
                             <h3>Pez más bonito</h3>
                             <label>
                                 Foto del pez más bonito:
                                 <input type="file" name="prettiest_fish_photo">
+                                <input type="checkbox" name="delete_prettiest_fish_photo"> Borrar foto
+
                             </label>
                             <label>
                                 Peso del pez más bonito (gramos):
-                                <input type="number" name="prettiest_fish_weight" value="{{ user.prettiest_fish_weight }}">
+                                <input placeholder="{{ fish_data.captured.prettiest_fish_weight }}" type="number" name="prettiest_fish_weight" value="{{ user.prettiest_fish_weight }}">
+                                <input type="checkbox" name="delete_prettiest_fish_weight"> Borrar peso
                             </label>
                             <label>
                                 Tamaño del pez más bonito (cm):
-                                <input type="number" name="prettiest_fish_size" step="0.01" value="{{ user.prettiest_fish_size }}">
+                                <input placeholder="{{ fish_data.captured.prettiest_fish_size }}" type="number" name="prettiest_fish_size" step="0.01" value="{{ user.prettiest_fish_size }}">
+                                <input type="checkbox" name="delete_prettiest_fish_size"> Borrar tamaño
                             </label>
                             <label>
                                 Equipo con que se sacó el pez más bonito:
-                                <input type="text" name="prettiest_fish_equipment" value="{{ user.prettiest_fish_equipment }}">
+                                <input placeholder="{{ fish_data.captured.prettiest_fish_equipment }}" type="text" name="prettiest_fish_equipment" value="{{ user.prettiest_fish_equipment }}">
+                                <input type="checkbox" name="delete_prettiest_fish_equipment"> Borrar equipo
                             </label>
                             <label>
                                 Señuelo con que se sacó el pez más bonito:
-                                <input type="text" name="prettiest_fish_lure" value="{{ user.prettiest_fish_lure }}">
+                                <input placeholder="{{ fish_data.captured.prettiest_fish_lure }}" type="text" name="prettiest_fish_lure" value="{{ user.prettiest_fish_lure }}">
+                                <input type="checkbox" name="delete_prettiest_fish_lure"> Borrar señuelo
                             </label>
                             <label>
                                 Ubicación del pez más bonito:
-                                <input type="text" name="prettiest_fish_location" value="{{ user.prettiest_fish_location }}">
+                                <input placeholder="{{ fish_data.captured.prettiest_fish_location }}" type="text" name="prettiest_fish_location" value="{{ user.prettiest_fish_location }}">
+                                <input type="checkbox" name="delete_prettiest_fish_location"> Borrar ubicación
                             </label>
                         </div>
-            
-                        <button class="btn-capturado" type="submit">Actualizar</button>
+                    
+                        <button class="btn-capturado titulo-pokedex" type="submit">Actualizar</button>
                     </form>
+                    
             
                 </div>
                 {% endfor %}
             </div>
-            
-
 
         </main>
         <footer>

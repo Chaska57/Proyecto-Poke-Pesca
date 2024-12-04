@@ -2,10 +2,8 @@
 
     margin: 0;
     padding: 0;
-    utline: 2px dashed black;
+    outline: 2px dashed black;
 }
-
-
 
 
 header{
@@ -21,10 +19,11 @@ header{
 
 .pic{
     height: 290px;
-    width: 468px; object-fit: cover;
+    width: 468px; 
+    object-fit: cover;
     border-radius: 10px;
     background-color: black;
-    border: 3px solid black;
+    border: 1px solid black;
 }
 
 .user-pic{
@@ -35,6 +34,30 @@ header{
     border: 3px solid black;
 }
 
+.container-titulo {
+  display: flex;
+  width: 100%;
+   /* Puedes ajustar el tamaño máximo */
+  align-items: center; /* Alinea la imagen y el texto verticalmente */
+}
+.titulo {
+  flex-grow: 1; /* Hace que el texto ocupe el espacio restante */
+  text-align: center; /* Centra el texto en el contenedor */
+}
+
+.titulo-nom
+{
+  text-align: start;
+  font-size: 36px;
+  margin-left: 16px;
+  margin-bottom: 10px; /* Espacio entre los títulos */
+  margin-right: 150px;
+}
+ .titulo-pez {
+  font-size: 36px;
+  margin-bottom: 10px; /* Espacio entre los títulos */
+  margin-right: 150px;
+}
 main {
     position: relative;
     background: url(../img/7-noise-texture-overlays-3.png), rgb(182, 182, 182);
@@ -94,8 +117,7 @@ main {
     width: fit-content;
     height: fit-content;
     padding: 16px;
-    border-radius: 20px;
-    border: 3px solid black;
+    border-radius: 12px;
     color: white;
 
 }
@@ -118,7 +140,6 @@ main {
         #fca40080 90%   /* Terminamos con el dorado */);
     background-blend-mode: overlay;
     display: flex;
-    background-size: ;
     justify-content: center;
     align-items: center;
     border-radius: 15px;
@@ -129,7 +150,8 @@ main {
   }
   
 .S {
-    
+  padding: 16px;
+
     position: relative;
     transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
     transition: transform 0.6s; /* Transición suave para el efecto de volteo */
@@ -151,17 +173,13 @@ main {
     background-size: 160%;
     justify-content: center;
     align-items: center;
-    
-  
-  
     border-radius: 15px;
-    
-    
-    
+    width: fit-content;
+
   }
   
 .A {
-    
+    padding: 16px;
     position: relative;
     transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
     transition: transform 0.6s; /* Transición suave para el efecto de volteo */
@@ -179,15 +197,12 @@ main {
         #ffbf00 80%,   /* Naranja dorado */
         #ffe135 90%,   /* Amarillo claro */
         #ffea00 100%   /* Amarillo chillón */);
-    background-blend-mode: overlay;
-    display: flex;
-    background-size: 160%;
-    justify-content: center;
-    align-items: center;
-    
-  
-  
-    border-radius: 15px;
+        background-blend-mode: overlay;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+        width: fit-content;
     
     
     
@@ -221,7 +236,8 @@ main {
   }
   
 .C {
-    
+  padding: 16px;
+
     position: relative;
     transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
     transition: transform 0.6s; /* Transición suave para el efecto de volteo */
@@ -248,7 +264,8 @@ main {
   }
   
 .D {
-    
+  padding: 16px;
+
     position: relative;
     transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
     transition: transform 0.6s; /* Transición suave para el efecto de volteo */
@@ -276,22 +293,20 @@ p{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     padding: 4px;
     padding-top: 8px;
+    margin: 0;
   }
 
 .carta-bottom p { 
     width: 50%;
     font-size: 18px;
     height: 36px;
+    margin: 0;
+    padding: 0;
 }
 
-.titulo-foto{
-    width: 100%;
-    display: flex;
-    justify-content: start;
-    flex-direction: column;
-}
 
 .titulo-foto div{
     width: 100%;
@@ -320,3 +335,105 @@ path{
     margin: 0;
     padding: 0;   
 }
+
+.text-tier{
+    position: absolute;
+    top: 50%;         /* Lleva al hijo al 50% de la altura del padre */
+    left: 50%;        /* Lleva al hijo al 50% del ancho del padre */
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: lighter;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+  
+.tier-SS {
+    position: relative;
+    background: rgb(198, 252, 3);
+    padding: 4px;
+    border-radius: 50%;
+    border: 2px solid black;
+    height: 32px;
+    width: 32px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.tier-S {
+  position: relative;
+  background: rgb(255, 61, 61);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  }
+  
+.tier-A {
+  position: relative;
+  background: rgb(255, 45, 244);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;  
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  }
+  
+.tier-B {
+  position: relative;
+  background: rgb(143, 17, 143);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  }
+  
+.tier-C {
+  position: relative;
+  background: rgb(0, 119, 255);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px; 
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  }
+  
+.tier-D {
+  position: relative;
+  background: rgb(39, 183, 240);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  }
+  
+
+  .icono-blanco {
+    filter: invert(1) brightness(10);
+  }
+

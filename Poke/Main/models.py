@@ -2,7 +2,97 @@ from django.db import models
 from PIL import Image
 from django.contrib.auth.models import User
 import os
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
+from PIL.Image import Resampling
 
+def compress_and_crop_image(image, quality=85, target_width=500, target_height=500):
+    from PIL import Image
+    from io import BytesIO
+    from django.core.files.base import ContentFile
+
+    # Abrir la imagen con Pillow
+    img = Image.open(image)
+
+    # Convertir a modo RGB si es necesario
+    if img.mode in ("RGBA", "P"):
+        img = img.convert("RGB")
+
+    # Obtener dimensiones originales
+    original_width, original_height = img.size
+    original_ratio = original_width / original_height
+    target_ratio = target_width / target_height
+
+    # Redimensionar para que la imagen cubra el área requerida
+    if original_ratio > target_ratio:
+        # La imagen es más ancha que el objetivo; ajustar altura y recortar ancho
+        new_height = target_height
+        new_width = int(new_height * original_ratio)
+    else:
+        # La imagen es más alta que el objetivo; ajustar ancho y recortar altura
+        new_width = target_width
+        new_height = int(new_width / original_ratio)
+
+    # Redimensionar la imagen manteniendo el aspecto
+    img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+
+    # Calcular el recorte para centrar la imagen
+    left = (new_width - target_width) // 2
+    top = (new_height - target_height) // 2
+    right = left + target_width
+    bottom = top + target_height
+    img = img.crop((left, top, right, bottom))
+
+    # Guardar la imagen comprimida en un buffer
+    buffer = BytesIO()
+    img.save(buffer, format='JPEG', quality=quality)
+    buffer.seek(0)
+
+    # Retornar la imagen comprimida y recortada
+    return ContentFile(buffer.read(), name=image.name)
+
+def compress_and_crop_image_to_468x290(image, quality=85, target_width=468, target_height=290):
+
+    # Abrir la imagen con Pillow
+    img = Image.open(image)
+
+    # Convertir a modo RGB si es necesario
+    if img.mode in ("RGBA", "P"):
+        img = img.convert("RGB")
+
+    # Obtener dimensiones originales
+    original_width, original_height = img.size
+    original_ratio = original_width / original_height
+    target_ratio = target_width / target_height
+
+    # Redimensionar para cubrir el área requerida
+    if original_ratio > target_ratio:
+        # La imagen es más ancha que el objetivo; ajustar altura y recortar ancho
+        new_height = target_height
+        new_width = int(new_height * original_ratio)
+    else:
+        # La imagen es más alta que el objetivo; ajustar ancho y recortar altura
+        new_width = target_width
+        new_height = int(new_width / original_ratio)
+
+    # Redimensionar la imagen manteniendo el aspecto
+    img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+
+    # Calcular el recorte para centrar la imagen
+    left = (new_width - target_width) // 2
+    top = (new_height - target_height) // 2
+    right = left + target_width
+    bottom = top + target_height
+    img = img.crop((left, top, right, bottom))
+
+    # Guardar la imagen comprimida en un buffer
+    buffer = BytesIO()
+    img.save(buffer, format='JPEG', quality=quality)
+    buffer.seek(0)
+
+    # Retornar la imagen comprimida y recortada
+    return ContentFile(buffer.read(), name=image.name)
 
 class Distribution(models.Model):
     description = models.CharField(max_length=500, verbose_name="Descripción de la Distribución")
@@ -88,29 +178,12 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
+   
     def save(self, *args, **kwargs):
         if self.photo:
-            img = Image.open(self.photo)
-            
-            # Redimensionar la imagen, asegurándose de que el lado más corto sea de 500px
-            img.thumbnail((500, 500))  # Mantener la relación de aspecto y ajustar al tamaño máximo
-            
-            # Obtener las nuevas dimensiones después de redimensionar
-            width, height = img.size
-            
-            # Calcular el recorte cuadrado de 500x500px centrado
-            left = (width - 500) // 2
-            upper = (height - 500) // 2
-            right = left + 500
-            lower = upper + 500
+            self.photo = compress_and_crop_image(self.photo)
 
-            # Recortar la imagen para mantener el cuadrado centrado
-            img = img.crop((left, upper, right, lower))
-            
-            # Guardar la imagen recortada en la misma ruta
-            img.save(self.photo.path)
-
-        super(User, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 class UserFish(models.Model):
     # Campos base
@@ -121,34 +194,42 @@ class UserFish(models.Model):
     weight = models.IntegerField(null=True, blank=True, verbose_name="Peso (gramos)")
     location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación")
     image = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez capturado")
-
-    # Nuevos campos para destacar capturas
+    
     biggest_fish_photo = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez más grande")
-    prettiest_fish_photo = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez más bonito")
-    smallest_fish_photo = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez más chico")
-   
     biggest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más grande (gramos)")
     biggest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más grande (cm)")
-    
-    smallest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más chico (gramos)")
-    smallest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más chico (cm)")
-
-    # Nuevos campos para equipo y señuelo para cada tipo de pez destacado
-    biggest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más grande")  # Ej: Caña, carrete, línea, etc.
-    biggest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más grande")  # Ej: Spinnerbait, crankbait, etc.
+    biggest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más grande")
+    biggest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más grande")
     biggest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más grande")
 
+    # Campos para el pez más bonito
+    prettiest_fish_photo = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez más bonito")
     prettiest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más bonito")
     prettiest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más bonito")
     prettiest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más bonito")
-
+    biggest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más grande (gramos)")
+    biggest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más grande (cm)")
+    
+    # Campos para el pez más chico
+    smallest_fish_photo = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez más chico")
+    smallest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más chico (gramos)")
+    smallest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más chico (cm)")
     smallest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más chico")
     smallest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más chico")
     smallest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más chico")
+
+    def save(self, *args, **kwargs):
+        if self.biggest_fish_photo:
+            self.biggest_fish_photo = compress_and_crop_image_to_468x290(self.biggest_fish_photo)
+        if self.prettiest_fish_photo:
+            self.prettiest_fish_photo = compress_and_crop_image_to_468x290(self.prettiest_fish_photo)
+        if self.smallest_fish_photo:
+            self.smallest_fish_photo = compress_and_crop_image_to_468x290(self.smallest_fish_photo)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Relación Usuario-Pez"
         verbose_name_plural = "Relaciones Usuario-Pez"
 
     def __str__(self):
-        return f"{self.user.username} - {self.fish.name} - Capturado: {'Sí' if self.captured else 'No'}"
+        return f"{self.user.name} - {self.fish.name} - Capturado: {'Sí' if self.captured else 'No'}"

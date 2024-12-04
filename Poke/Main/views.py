@@ -3,6 +3,8 @@ from .models import Fish, User ,UserFish
 from django.shortcuts import get_object_or_404, render
 from decimal import Decimal
 from .forms import UserProfileForm
+from collections import OrderedDict
+
 
 
 TIER_ORDER = {
@@ -10,7 +12,9 @@ TIER_ORDER = {
     'S': 2,
     'A': 3,
     'B': 4,
-    'C': 5
+    'C': 5,
+    'D': 6
+
 }
 def Mainmenu(request):
     peces = Fish.objects.all()
@@ -132,11 +136,11 @@ def capture_fish(request, fish_id, user_id):
         biggest_fish_equipment = request.POST.get("biggest_fish_equipment")
         biggest_fish_lure = request.POST.get("biggest_fish_lure")
         biggest_fish_location = request.POST.get("biggest_fish_location")
-        delete_biggest_fish_photo = request.POST.get("delete_biggest_fish_photo") == "true"  # Eliminar foto
 
-        if delete_biggest_fish_photo and user_fish.biggest_fish_photo:
-            user_fish.biggest_fish_photo.delete()  # Eliminar la foto física
-            user_fish.biggest_fish_photo = None  # Eliminar la referencia en el modelo
+        if request.POST.get('delete_biggest_fish_photo'):
+            user_fish.biggest_fish_photo = None  # Ruta de la foto de stock
+            user_fish.save() # Eliminar la referencia en el modelo
+        
         elif biggest_fish_photo:
             user_fish.biggest_fish_photo = biggest_fish_photo
 
@@ -158,11 +162,11 @@ def capture_fish(request, fish_id, user_id):
         smallest_fish_equipment = request.POST.get("smallest_fish_equipment")
         smallest_fish_lure = request.POST.get("smallest_fish_lure")
         smallest_fish_location = request.POST.get("smallest_fish_location")
-        delete_smallest_fish_photo = request.POST.get("delete_smallest_fish_photo") == "true"  # Eliminar foto
 
-        if delete_smallest_fish_photo and user_fish.smallest_fish_photo:
-            user_fish.smallest_fish_photo.delete()  # Eliminar la foto física
-            user_fish.smallest_fish_photo = None  # Eliminar la referencia en el modelo
+        if request.POST.get('delete_smallest_fish_photo'):
+            user_fish.smallest_fish_photo = None  # Ruta de la foto de stock
+            user_fish.save() # Eliminar la referencia en el modelo
+        
         elif smallest_fish_photo:
             user_fish.smallest_fish_photo = smallest_fish_photo
 
@@ -184,11 +188,13 @@ def capture_fish(request, fish_id, user_id):
         prettiest_fish_equipment = request.POST.get("prettiest_fish_equipment")
         prettiest_fish_lure = request.POST.get("prettiest_fish_lure")
         prettiest_fish_location = request.POST.get("prettiest_fish_location")
-        delete_prettiest_fish_photo = request.POST.get("delete_prettiest_fish_photo") == "true"  # Eliminar foto
-
-        if delete_prettiest_fish_photo and user_fish.prettiest_fish_photo:
-            user_fish.prettiest_fish_photo.delete()  # Eliminar la foto física
-            user_fish.prettiest_fish_photo = None  # Eliminar la referencia en el modelo
+        
+        
+        if request.POST.get('delete_prettiest_fish_photo'):
+                    user_fish.prettiest_fish_photo = None  # Ruta de la foto de stock
+                    user_fish.save() # Eliminar la referencia en el modelo
+        
+        
         elif prettiest_fish_photo:
             user_fish.prettiest_fish_photo = prettiest_fish_photo
 
@@ -213,17 +219,28 @@ def capture_fish(request, fish_id, user_id):
 
 def user_fish_view(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    fishes = Fish.objects.all()
+    fishes = Fish.objects.order_by('name')
 
+    # Obtener el parámetro de ordenación de la solicitud GET (si existe)
+    orden = request.GET.get('orden', 'nombre_desc')  # Por defecto se ordena por nombre descendente (Z-A)
+
+    if orden == 'nombre_asc':
+        fishes_ordenados = fishes.order_by('-name')
+    elif orden == 'nombre_desc':
+        fishes_ordenados = fishes.order_by('name')  # Orden por nombre de A-Z
+    else:
+        fishes_ordenados = fishes 
+
+    
     user_fishes = [
         {
             "fish": fish,
             "captured": UserFish.objects.filter(user=user, fish=fish).first()
         }
-        for fish in fishes
+        for fish in fishes_ordenados
     ]
 
-    captured_count = sum(1 for data in user_fishes if data["captured"] and data["captured"].captured)
+
 
     return render(
         request,
@@ -231,8 +248,6 @@ def user_fish_view(request, user_id):
         {
             "user": user,
             "user_fishes": user_fishes,
-            "captured_count": captured_count,
-            "total_count": len(user_fishes),
         },
     )
 
@@ -268,6 +283,8 @@ def user_fish_poke(request, user_id):
             for fish in fishes
         ]
 
+
+
     # Contar los peces capturados
     captured_count = sum(1 for data in user_fishes if data["captured"] and data["captured"].captured)
 
@@ -301,6 +318,21 @@ def user_fish_poke(request, user_id):
         tier_order = {'SS': 1, 'S': 2, 'A': 3, 'B': 4, 'C': 5, 'D': 6}
         user_fishes.sort(key=lambda x: tier_order.get(x['fish'].tier, float('inf')), reverse=True)
 
+
+    peces_capturados = [data["fish"] for data in user_fishes if data["captured"] and data["captured"].captured]
+
+
+        # Crear un diccionario para contar los peces por tier, incluyendo aquellos con conteo 0, y mantener el orden
+    contador_tiers = OrderedDict({
+        tier: len([fish for fish in peces_capturados if fish.tier == tier])
+        for tier in TIER_ORDER  # Asegura que todos los tiers estén en el diccionario y en el orden correcto
+    })
+
+    # Si un tier no tiene peces, su valor será 0
+    for tier in TIER_ORDER:
+        if tier not in contador_tiers:
+            contador_tiers[tier] = 0
+
     return render(
         request,
         "user_pokedex.html",
@@ -309,6 +341,9 @@ def user_fish_poke(request, user_id):
             "user_fishes": user_fishes,
             "captured_count": captured_count,
             "total_count": len(user_fishes),
+            "contador_tiers": contador_tiers,  # Contador por tier
+
+
         },
     )
 

@@ -18,6 +18,7 @@
             crossorigin="anonymous"
         />
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
     </head>
 
     <body>
@@ -28,7 +29,6 @@
               <img src="{% static 'img/juego2.png' %}" alt="" style="height: 100px;">
             </button>
             <strong>Pokédex Peces NG</strong>
-
           </p>
           <div class="collapse" id="collapseExample">
                   <div class="usuarios">
@@ -42,31 +42,26 @@
                     {% endfor %}
                   </div>
           </div>
-
+          
         </header>
 
         <main>
 
           <div class="ordenar-peces">
-
             <div class="cantidad-tier">
               <p>Total de peces: {{ total_peces }}</p>
-
               <div class="cantidades">
                 {% for tier, count in contador_tiers.items %}
+                <div class="tier">
                   <div class="tier-{{ tier }}">
                     <p class="text-tier">{{ tier }} </p>
                   </div>
-                <span>{{ count }}</span>
+                  <span>: {{ count }}</span>
+                </div> 
                 {% endfor %}
-              </div>
-              
-                
-                
-              
+              </div>      
             </div>
             
-
             <form class="form-ordenar" method="GET" action="{% url 'mainmenu' %}">
                 <select class="form-select" name="orden" onchange="this.form.submit()">
                     <option value="nombre_asc" {% if request.GET.orden == 'nombre_asc' %}selected{% endif %}>Nombre A-Z</option>
@@ -84,9 +79,7 @@
             {% for fish_data in peces_nombre %}
                 <div class="card-container hover-item">
                     <div class="carta-main {{ fish_data.fish.tier }}">s
-                      <div>
-                        
-                      </div>
+      
                         <div class="front">
                             <div class="titulo-carta">
                               
@@ -99,7 +92,7 @@
                             <div class="holo">
                                 <img class="img-pez" src="{% if fish_data.fish.image %}{{ fish_data.fish.image.url }}{% else %}{{ 'path/to/default/image.jpg' }}{% endif %}" alt="{{ fish_data.fish.name }}">
                             </div>
-                            <div class="bottom-carta">
+                            <div class="bottom-carta div-multi-line">
                                 <p>{{ fish_data.fish.description }}</p>
                             </div>
                         </div>
@@ -135,11 +128,7 @@
 
 
         </main>
-        <footer>
-        
-        </footer>
 
-       
         <!-- Bootstrap JavaScript Libraries -->
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -152,6 +141,7 @@
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"
         ></script>
+        
 
         
     </body>
