@@ -2,7 +2,6 @@ from django.db import models
 from PIL import Image
 from django.contrib.auth.models import User
 import os
-from PIL import Image
 from io import BytesIO
 from django.core.files.base import ContentFile
 from PIL.Image import Resampling
@@ -115,10 +114,19 @@ class Diet(models.Model):
         return self.description[:50]
 
 class Fish(models.Model):
+
+    def get_media_path_fish(self, filename):
+            ruta = 'fish_images/'
+            
+            if ruta not in filename:
+                filename = ruta + filename
+            return filename 
+
+
     name = models.CharField(max_length=255, verbose_name="Nombre")
     scientific_name = models.CharField(max_length=255, verbose_name="Nombre Científico")
     description = models.CharField(max_length=500, verbose_name="Descripción")
-    image = models.ImageField(upload_to='fish_images', null=True, blank=True, verbose_name="Imagen del Pez")
+    image = models.ImageField(upload_to=get_media_path_fish, null=True, blank=True, verbose_name="Imagen del Pez")
     tier = models.CharField(
         max_length=50, 
         choices=[
@@ -136,39 +144,28 @@ class Fish(models.Model):
         verbose_name = "Pez"
         verbose_name_plural = "Peces"
 
+
     def save(self, *args, **kwargs):
-        # Redimensionar la imagen antes de guardarla
         if self.image:
-            img = Image.open(self.image)
-            
-            # Obtener las dimensiones originales de la imagen
-            width, height = img.size
-            
-            # Calcular el alto que corresponde con la proporción 5:4
-            new_width = 500
-            new_height = int(new_width * 4 / 5)  # Proporción 5:4
-            
-            # Calcular la parte de la imagen que se va a recortar
-            left = 0  # Puedes cambiar esto para mover el recorte horizontalmente
-            upper = (height - new_height) // 2  # Centrar el recorte verticalmente
-            right = new_width
-            lower = upper + new_height
-            
-            # Realizar el recorte
-            img = img.crop((left, upper, right, lower))
-            
-            # Guardar la imagen recortada
-            img.save(self.image.path)
+            self.image = compress_and_crop_image_to_468x290(self.image)
         
-        super().save(*args, **kwargs)  # Guardar el modelo
+        super().save(*args, **kwargs)        
 
     def __str__(self):
         return self.name
 
 class User(models.Model):
+
+    def get_media_path(self, filename):
+            ruta = 'user_photos/'
+            
+            if ruta not in filename:
+                filename = ruta + filename
+            return filename 
+
     name = models.CharField(max_length=255, verbose_name="Nombre")
     description = models.CharField(max_length=500, verbose_name="Descripción")
-    photo = models.ImageField(upload_to='user_photos', verbose_name="Foto del Usuario")
+    photo = models.ImageField(upload_to=get_media_path, verbose_name="Foto del Usuario")
     fishes = models.ManyToManyField('Fish', through='UserFish', related_name='users', verbose_name="Peces Capturados")
 
     class Meta:
@@ -186,16 +183,20 @@ class User(models.Model):
         super().save(*args, **kwargs)
 
 class UserFish(models.Model):
+
+    def get_media_path_userfish(self, filename):
+                ruta = 'user_fish_images/'
+                
+                if ruta not in filename:
+                    filename = ruta + filename
+                return filename 
+
     # Campos base
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuario")
     fish = models.ForeignKey(Fish, on_delete=models.CASCADE, verbose_name="Pez")
     captured = models.BooleanField(default=False, verbose_name="Capturado")
-    size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño (cm)")
-    weight = models.IntegerField(null=True, blank=True, verbose_name="Peso (gramos)")
-    location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación")
-    image = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez capturado")
     
-    biggest_fish_photo = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez más grande")
+    biggest_fish_photo = models.ImageField(upload_to=get_media_path_userfish, null=True, blank=True, verbose_name="Foto del pez más grande")
     biggest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más grande (gramos)")
     biggest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más grande (cm)")
     biggest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más grande")
@@ -203,15 +204,15 @@ class UserFish(models.Model):
     biggest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más grande")
 
     # Campos para el pez más bonito
-    prettiest_fish_photo = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez más bonito")
+    prettiest_fish_photo = models.ImageField(upload_to=get_media_path_userfish, null=True, blank=True, verbose_name="Foto del pez más bonito")
     prettiest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más bonito")
     prettiest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más bonito")
     prettiest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más bonito")
-    biggest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más grande (gramos)")
-    biggest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más grande (cm)")
+    prettiest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más bonito (gramos)")
+    prettiest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más bonito (cm)")
     
     # Campos para el pez más chico
-    smallest_fish_photo = models.ImageField(upload_to='user_fish_images', null=True, blank=True, verbose_name="Foto del pez más chico")
+    smallest_fish_photo = models.ImageField(upload_to=get_media_path_userfish, null=True, blank=True, verbose_name="Foto del pez más chico")
     smallest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más chico (gramos)")
     smallest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más chico (cm)")
     smallest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más chico")

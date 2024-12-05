@@ -18,24 +18,18 @@ class UserFishAdmin(admin.ModelAdmin):
     list_display = (
         'user', 
         'fish', 
-        'captured', 
-        'size', 
-        'weight', 
-        'location',
-        'biggest_fish_weight', 
-        'prettiest_fish_photo', 
-        'smallest_fish_weight'
+        'captured'
     )
     # Campos que permiten buscar registros
-    search_fields = ('user__name', 'fish__name', 'location')
+    search_fields = ('user__username', 'fish__name')  # Corregir si "username" es el campo correcto
     # Campos para filtrar en la lista
-    list_filter = ('captured', 'location')
+    list_filter = ('captured',)  # Debe ser una tupla o lista (añadido `,` para convertirlo en una tupla)
     # Configuración para los campos que se editan directamente en la lista
-    list_editable = ('captured', 'size', 'weight')
+    list_editable = ('captured',)
     # Configuración para mostrar más detalles en la vista de edición
     fieldsets = (
         ('Información General', {
-            'fields': ('user', 'fish', 'captured', 'size', 'weight', 'location', 'image')
+            'fields': ('user', 'fish', 'captured')
         }),
         ('Pez Más Grande', {
             'fields': (
@@ -53,6 +47,8 @@ class UserFishAdmin(admin.ModelAdmin):
                 'prettiest_fish_equipment', 
                 'prettiest_fish_lure', 
                 'prettiest_fish_location'
+                'prettiest_fish_weight', 
+                'prettiest_fish_size',
             )
         }),
         ('Pez Más Chico', {

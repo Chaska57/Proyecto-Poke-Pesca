@@ -43,8 +43,9 @@ main{
 .contenedor{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     gap: 16px;
+    align-items: center;
     flex-wrap: wrap;
     margin-top: 16px;
 }
@@ -155,12 +156,22 @@ form{
 }
 
 .contenido-form{
+    width: 400px;
     border: 2px solid black;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: start;
     gap: 8px;
+}
+
+.formularios{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+
 }
 
 

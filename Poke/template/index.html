@@ -9,7 +9,6 @@
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
-
         <link rel="icon" href="" type="image/x-icon">
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -18,31 +17,32 @@
             crossorigin="anonymous"
         />
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
     </head>
 
     <body>
+
         <header>
-          
+
           <p>
             <button class="boton-usuarios" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
               <img src="{% static 'img/juego2.png' %}" alt="" style="height: 100px;">
             </button>
             <strong>Pokédex Peces NG</strong>
           </p>
+
           <div class="collapse" id="collapseExample">
-                  <div class="usuarios">
-                    {% for user in usuarios %}
-                    <div class="carta-usuarios">
-                      <a href="/detalle/usuario/{{user.id}}">
-                        <img class="user-img" src="{{ user.photo.url }}" alt="">
-                      </a>
-                      <h4>{{user.name}}</h4>
-                    </div>
-                    {% endfor %}
-                  </div>
+            <div class="usuarios">
+              {% for user in usuarios %}
+                <div class="carta-usuarios">
+                  <a href="/detalle/usuario/{{user.id}}">
+                    <img class="user-img" src="{{ user.photo.url }}" alt="">
+                  </a>
+                  <h4>{{user.name}}</h4>
+                </div>
+              {% endfor %}
+            </div>
           </div>
-          
+
         </header>
 
         <main>
@@ -52,12 +52,12 @@
               <p>Total de peces: {{ total_peces }}</p>
               <div class="cantidades">
                 {% for tier, count in contador_tiers.items %}
-                <div class="tier">
-                  <div class="tier-{{ tier }}">
-                    <p class="text-tier">{{ tier }} </p>
-                  </div>
-                  <span>: {{ count }}</span>
-                </div> 
+                  <div class="tier">
+                    <div class="tier-{{ tier }}">
+                      <p class="text-tier">{{ tier }} </p>
+                    </div>
+                    <span>: {{ count }}</span>
+                  </div> 
                 {% endfor %}
               </div>      
             </div>
@@ -71,23 +71,17 @@
                 </select>
             </form>
           </div>
-          
 
           <div class="contenedor">
-            
-
             {% for fish_data in peces_nombre %}
                 <div class="card-container hover-item">
-                    <div class="carta-main {{ fish_data.fish.tier }}">s
-      
+                    <div class="carta-main {{ fish_data.fish.tier }}">
                         <div class="front">
                             <div class="titulo-carta">
-                              
                                 <span>{{ fish_data.fish.name }}</span>
                                 <div class="tier-{{ fish_data.fish.tier }}">
                                   <p class="text-tier">{{ fish_data.fish.tier }}</p>
                                 </div>
-                                
                             </div>
                             <div class="holo">
                                 <img class="img-pez" src="{% if fish_data.fish.image %}{{ fish_data.fish.image.url }}{% else %}{{ 'path/to/default/image.jpg' }}{% endif %}" alt="{{ fish_data.fish.name }}">
@@ -108,28 +102,20 @@
                              
                             <img class="" src="{% static '/img/IMG_0604.png' %}" alt="" style="width: 250px;">
                             <div class="users-poke">
-                                
                                 {% for user_capture in fish_data.captured_by_users %}
                                     {% if user_capture.captured %}
-                                      <img class="users-poke-img" src="{{ user_capture.user.photo.url }}" alt="">
-
-                                    {% else %}
-                                              
+                                      <img class="users-poke-img" src="{{ user_capture.user.photo.url }}" alt="">    
                                     {% endif %}
-                                   
                                 {% endfor %}
                             </div>
                         </div>
                     </div>
                 </div>
             {% endfor %}
-            
           </div>
-
 
         </main>
 
-        <!-- Bootstrap JavaScript Libraries -->
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -141,8 +127,6 @@
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"
         ></script>
-        
-
-        
+  
     </body>
 </html>

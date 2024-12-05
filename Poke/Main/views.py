@@ -103,33 +103,7 @@ def capture_fish(request, fish_id, user_id):
 
     if request.method == "POST":
         captured = request.POST.get("captured") == "true"
-        size = request.POST.get('size')
-        weight = request.POST.get('weight')
-        image = request.FILES.get('image')
-        location = request.POST.get('location')  # Obtener la ubicación
-        delete_image = request.POST.get('delete_image') == "true"
-
-        # Actualizar el estado de 'capturado'
         user_fish.captured = captured
-
-        # Actualizar tamaño y peso
-        if size:
-            user_fish.size = Decimal(size)
-        if weight:
-            user_fish.weight = int(weight)  # Convertir el peso a entero
-
-        # Borrar la imagen si el usuario lo marca
-        if delete_image and user_fish.image:
-            user_fish.image.delete()  # Eliminar la imagen física
-            user_fish.image = None  # Eliminar la referencia en el modelo
-
-        # Si hay una nueva imagen, se actualiza
-        if image:
-            user_fish.image = image
-
-        # Actualizar ubicación
-        if location:
-            user_fish.location = location
 
         # Actualizar los datos para el pez más grande
         biggest_fish_photo = request.FILES.get("biggest_fish_photo")
@@ -142,6 +116,29 @@ def capture_fish(request, fish_id, user_id):
         if request.POST.get('delete_biggest_fish_photo'):
             user_fish.biggest_fish_photo = None  # Ruta de la foto de stock
             user_fish.save() # Eliminar la referencia en el modelo
+
+        elif biggest_fish_photo:
+            user_fish.biggest_fish_photo = biggest_fish_photo
+
+        if request.POST.get('delete_biggest_fish_weight'):
+            user_fish.biggest_fish_weight = None
+            user_fish.save()  # Elimina el peso del pez más bonito
+
+        if request.POST.get('delete_biggest_fish_size'):
+            user_fish.biggest_fish_size = None
+            user_fish.save()  # Elimina el tamaño del pez más bonito
+
+        if request.POST.get('delete_biggest_fish_equipment'):
+            user_fish.biggest_fish_equipment = None
+            user_fish.save()  # Elimina el equipo utilizado para el pez más bonito
+
+        if request.POST.get('delete_biggest_fish_lure'):
+            user_fish.biggest_fish_lure = None
+            user_fish.save()  # Elimina el señuelo utilizado para el pez más bonito
+
+        if request.POST.get('delete_biggest_fish_location'):
+            user_fish.biggest_fish_location = None
+            user_fish.save()  # Elimina la ubicación del pez más bonito
         
         elif biggest_fish_photo:
             user_fish.biggest_fish_photo = biggest_fish_photo
@@ -168,6 +165,29 @@ def capture_fish(request, fish_id, user_id):
         if request.POST.get('delete_smallest_fish_photo'):
             user_fish.smallest_fish_photo = None  # Ruta de la foto de stock
             user_fish.save() # Eliminar la referencia en el modelo
+
+        elif smallest_fish_photo:
+            user_fish.smallest_fish_photo = smallest_fish_photo
+
+        if request.POST.get('delete_smallest_fish_weight'):
+            user_fish.smallest_fish_weight = None
+            user_fish.save()  # Elimina el peso del pez más bonito
+
+        if request.POST.get('delete_smallest_fish_size'):
+            user_fish.smallest_fish_size = None
+            user_fish.save()  # Elimina el tamaño del pez más bonito
+
+        if request.POST.get('delete_smallest_fish_equipment'):
+            user_fish.smallest_fish_equipment = None
+            user_fish.save()  # Elimina el equipo utilizado para el pez más bonito
+
+        if request.POST.get('delete_smallest_fish_lure'):
+            user_fish.smallest_fish_lure = None
+            user_fish.save()  # Elimina el señuelo utilizado para el pez más bonito
+
+        if request.POST.get('delete_smallest_fish_location'):
+            user_fish.smallest_fish_location = None
+            user_fish.save()  # Elimina la ubicación del pez más bonito
         
         elif smallest_fish_photo:
             user_fish.smallest_fish_photo = smallest_fish_photo
@@ -175,8 +195,6 @@ def capture_fish(request, fish_id, user_id):
         if smallest_fish_weight:
             user_fish.smallest_fish_weight = int(smallest_fish_weight)
 
-        else:   
-            user_fish.smallest_fish_weight = 0
         if smallest_fish_size:
             user_fish.smallest_fish_size = Decimal(smallest_fish_size)
         if smallest_fish_equipment:
@@ -196,12 +214,34 @@ def capture_fish(request, fish_id, user_id):
         
         
         if request.POST.get('delete_prettiest_fish_photo'):
-                    user_fish.prettiest_fish_photo = None  # Ruta de la foto de stock
-                    user_fish.save() # Eliminar la referencia en el modelo
-        
-        
+            user_fish.prettiest_fish_photo = None
+            user_fish.save()  # Elimina la foto más bonita
+
         elif prettiest_fish_photo:
             user_fish.prettiest_fish_photo = prettiest_fish_photo
+
+        if request.POST.get('delete_prettiest_fish_weight'):
+            user_fish.prettiest_fish_weight = None
+            user_fish.save()  # Elimina el peso del pez más bonito
+
+        if request.POST.get('delete_prettiest_fish_size'):
+            user_fish.prettiest_fish_size = None
+            user_fish.save()  # Elimina el tamaño del pez más bonito
+
+        if request.POST.get('delete_prettiest_fish_equipment'):
+            user_fish.prettiest_fish_equipment = None
+            user_fish.save()  # Elimina el equipo utilizado para el pez más bonito
+
+        if request.POST.get('delete_prettiest_fish_lure'):
+            user_fish.prettiest_fish_lure = None
+            user_fish.save()  # Elimina el señuelo utilizado para el pez más bonito
+
+        if request.POST.get('delete_prettiest_fish_location'):
+            user_fish.prettiest_fish_location = None
+            user_fish.save()  # Elimina la ubicación del pez más bonito
+        
+        
+        
 
         if prettiest_fish_weight:
             user_fish.prettiest_fish_weight = int(prettiest_fish_weight)
