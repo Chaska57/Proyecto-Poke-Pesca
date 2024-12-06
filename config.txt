@@ -1,3 +1,6 @@
+subir archivos mismo nombre no copiar y pegar todo
+
+
 todo menos setings y url
 
 template de album pes personal
