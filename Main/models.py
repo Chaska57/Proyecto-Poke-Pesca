@@ -5,6 +5,7 @@ import os
 from io import BytesIO
 from django.core.files.base import ContentFile
 from PIL.Image import Resampling
+from django.core.files.storage import default_storage
 
 def compress_and_crop_image(image, quality=85, target_width=500, target_height=500):
     from PIL import Image
@@ -93,26 +94,6 @@ def compress_and_crop_image_to_468x290(image, quality=85, target_width=468, targ
     # Retornar la imagen comprimida y recortada
     return ContentFile(buffer.read(), name=image.name)
 
-class Distribution(models.Model):
-    description = models.CharField(max_length=500, verbose_name="Descripción de la Distribución")
-
-    class Meta:
-        verbose_name = "Distribución"
-        verbose_name_plural = "Distribuciones"
-
-    def __str__(self):
-        return self.description[:50]
-
-class Diet(models.Model):
-    description = models.CharField(max_length=500, verbose_name="Descripción de la Alimentación")
-
-    class Meta:
-        verbose_name = "Alimentación"
-        verbose_name_plural = "Alimentaciones"
-
-    def __str__(self):
-        return self.description[:50]
-
 class Fish(models.Model):
 
     def get_media_path_fish(self, filename):
@@ -198,7 +179,7 @@ class UserFish(models.Model):
     
     biggest_fish_photo = models.ImageField(upload_to=get_media_path_userfish, null=True, blank=True, verbose_name="Foto del pez más grande")
     biggest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más grande (gramos)")
-    biggest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más grande (cm)")
+    biggest_fish_size = models.DecimalField(max_digits=5, decimal_places=1, null=True, blank=True, verbose_name="Tamaño del pez más grande (cm)")
     biggest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más grande")
     biggest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más grande")
     biggest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más grande")
@@ -209,23 +190,50 @@ class UserFish(models.Model):
     prettiest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más bonito")
     prettiest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más bonito")
     prettiest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más bonito (gramos)")
-    prettiest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más bonito (cm)")
+    prettiest_fish_size = models.DecimalField(max_digits=5, decimal_places=1, null=True, blank=True, verbose_name="Tamaño del pez más bonito (cm)")
     
     # Campos para el pez más chico
     smallest_fish_photo = models.ImageField(upload_to=get_media_path_userfish, null=True, blank=True, verbose_name="Foto del pez más chico")
     smallest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más chico (gramos)")
-    smallest_fish_size = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="Tamaño del pez más chico (cm)")
+    smallest_fish_size = models.DecimalField(max_digits=5, decimal_places=1, null=True, blank=True, verbose_name="Tamaño del pez más chico (cm)")
     smallest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más chico")
     smallest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más chico")
     smallest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más chico")
 
+    def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            # Guarda una referencia a la imagen original cargada
+            self._original_biggest_fish_photo = self.biggest_fish_photo
+            self._original_smallest_fish_photo = self.smallest_fish_photo
+            self._original_prettiest_fish_photo = self.prettiest_fish_photo
+
+
+
     def save(self, *args, **kwargs):
-        if self.biggest_fish_photo:
+        if self.biggest_fish_photo and self.biggest_fish_photo != self._original_biggest_fish_photo:
+            # Borra la foto anterior si existe
+            if self._original_biggest_fish_photo and default_storage.exists(self._original_biggest_fish_photo.name):
+                default_storage.delete(self._original_biggest_fish_photo.name)
+            
+            # Comprime y recorta la nueva foto
             self.biggest_fish_photo = compress_and_crop_image_to_468x290(self.biggest_fish_photo)
-        if self.prettiest_fish_photo:
-            self.prettiest_fish_photo = compress_and_crop_image_to_468x290(self.prettiest_fish_photo)
-        if self.smallest_fish_photo:
-            self.smallest_fish_photo = compress_and_crop_image_to_468x290(self.smallest_fish_photo)
+
+        if self.prettiest_fish_photo and self.prettiest_fish_photo != self._original_prettiest_fish_photo:
+                    # Borra la foto anterior si existe
+                    if self._original_prettiest_fish_photo and default_storage.exists(self._original_prettiest_fish_photo.name):
+                        default_storage.delete(self._original_prettiest_fish_photo.name)
+                    
+                    # Comprime y recorta la nueva foto
+                    self.prettiest_fish_photo = compress_and_crop_image_to_468x290(self.prettiest_fish_photo)
+
+        if self.smallest_fish_photo and self.smallest_fish_photo != self._original_smallest_fish_photo:
+                    # Borra la foto anterior si existe
+                    if self._original_smallest_fish_photo and default_storage.exists(self._original_smallest_fish_photo.name):
+                        default_storage.delete(self._original_smallest_fish_photo.name)
+                    
+                    # Comprime y recorta la nueva foto
+                    self.smallest_fish_photo = compress_and_crop_image_to_468x290(self.smallest_fish_photo)
+
         super().save(*args, **kwargs)
 
     class Meta:

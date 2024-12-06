@@ -18,6 +18,7 @@ TIER_ORDER = {
     'D': 6
 
 }
+
 def Mainmenu(request):
     peces = Fish.objects.all()
     usuarios = User.objects.all()
@@ -96,7 +97,7 @@ def detalle_pez(request, id):
     # Renderizar la plantilla con los datos
     return render(request, 'detalle-pez.html', data)
 
-def capture_fish(request, fish_id, user_id):
+def update_capture_fish(request, fish_id, user_id):
     user = get_object_or_404(User, id=user_id)
     fish = get_object_or_404(Fish, id=fish_id)
     user_fish, created = UserFish.objects.get_or_create(user=user, fish=fish)
@@ -115,11 +116,7 @@ def capture_fish(request, fish_id, user_id):
 
         if request.POST.get('delete_biggest_fish_photo'):
             user_fish.biggest_fish_photo = None  # Ruta de la foto de stock
-            user_fish.save() # Eliminar la referencia en el modelo
-
-        elif biggest_fish_photo:
-            user_fish.biggest_fish_photo = biggest_fish_photo
-
+            
         if request.POST.get('delete_biggest_fish_weight'):
             user_fish.biggest_fish_weight = None
             user_fish.save()  # Elimina el peso del pez más bonito
@@ -139,9 +136,6 @@ def capture_fish(request, fish_id, user_id):
         if request.POST.get('delete_biggest_fish_location'):
             user_fish.biggest_fish_location = None
             user_fish.save()  # Elimina la ubicación del pez más bonito
-        
-        elif biggest_fish_photo:
-            user_fish.biggest_fish_photo = biggest_fish_photo
 
         if biggest_fish_weight:
             user_fish.biggest_fish_weight = int(biggest_fish_weight)
@@ -153,6 +147,8 @@ def capture_fish(request, fish_id, user_id):
             user_fish.biggest_fish_lure = biggest_fish_lure
         if biggest_fish_location:
             user_fish.biggest_fish_location = biggest_fish_location
+        if biggest_fish_photo:
+            user_fish.biggest_fish_photo = biggest_fish_photo
 
         # Actualizar los datos para el pez más chico
         smallest_fish_photo = request.FILES.get("smallest_fish_photo")
@@ -164,10 +160,7 @@ def capture_fish(request, fish_id, user_id):
 
         if request.POST.get('delete_smallest_fish_photo'):
             user_fish.smallest_fish_photo = None  # Ruta de la foto de stock
-            user_fish.save() # Eliminar la referencia en el modelo
-
-        elif smallest_fish_photo:
-            user_fish.smallest_fish_photo = smallest_fish_photo
+           
 
         if request.POST.get('delete_smallest_fish_weight'):
             user_fish.smallest_fish_weight = None
@@ -188,13 +181,9 @@ def capture_fish(request, fish_id, user_id):
         if request.POST.get('delete_smallest_fish_location'):
             user_fish.smallest_fish_location = None
             user_fish.save()  # Elimina la ubicación del pez más bonito
-        
-        elif smallest_fish_photo:
-            user_fish.smallest_fish_photo = smallest_fish_photo
 
         if smallest_fish_weight:
             user_fish.smallest_fish_weight = int(smallest_fish_weight)
-
         if smallest_fish_size:
             user_fish.smallest_fish_size = Decimal(smallest_fish_size)
         if smallest_fish_equipment:
@@ -203,6 +192,9 @@ def capture_fish(request, fish_id, user_id):
             user_fish.smallest_fish_lure = smallest_fish_lure
         if smallest_fish_location:
             user_fish.smallest_fish_location = smallest_fish_location
+        if smallest_fish_photo:
+            user_fish.smallest_fish_photo = smallest_fish_photo
+
 
         # Actualizar los datos para el pez más bonito
         prettiest_fish_photo = request.FILES.get("prettiest_fish_photo")
@@ -215,10 +207,7 @@ def capture_fish(request, fish_id, user_id):
         
         if request.POST.get('delete_prettiest_fish_photo'):
             user_fish.prettiest_fish_photo = None
-            user_fish.save()  # Elimina la foto más bonita
-
-        elif prettiest_fish_photo:
-            user_fish.prettiest_fish_photo = prettiest_fish_photo
+              # Elimina la foto más bonita
 
         if request.POST.get('delete_prettiest_fish_weight'):
             user_fish.prettiest_fish_weight = None
@@ -253,6 +242,9 @@ def capture_fish(request, fish_id, user_id):
             user_fish.prettiest_fish_lure = prettiest_fish_lure
         if prettiest_fish_location:
             user_fish.prettiest_fish_location = prettiest_fish_location
+        if prettiest_fish_photo:
+            user_fish.prettiest_fish_photo = prettiest_fish_photo
+
 
         # Guardar los cambios
         user_fish.save()
@@ -260,11 +252,135 @@ def capture_fish(request, fish_id, user_id):
        
 
         # Redirigir a la vista de usuario-pez
-        return redirect("user_fish_view", user_id=user.id)
+        return redirect("user_poke_edit", user_id=user.id)
 
-    return render(request, 'user_fish_view.html', {'fish_data': user_fish})
+    return render(request, 'user_poke_edit.html', {'fish_data': user_fish})
 
-def user_fish_view(request, user_id):
+def update_biggest(request, fish_id, user_id):
+    user = get_object_or_404(User, id=user_id)
+    fish = get_object_or_404(Fish, id=fish_id)
+    user_fish, created = UserFish.objects.get_or_create(user=user, fish=fish)
+
+    if request.method == "POST":
+        captured = request.POST.get("captured") == "true"
+        user_fish.captured = captured
+
+        # Actualizar los datos para el pez más grande
+        biggest_fish_photo = request.FILES.get("biggest_fish_photo")
+        biggest_fish_weight = request.POST.get("biggest_fish_weight")
+        biggest_fish_size = request.POST.get("biggest_fish_size")
+        biggest_fish_equipment = request.POST.get("biggest_fish_equipment")
+        biggest_fish_lure = request.POST.get("biggest_fish_lure")
+        biggest_fish_location = request.POST.get("biggest_fish_location")
+
+        if request.POST.get('delete_biggest_fish_photo'):
+            user_fish.biggest_fish_photo = None  # Ruta de la foto de stock
+            
+        if request.POST.get('delete_biggest_fish_weight'):
+            user_fish.biggest_fish_weight = None
+            user_fish.save()  # Elimina el peso del pez más bonito
+
+        if request.POST.get('delete_biggest_fish_size'):
+            user_fish.biggest_fish_size = None
+            user_fish.save()  # Elimina el tamaño del pez más bonito
+
+        if request.POST.get('delete_biggest_fish_equipment'):
+            user_fish.biggest_fish_equipment = None
+            user_fish.save()  # Elimina el equipo utilizado para el pez más bonito
+
+        if request.POST.get('delete_biggest_fish_lure'):
+            user_fish.biggest_fish_lure = None
+            user_fish.save()  # Elimina el señuelo utilizado para el pez más bonito
+
+        if request.POST.get('delete_biggest_fish_location'):
+            user_fish.biggest_fish_location = None
+            user_fish.save()  # Elimina la ubicación del pez más bonito
+
+        if biggest_fish_weight:
+            user_fish.biggest_fish_weight = int(biggest_fish_weight)
+        if biggest_fish_size:
+            user_fish.biggest_fish_size = Decimal(biggest_fish_size)
+        if biggest_fish_equipment:
+            user_fish.biggest_fish_equipment = biggest_fish_equipment
+        if biggest_fish_lure:
+            user_fish.biggest_fish_lure = biggest_fish_lure
+        if biggest_fish_location:
+            user_fish.biggest_fish_location = biggest_fish_location
+        if biggest_fish_photo:
+            if user_fish.biggest_fish_photo:
+                user_fish.biggest_fish_photo.delete(save=False)
+            user_fish.biggest_fish_photo = biggest_fish_photo
+
+        user_fish.save()
+
+        # Redirigir a la vista de usuario-pez
+        return redirect("user_poke_edit", user_id=user.id)
+
+    return render(request, 'user_poke_edit.html', {'fish_data': user_fish})
+
+def update_smallest(request, fish_id, user_id):
+    user = get_object_or_404(User, id=user_id)
+    fish = get_object_or_404(Fish, id=fish_id)
+    user_fish, created = UserFish.objects.get_or_create(user=user, fish=fish)
+
+    if request.method == "POST":
+        captured = request.POST.get("captured") == "true"
+        user_fish.captured = captured
+
+        smallest_fish_photo = request.FILES.get("smallest_fish_photo")
+        smallest_fish_weight = request.POST.get("smallest_fish_weight")
+        smallest_fish_size = request.POST.get("smallest_fish_size")
+        smallest_fish_equipment = request.POST.get("smallest_fish_equipment")
+        smallest_fish_lure = request.POST.get("smallest_fish_lure")
+        smallest_fish_location = request.POST.get("smallest_fish_location")
+
+        if request.POST.get('delete_smallest_fish_photo'):
+            user_fish.smallest_fish_photo = None  # Ruta de la foto de stock
+           
+
+        if request.POST.get('delete_smallest_fish_weight'):
+            user_fish.smallest_fish_weight = None
+            user_fish.save()  # Elimina el peso del pez más bonito
+
+        if request.POST.get('delete_smallest_fish_size'):
+            user_fish.smallest_fish_size = None
+            user_fish.save()  # Elimina el tamaño del pez más bonito
+
+        if request.POST.get('delete_smallest_fish_equipment'):
+            user_fish.smallest_fish_equipment = None
+            user_fish.save()  # Elimina el equipo utilizado para el pez más bonito
+
+        if request.POST.get('delete_smallest_fish_lure'):
+            user_fish.smallest_fish_lure = None
+            user_fish.save()  # Elimina el señuelo utilizado para el pez más bonito
+
+        if request.POST.get('delete_smallest_fish_location'):
+            user_fish.smallest_fish_location = None
+            user_fish.save()  # Elimina la ubicación del pez más bonito
+
+        if smallest_fish_weight:
+            user_fish.smallest_fish_weight = int(smallest_fish_weight)
+        if smallest_fish_size:
+            user_fish.smallest_fish_size = Decimal(smallest_fish_size)
+        if smallest_fish_equipment:
+            user_fish.smallest_fish_equipment = smallest_fish_equipment
+        if smallest_fish_lure:
+            user_fish.smallest_fish_lure = smallest_fish_lure
+        if smallest_fish_location:
+            user_fish.smallest_fish_location = smallest_fish_location
+        if smallest_fish_photo:
+            if user_fish.smallest_fish_photo:
+                user_fish.smallest_fish_photo.delete(save=False)
+            user_fish.smallest_fish_photo = smallest_fish_photo
+
+        user_fish.save()
+
+        # Redirigir a la vista de usuario-pez
+        return redirect("user_poke_edit", user_id=user.id)
+
+    return render(request, 'user_poke_edit.html', {'fish_data': user_fish})
+
+def user_poke_edit(request, user_id):
     user = get_object_or_404(User, id=user_id)
     fishes = Fish.objects.order_by('name')
 
@@ -277,7 +393,6 @@ def user_fish_view(request, user_id):
         fishes_ordenados = fishes.order_by('name')  # Orden por nombre de A-Z
     else:
         fishes_ordenados = fishes 
-
     
     user_fishes = [
         {
@@ -287,18 +402,16 @@ def user_fish_view(request, user_id):
         for fish in fishes_ordenados
     ]
 
-
-
     return render(
         request,
-        "user_fish_view.html",
+        "user_poke_edit.html",
         {
             "user": user,
             "user_fishes": user_fishes,
         },
     )
 
-def user_fish_poke(request, user_id):
+def user_poke(request, user_id):
     user = get_object_or_404(User, id=user_id)
     fishes = Fish.objects.all()
 
@@ -401,16 +514,14 @@ def edit_user_profile(request, user_id):
         form = UserProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('user_fish_view', user_id=user.id)  # Redirige al perfil del usuario
+            return redirect('user_poke_edit', user_id=user.id)  # Redirige al perfil del usuario
     else:
         form = UserProfileForm(instance=user)
 
-    return render(request, 'user_fish_view.html', {'form': form, 'user': user})
+    return render(request, 'user_poke_edit.html', {'form': form, 'user': user})
 
-def info(request):
-    return render(request, 'informacion.html')
+def user_fish_detail(request, fish_id, user_id):
 
-def fish_detail(request, fish_id, user_id):
     user = get_object_or_404(User, id=user_id)
     fish = get_object_or_404(Fish, id=fish_id)
     user_fish = UserFish.objects.get(user=user, fish=fish)
@@ -424,3 +535,20 @@ def fish_detail(request, fish_id, user_id):
             
         },
     )
+
+def info(request):
+    return render(request, 'informacion.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+

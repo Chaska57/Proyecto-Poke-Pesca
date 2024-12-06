@@ -1,6 +1,6 @@
 *{
     margin: 0;
-    utline: 2px dashed black;
+    outline: 2px dashed black;
 }
 
 body{
@@ -280,6 +280,10 @@ header{
     
     
   }
+
+  canvas {
+    display: none; /* Esconde el canvas */
+}
   
 .B {
     

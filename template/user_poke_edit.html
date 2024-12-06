@@ -68,7 +68,7 @@
                 </form>
             </div>
 
-            <form method="GET" action="{% url 'user_fish_view' user.id %}">
+            <form method="GET" action="{% url 'user_poke_edit' user.id %}">
                 <label for="orden">Ordenar por:</label>
                 <select name="orden" id="orden" onchange="this.form.submit()">
                     <option value="nombre_desc" {% if request.GET.orden == 'nombre_desc' %}selected{% endif %}>A-Z</option>
@@ -82,16 +82,22 @@
 
             <div class="contenedor">
                 {% for fish_data in user_fishes %}
+        
                     <div class="carta-pez {% if fish_data.captured and fish_data.captured.captured %}capturado{% else %}no-capturado{% endif %}">
-                        <h1>{{ fish_data.fish.name }}</h1>
-    
+                        <form id="myForm" method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
+                            {% csrf_token %}
+                            <label class="titulo-pokedex">
+                                <h1>
+                                    {{fish_data.fish.name}}:
+                                    <input type="checkbox" name="captured" value="true" {% if fish_data.captured and fish_data.captured.captured %}checked{% endif %} onchange="submitForm()">
+                                </h1>
+                            </label>
+                        </form>
                         <div class="formularios">
-                            <form class="contenido-form" method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
+                            <form id="" class="contenido-form" method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
                                 {% csrf_token %}
-                                <label class="titulo-pokedex">
-                                    Capturado:
-                                    <input type="checkbox" name="captured" value="true" {% if fish_data.captured and fish_data.captured.captured %}checked{% endif %}>
-                                </label>
+                                <input type="hidden" name="captured" value="true" {% if fish_data.captured and fish_data.captured.captured %}checked{% endif %}>
+
                                 <!-- Bloque Pez Más Grande -->
                                 <div>
                                     
@@ -104,45 +110,44 @@
                                         {% endif %}
                                     </div>
                                     <label>
-                                        Foto del pez más grande:
-                                        <input type="file" name="biggest_fish_photo">
-                                        <input type="checkbox" name="delete_biggest_fish_photo"> Borrar foto
+                                        Foto del pez más grande: <input type="checkbox" name="delete_biggest_fish_photo"> Borrar foto
+
+                                        <input type="file" name="biggest_fish_photo" value="">
+                                
     
                                     </label>
                                     <label>
                                         Peso del pez más grande (gramos):
-                                        <input placeholder="{{ fish_data.captured.biggest_fish_weight }}" type="number" name="biggest_fish_weight" value="{{ user.biggest_fish_weight }}">
+                                        <input placeholder="{{ fish_data.captured.biggest_fish_weight }}" type="number" name="biggest_fish_weight" value="{{ user.biggest_fish_weight }}" min="1" max="50000">
                                         <input type="checkbox" name="delete_biggest_fish_weight"> Borrar peso
                                     </label>
                                     <label>
                                         Tamaño del pez más grande (cm):
-                                        <input placeholder="{{ fish_data.captured.biggest_fish_size }}" type="number" name="biggest_fish_size" step="0.01" value="{{ user.biggest_fish_size }}">
+                                        <input placeholder="{{ fish_data.captured.biggest_fish_size }}" type="number" name="biggest_fish_size" step="0.01" value="{{ user.biggest_fish_size }}" min="1" max="300">
                                         <input type="checkbox" name="delete_biggest_fish_size"> Borrar tamaño
                                     </label>
                                     <label>
                                         Equipo con que se sacó el pez más grande:
-                                        <input placeholder="{{ fish_data.captured.biggest_fish_equipment }}" type="text" name="biggest_fish_equipment" value="{{ user.biggest_fish_equipment }}">
+                                        <input placeholder="{{ fish_data.captured.biggest_fish_equipment }}" type="text" name="biggest_fish_equipment" value="{{ user.biggest_fish_equipment }}" maxlength="255">
                                         <input type="checkbox" name="delete_biggest_fish_equipment"> Borrar equipo
                                     </label>
                                     <label>
                                         Señuelo con que se sacó el pez más grande:
-                                        <input placeholder="{{ fish_data.captured.biggest_fish_lure }}" type="text" name="biggest_fish_lure" value="{{ user.biggest_fish_lure }}">
+                                        <input placeholder="{{ fish_data.captured.biggest_fish_lure }}" type="text" name="biggest_fish_lure" value="{{ user.biggest_fish_lure }}" maxlength="255">
                                         <input type="checkbox" name="delete_biggest_fish_lure"> Borrar señuelo
                                     </label>
                                     <label>
                                         Ubicación del pez más grande:
-                                        <input placeholder="{{ fish_data.captured.biggest_fish_location }}" type="text" name="biggest_fish_location" value="{{ user.biggest_fish_location }}">
+                                        <input placeholder="{{ fish_data.captured.biggest_fish_location }}" type="text" name="biggest_fish_location" value="{{ user.biggest_fish_location }}" maxlength="255">
                                         <input type="checkbox" name="delete_biggest_fish_location"> Borrar ubicación
                                     </label>
                                 </div>
-                                <button class="btn-capturado titulo-pokedex" type="submit">Actualizar</button>
+                                <button class="btn-capturado titulo-pokedex" type="submit" >Actualizar</button>
                             </form>
-                            <form  class="contenido-form" method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
+                            <form id="" class="contenido-form" method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
                                 {% csrf_token %}
-                                <label class="titulo-pokedex">
-                                    Capturado:
-                                    <input type="checkbox" name="captured" value="true" {% if fish_data.captured and fish_data.captured.captured %}checked{% endif %}>
-                                </label>
+                                <input type="hidden" name="captured" value="true" {% if fish_data.captured and fish_data.captured.captured %}checked{% endif %}>
+
                                 <!-- Bloque Pez Más Chico -->
                                 <div>
                                     
@@ -155,44 +160,43 @@
                                         {% endif %}
                                     </div>
                                     <label>
-                                        Foto del pez más chico:
+                                        Foto del pez más chico: <input type="checkbox" name="delete_smallest_fish_photo"> Borrar foto
+
                                         <input type="file" name="smallest_fish_photo">
-                                        <input type="checkbox" name="delete_smallest_fish_photo"> Borrar foto
                                     </label>
                                     <label>
                                         Peso del pez más chico (gramos):
-                                        <input placeholder="{{ fish_data.captured.smallest_fish_weight }}" type="number" name="smallest_fish_weight" value="{{ user.smallest_fish_weight }}">
+                                        <input placeholder="{{ fish_data.captured.smallest_fish_weight }}" type="number" name="smallest_fish_weight" value="{{ user.smallest_fish_weight }}" min="1" max="50000">
                                         <input type="checkbox" name="delete_smallest_fish_weight"> Borrar peso
                                     </label>
                                     <label>
                                         Tamaño del pez más chico (cm):
-                                        <input placeholder="{{ fish_data.captured.smallest_fish_size }}" type="number" name="smallest_fish_size" step="0.01" value="{{ user.smallest_fish_size }}">
+                                        <input placeholder="{{ fish_data.captured.smallest_fish_size }}" type="number" name="smallest_fish_size" step="0.01" value="{{ user.smallest_fish_size }}" min="1" max="300">
                                         <input type="checkbox" name="delete_smallest_fish_size"> Borrar tamaño
                                     </label>
                                     <label>
                                         Equipo con que se sacó el pez más chico:
-                                        <input placeholder="{{ fish_data.captured.smallest_fish_equipment }}" type="text" name="smallest_fish_equipment" value="{{ user.smallest_fish_equipment }}">
+                                        <input placeholder="{{ fish_data.captured.smallest_fish_equipment }}" type="text" name="smallest_fish_equipment" value="{{ user.smallest_fish_equipment }}" maxlength="255">
                                         <input type="checkbox" name="delete_smallest_fish_equipment"> Borrar equipo
                                     </label>
                                     <label>
                                         Señuelo con que se sacó el pez más chico:
-                                        <input placeholder="{{ fish_data.captured.smallest_fish_lure }}" type="text" name="smallest_fish_lure" value="{{ user.smallest_fish_lure }}">
+                                        <input placeholder="{{ fish_data.captured.smallest_fish_lure }}" type="text" name="smallest_fish_lure" value="{{ user.smallest_fish_lure }}" maxlength="255">
                                         <input type="checkbox" name="delete_smallest_fish_lure"> Borrar señuelo
                                     </label>
                                     <label>
                                         Ubicación del pez más chico:
-                                        <input placeholder="{{ fish_data.captured.smallest_fish_location }}" type="text" name="smallest_fish_location" value="{{ user.smallest_fish_location }}">
+                                        <input placeholder="{{ fish_data.captured.smallest_fish_location }}" type="text" name="smallest_fish_location" value="{{ user.smallest_fish_location }}" maxlength="255">
                                         <input type="checkbox" name="delete_smallest_fish_location"> Borrar ubicación
                                     </label>
                                 </div>
-                                <button class="btn-capturado titulo-pokedex" type="submit">Actualizar</button>
+                                <button type="submit" class="btn-capturado titulo-pokedex">Actualizar</button>
                             </form>
-                            <form  class="contenido-form" method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
+                            <form id="" class="contenido-form" method="post" enctype="multipart/form-data" action="/capture/{{ fish_data.fish.id }}/{{ user.id }}/">
                                 {% csrf_token %}
-                                <label class="titulo-pokedex">
-                                    Capturado:
-                                    <input type="checkbox" name="captured" value="true" {% if fish_data.captured and fish_data.captured.captured %}checked{% endif %}>
-                                </label>
+                                <input type="hidden" name="captured" value="true" {% if fish_data.captured and fish_data.captured.captured %}checked{% endif %}>
+
+                        
                                 <!-- Bloque Pez Más Bonito -->
                                 <div>
                                     
@@ -205,34 +209,34 @@
                                         {% endif %}
                                     </div>
                                     <label>
-                                        Foto del pez más bonito:
+                                        Foto del pez más bonito: <input type="checkbox" name="delete_prettiest_fish_photo"> Borrar foto
+
                                         <input type="file" name="prettiest_fish_photo">
-                                        <input type="checkbox" name="delete_prettiest_fish_photo"> Borrar foto
     
                                     </label>
                                     <label>
                                         Peso del pez más bonito (gramos):
-                                        <input placeholder="{{ fish_data.captured.prettiest_fish_weight }}" type="number" name="prettiest_fish_weight" value="{{ user.prettiest_fish_weight }}">
+                                        <input placeholder="{{ fish_data.captured.prettiest_fish_weight }}" type="number" name="prettiest_fish_weight" value="{{ user.prettiest_fish_weight }}" min="1" max="50000">
                                         <input type="checkbox" name="delete_prettiest_fish_weight"> Borrar peso
                                     </label>
                                     <label>
                                         Tamaño del pez más bonito (cm):
-                                        <input placeholder="{{ fish_data.captured.prettiest_fish_size }}" type="number" name="prettiest_fish_size" step="0.01" value="{{ user.prettiest_fish_size }}">
+                                        <input placeholder="{{ fish_data.captured.prettiest_fish_size }}" type="number" name="prettiest_fish_size" step="0.01" value="{{ user.prettiest_fish_size }}" min="1" max="300">
                                         <input type="checkbox" name="delete_prettiest_fish_size"> Borrar tamaño
                                     </label>
                                     <label>
                                         Equipo con que se sacó el pez más bonito:
-                                        <input placeholder="{{ fish_data.captured.prettiest_fish_equipment }}" type="text" name="prettiest_fish_equipment" value="{{ user.prettiest_fish_equipment }}">
+                                        <input placeholder="{{ fish_data.captured.prettiest_fish_equipment }}" type="text" name="prettiest_fish_equipment" value="{{ user.prettiest_fish_equipment }}" maxlength="255">
                                         <input type="checkbox" name="delete_prettiest_fish_equipment"> Borrar equipo
                                     </label>
                                     <label>
                                         Señuelo con que se sacó el pez más bonito:
-                                        <input placeholder="{{ fish_data.captured.prettiest_fish_lure }}" type="text" name="prettiest_fish_lure" value="{{ user.prettiest_fish_lure }}">
+                                        <input placeholder="{{ fish_data.captured.prettiest_fish_lure }}" type="text" name="prettiest_fish_lure" value="{{ user.prettiest_fish_lure }}" maxlength="255">
                                         <input type="checkbox" name="delete_prettiest_fish_lure"> Borrar señuelo
                                     </label>
                                     <label>
                                         Ubicación del pez más bonito:
-                                        <input placeholder="{{ fish_data.captured.prettiest_fish_location }}" type="text" name="prettiest_fish_location" value="{{ user.prettiest_fish_location }}">
+                                        <input placeholder="{{ fish_data.captured.prettiest_fish_location }}" type="text" name="prettiest_fish_location" value="{{ user.prettiest_fish_location }}" maxlength="255">
                                         <input type="checkbox" name="delete_prettiest_fish_location"> Borrar ubicación
                                     </label>
                                 </div>
@@ -249,80 +253,19 @@
         <footer>
             <!-- place footer here -->
         </footer>
-        <script>
-            let cropper;
-            let imagePreview = document.getElementById('imagePreview');
-            let imageInput = document.getElementById('imageInput');
-        
-            // Muestra la imagen seleccionada y habilita el recorte
-            imageInput.addEventListener('change', function (e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        imagePreview.src = e.target.result;
-                        imagePreview.style.display = 'block';  // Muestra la vista previa de la imagen
-        
-                        // Si ya existe un Cropper, lo destruye
-                        if (cropper) {
-                            cropper.destroy();
-                        }
-        
-                        // Inicializa Cropper.js con la imagen cargada
-                        cropper = new Cropper(imagePreview, {
-                            aspectRatio: 1,  // Aspecto cuadrado, puedes cambiarlo si es necesario
-                            viewMode: 1,
-                            preview: '.preview', // Si quieres una vista previa
-                        });
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        
-            // Función para obtener la imagen recortada
-            function getCroppedImage() {
-                const canvas = cropper.getCroppedCanvas();
-                const croppedImage = canvas.toDataURL();
-                return croppedImage;
-            }
-        
-            // Al enviar el formulario, procesamos la imagen recortada
-            document.querySelector('form').onsubmit = function (e) {
-                e.preventDefault();
-        
-                const croppedImage = getCroppedImage();
-        
-                // Convertimos la imagen recortada en un archivo (base64 a file)
-                const formData = new FormData();
-                formData.append('image', dataURLtoFile(croppedImage, 'image.png'));
-        
-                // Enviar el formulario con AJAX o como un POST tradicional
-                fetch('/capture/{{ fish_data.fish.id }}/{{ user.id }}/', {
-                    method: 'POST',
-                    body: formData
-                }).then(response => response.json())
-                  .then(data => {
-                    // Hacer algo con la respuesta
-                    console.log(data);
-                });
-            };
-        
-            // Convertir base64 a archivo
-            function dataURLtoFile(dataurl, filename) {
-                const arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-                bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-                while(n--){
-                    u8arr[n] = bstr.charCodeAt(n);
-                }
-                return new File([u8arr], filename, {type:mime});
-            }
-        </script>
-
+  
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
             crossorigin="anonymous"
         ></script>
+
+        <script>
+            function submitForm() {
+                document.getElementById("myForm").submit();  // Envia el formulario automáticamente
+            }
+        </script>
+
 
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"

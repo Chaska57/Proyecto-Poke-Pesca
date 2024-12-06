@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Distribution, Diet, Fish, User, UserFish
+from .models import Fish, User, UserFish
 
 
 @admin.register(Fish)
