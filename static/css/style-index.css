@@ -1,0 +1,545 @@
+/* DEFAULT */
+
+*{
+  margin: 0px;
+  padding: 0px;
+  utline: 2px dashed black;
+}
+
+main{
+  background: #e0e0e0;
+}
+
+header{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    background: #5f5f5f;
+    padding: 16px;
+}
+
+header span{
+  font-size: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: start;
+  margin: 0;
+  
+}
+
+header span button{
+  background: none;
+  border: none;
+}
+
+/* DEFAULT */
+
+/* USUARIOS */
+
+.usuarios{
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem ;
+  flex-wrap: wrap ;
+
+}
+
+.carta-usuarios{
+  width: 7rem;
+  height: 9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  padding-top: 0.5rem;
+}
+
+.user-img{
+  height: 6rem;
+  width: 6rem;
+  border-radius: 50%;
+  border: 3px solid black;
+  background: white;
+  object-fit: cover;
+  
+}
+
+
+/* USUARIOS */
+
+/* ORDEN */
+
+.ordenar-peces{
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  }
+
+.cantidad-tier{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  padding: 4px 16px;
+  border-radius: 6px;
+}
+  
+.cantidad-tier span{
+  font-weight: bold;
+}
+
+.cantidades{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap: 16px;
+
+}
+
+.tier{
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 4px;
+}
+
+.tier span{
+  font-weight: bold;
+}
+
+.form-ordenar{
+  width: 150px;
+}
+
+
+
+/* ORDEN */
+
+/* PECES */
+
+.contenedor{
+  padding:16px;
+  display: flex;
+  flex-wrap: wrap; /* Asegura que los elementos bajen si no hay espacio */
+  justify-content: center; /* Centra las tarjetas en su contenedor */
+  gap: 16px; 
+  height: 100%;
+}
+
+.card-container {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.front{
+  color: white;
+  background-color: #666666; /* Color sólido gris */
+  background-image: linear-gradient(125deg,rgba(255, 255, 255, 0.274), rgba(255, 255, 255, 0.226),rgba(255, 255, 255, 0.438)), /* Más énfasis en el gris */
+                  url("../img/grano/grain.webp");            
+  background-blend-mode: hard-light;
+  background-size: 160%;
+  position: absolute;
+  backface-visibility: hidden; /* Oculta el reverso cuando está volteado */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px;
+  gap: 8px;
+  padding: 16px;
+  height: max-content;
+  width: 340px;
+  height: 400px;
+}
+
+.SS {
+  width: 360px;
+  height: 420px;
+  background-image: url("../img/grano/vmaxbg.jpg"), 
+      url(../img/grano/glitter.png), 
+      linear-gradient(120deg,#ff0084a0 10%,  /* Rosa vibrante */
+      #fca40080 20%,  /* Naranja dorado */
+      #ffff0040 30%,  /* Amarillo translúcido */
+      #00ff8a50 40%,  /* Verde brillante */
+      #00cfff60 50%,  /* Azul cian */
+      #8a2be240 60%,  /* Púrpura profundo */
+      #cc4cfa70 70%,  /* Morado pastel */
+      #ff0084a0 80%,  /* Volvemos al rosa vibrante */
+      #fca40080 90%   /* Terminamos con el dorado */);
+  background-blend-mode: overlay;
+  display: flex;
+  background-size: 160%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+}
+
+.S {
+  width: 360px;
+  height: 420px;
+  background-image: url("../img/grano/angular.png"), 
+      url(../img/grano/glitter.png), 
+      linear-gradient(120deg,#fbf7fdec,       /* Blanco brillante */
+      #f8f8f8 10%,   /* Gris perla */
+      #ffe4f0 20%,   /* Rosa muy claro */
+      #e8d8ff 30%,   /* Morado perla */
+      #f0f0f5 40%,   /* Gris perlado claro */
+      #fff8f8e0 50%,   /* Blanco brillante */
+      #f8f8f8 60%,   /* Gris perla */
+      #ffe4f0 70%,   /* Rosa muy claro */
+      #e8d8ff 80%,   /* Morado perla */
+      #f0f0f5 90%,   /* Gris perlado claro */
+      #ffffff 100%   /* Blanco brillante */);
+  background-blend-mode: overlay;
+  display: flex;
+  background-size: 160%;
+  justify-content: center;
+  align-items: center;
+  
+
+
+  border-radius: 15px;
+  
+  
+  
+}
+
+.A {
+  width: 360px;
+  height: 420px;
+  background-image: url(../img/grano/ancient.png),
+      url(../img/grano/glitter.png), 
+      linear-gradient(120deg,
+      #ffea00,       /* Amarillo chillón */
+      #ffd700 10%,   /* Dorado brillante */
+      #ffc107 20%,   /* Amarillo dorado */
+      #ffbf00 30%,   /* Naranja dorado */
+      #ffe135 40%,   /* Amarillo claro */
+      #ffea00 50%,   /* Amarillo chillón */
+      #ffd700 60%,   /* Dorado brillante */
+      #ffc107 70%,   /* Amarillo dorado */
+      #ffbf00 80%,   /* Naranja dorado */
+      #ffe135 90%,   /* Amarillo claro */
+      #ffea00 100%   /* Amarillo chillón */);
+  background-blend-mode: overlay;
+  display: flex;
+  background-size: 120%;
+  justify-content: center;
+  align-items: center;
+  
+
+
+  border-radius: 15px;
+  
+  
+  
+}
+
+.B {
+  width: 360px;
+  height: 420px;
+  background-image: url("../img/grano/wave.png"), 
+      url(../img/grano/glitter.png), 
+      linear-gradient(120deg,  #d9d9d9,       /* Gris claro */
+      #c0c0c0 20%,   /* Plata */
+      #a6a6a6 40%,   /* Gris medio */
+      #e0e0e0 60%,   /* Gris perlado claro */
+      #b0b0b0 80%,   /* Plata opaca */
+      #d9d9d9 100%   /* Gris claro */);
+  background-blend-mode: overlay;
+  display: flex;
+  background-size: 160%;
+  justify-content: center;
+  align-items: center;
+  
+
+
+  border-radius: 15px;
+  
+  
+  
+}
+
+.C {
+  width: 360px;
+  height: 420px;
+  background-image:url(../img/grano/stylish.png),
+      url(../img/grano/grain.webp), 
+      linear-gradient(120deg,#8c6239,       /* Marrón bronce opaco */
+      #a57c52 20%,   /* Bronce claro apagado */
+      #6e4f33 40%,   /* Marrón oscuro */
+      #b08d57 60%,   /* Bronce mate */
+      #7c5635 80%,   /* Marrón bronce profundo */
+      #8c6239 100%   /* Marrón bronce opaco */);
+  background-blend-mode: overlay;
+  display: flex;
+  background-size: 160%;
+  justify-content: center;
+  align-items: center;
+  
+
+
+  border-radius: 15px;
+  
+  
+  
+}
+
+.D { 
+  width: 360px;
+  height: 420px;
+  background-image:url(../img/grano/metal.png),
+      url(../img/grano/grain.webp),linear-gradient(
+          45deg,
+          #999 5%,
+          #fff 10%,
+          #ccc 30%,
+          #ddd 50%,
+          #ccc 70%,
+          #fff 80%,
+          #999 95%
+        );
+  background-blend-mode: overlay;
+  display: flex;
+  background-size: 160%;
+  justify-content: center;
+  align-items: center;
+  
+
+
+  border-radius: 15px;
+  
+  
+  
+}
+
+.titulo-carta{
+  width: 100%;
+  font-size: 24px;
+  display: flex;
+  font-weight: bold;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-tier{
+  position: absolute;
+  top: 50%;         /* Lleva al hijo al 50% de la altura del padre */
+  left: 50%;        /* Lleva al hijo al 50% del ancho del padre */
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-weight: bold;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  
+  
+ 
+}
+
+.tier-SS {
+  position: relative;
+  background: rgb(198, 252, 3);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tier-S {
+  position: relative;
+  background: rgb(255, 61, 61);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.tier-A {
+  position: relative;
+  background: rgb(255, 45, 244);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;  
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.tier-B {
+  position: relative;
+  background: rgb(143, 17, 143);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.tier-C {
+  position: relative;
+  background: rgb(0, 119, 255);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px; 
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.tier-D {
+  position: relative;
+  background: rgb(39, 183, 240);
+  padding: 4px;
+  border-radius: 50%;
+  border: 2px solid black;
+  height: 32px;
+  width: 32px;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-pez{
+  object-fit: cover;
+  width: 100%; /* El ancho puede ser dinámico */
+  aspect-ratio: 1.6 / 1; 
+  object-position: center;
+}
+
+.bottom-carta{
+  font-size: 14px;
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5; /* Limita a 2 líneas */
+  text-overflow: clip;
+ 
+}
+
+/* PECES */
+
+
+/* EFECTOS */
+
+/* botones etc */
+
+a{
+  display: flex;
+  color: #000;
+  justify-content: center;
+  align-items: center;
+  }
+
+
+.hover-item {
+  transition: 0.3s;
+}
+
+.hover-item:hover {
+  transform: translate(0, -10px);
+}
+
+.holo {
+
+  position: relative;
+  overflow: hidden;
+  overflow: hidden;
+  z-index: 10;
+  touch-action: none;
+  transition: transform 0.5s ease, box-shadow 0.2s ease;
+  background-color: #040712;
+  background-size: cover;
+  border-radius: 5px;
+  
+  
+  }
+  
+.holo:before,
+.holo:after{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-repeat: no-repeat;
+  opacity: .5;
+  mix-blend-mode: color-dodge;
+  transition: all .33s ease;
+  }
+  
+.holo:before{
+  background-position: 50% 50%;
+  background-size: 300% 300%;
+  background-image: linear-gradient(
+    115deg,
+    transparent 0%,
+    var(--color1) 25%,
+    transparent 47%,
+    transparent 53%,
+    var(--color2) 75%,
+    transparent 100%
+  );
+  opacity: .5;
+  filter: brightness(.5) contrast(1);
+  z-index: 1;
+  }
+  
+.holo:after{
+  opacity: 1;
+  background-image: url("https://assets.codepen.io/13471/sparkles.gif"), 
+    url(https://assets.codepen.io/13471/holo.png), 
+    linear-gradient(125deg, #ff008450 15%, #fca40040 30%, #ffff0030 40%, #00ff8a20 60%, #00cfff40 70%, #cc4cfa50 85%);
+  background-position: 50% 50%;
+  background-size: 160%;
+  background-blend-mode: overlay;
+  z-index: 2;
+  filter: brightness(2) contrast(6);
+  transition: all .33s ease;
+  mix-blend-mode: color-dodge;
+  opacity: .75;
+  }
+  
+  

@@ -1,0 +1,393 @@
+<!doctype html>
+{%load static%}
+<html lang="en">
+    <head>
+        <title>Title</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <!-- Bootstrap CSS v5.2.1 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="{% static 'css/style-user-fish-detail.css' %}">
+        <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <div class="container-titulo">
+                <a class="btn-regresar" href="/fish_detail/{{fish_data.user.id}}/{{fish_data.fish.id}}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-reply" viewBox="0 0 16 16">
+                        <path d="M6.598 5.013a.144.144 0 0 1 .202.134V6.3a.5.5 0 0 0 .5.5c.667 0 2.013.005 3.3.822.984.624 1.99 1.76 2.595 3.876-1.02-.983-2.185-1.516-3.205-1.799a8.7 8.7 0 0 0-1.921-.306 7 7 0 0 0-.798.008h-.013l-.005.001h-.001L7.3 9.9l-.05-.498a.5.5 0 0 0-.45.498v1.153c0 .108-.11.176-.202.134L2.614 8.254l-.042-.028a.147.147 0 0 1 0-.252l.042-.028zM7.8 10.386q.103 0 .223.006c.434.02 1.034.086 1.7.271 1.326.368 2.896 1.202 3.94 3.08a.5.5 0 0 0 .933-.305c-.464-3.71-1.886-5.662-3.46-6.66-1.245-.79-2.527-.942-3.336-.971v-.66a1.144 1.144 0 0 0-1.767-.96l-3.994 2.94a1.147 1.147 0 0 0 0 1.946l3.994 2.94a1.144 1.144 0 0 0 1.767-.96z"/>
+                      </svg>
+                </a>
+                <h1 class="titulo-nom">{{ fish_data.user.name }}</h1>
+            </div>
+        </header>
+        
+        <main>
+
+            <img class="user-pic" src="{{ fish_data.user.photo.url }}" alt="Foto de {{ user.name }}" >
+            <button id="submitBtn" class="btn-actualizar" type="submit">Actualizar</button>
+            <form id="miFormulario" class="contenedor" method="post" enctype="multipart/form-data" action="/edit_user_fish/{{ user.id }}/{{ fish_data.fish.id }}/">
+            {% csrf_token %}
+            <div>
+                <label class="titulo-pokedex">
+                    <input type="checkbox" name="captured" value="true" {% if fish_data.captured  %}checked{% endif %} onchange="submitForm()">
+                </label>
+                <h1 class="text-center">El más Bonito</h1>
+                <div class="">
+                    <div class="carta">
+                        <div class="header-carta">
+                            <span>{{fish_data.fish.name}}</span>
+                            <div class="tier-{{ fish_data.fish.tier }}">
+                                <p class="text-tier">{{ fish_data.fish.tier }}</p>
+                            </div>
+                        </div>
+                        {% if fish_data.prettiest_fish_photo %}
+                            <img class="pez-pic" src="{{ fish_data.prettiest_fish_photo.url }}" alt="">
+                        {% else %}
+                            <img class="pez-pic" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="">
+                        {% endif %}  
+
+                        <label>
+                            <input class="file-inp" type="file" name="prettiest_fish_photo" accept="image/*">
+                            <input type="checkbox" name="delete_prettiest_fish_photo"> Borrar
+                        </label>
+                    
+                        <div class="info">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                                    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                </svg>
+                                Ubicación
+                            </span>
+                            <div>
+                                <label>
+                                    <input class="text-inp" placeholder="{{ fish_data.prettiest_fish_location }}" type="text" name="prettiest_fish_location" value="{{ user.prettiest_fish_location }}" maxlength="50">
+                                    <div>
+                                        <input type="checkbox" name="delete_prettiest_fish_location"> Borrar
+                                    </div>
+                                </label>
+                            </div>
+                            
+                        </div>
+                        <div class="info">
+                            <span>
+                                <img class="icon" src="{% static '/img/iconos/rod.png' %}" alt="xd">
+                                Caña
+                            </span>
+                            <label>
+                                <input class="text-inp" placeholder="{{ fish_data.prettiest_fish_rod }}" type="text" name="prettiest_fish_rod" value="{{ user.prettiest_fish_rod }}" maxlength="255">
+                                <div>
+                                    <input type="checkbox" name="delete_prettiest_fish_rod"> Borrar
+                                </div>
+                            </label>
+                        </div>    
+                        <div class="info">
+                            <span>
+                                <img class="icon" src="{% static '/img/iconos/reel.png' %}" alt="xd">
+                                Carrete
+                            </span>
+                            <label>
+                                <input class="text-inp" placeholder="{{ fish_data.prettiest_fish_reel }}" type="text" name="prettiest_fish_reel" value="{{ user.prettiest_fish_reel }}" maxlength="255">
+                                <div>
+                                    <input type="checkbox" name="delete_prettiest_fish_reel"> Borrar
+                                </div>
+                            </label>
+                        </div>
+                        <div class="info">
+                            <span>
+                                <img class="icon" src="{% static '/img/iconos/lure.png' %}" alt="xd">
+                                Lure
+                            </span>
+                            <label>
+                                <input class="text-inp" placeholder="{{ fish_data.prettiest_fish_lure }}" type="text" name="prettiest_fish_lure" value="{{ user.prettiest_fish_lure }}" maxlength="255">
+                                <div>
+                                    <input type="checkbox" name="delete_prettiest_fish_lure"> Borrar señuelo
+
+                                </div>
+                            </label>
+                        </div>
+                        <div class="info-bottom">
+                            <div class="info-bottom-content">
+                                <span>
+                                    <img class="icon" src="{% static '/img/iconos/peso.png' %}" alt="xd">
+                                    Peso(gramos)
+                                </span>
+                                <label>
+                                    <input class="num-inp" placeholder="{{ fish_data.prettiest_fish_weight }}" type="number" name="prettiest_fish_weight" value="{{ user.prettiest_fish_weight }}" min="1" max="50000">
+                                    <div>
+                                        <input type="checkbox" name="delete_prettiest_fish_weight"> Borrar peso
+
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="info-bottom-content">
+                                <span>
+                                    <img class="icon" src="{% static '/img/iconos/medida.png' %}" alt="xd">
+                                    Tamaño(cm)
+                                </span>
+                                <label>
+                                    <input class="num-inp" placeholder="{{ fish_data.prettiest_fish_size }}" type="number" name="prettiest_fish_size" step="0.01" value="{{ user.prettiest_fish_size }}" min="1" max="300">
+                                    <div>
+                                        <input type="checkbox" name="delete_prettiest_fish_size"> Borrar tamaño
+
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h1 class="text-center">El más Grande</h1>
+                <div class="{{ user_fish.fish.tier }}">
+                    <div class="carta">
+                        <div class="header-carta">
+                            <span>{{user_fish.fish.name}}</span>
+                            <div class="tier-{{ user_fish.fish.tier }}">
+                                <p class="text-tier">{{ user_fish.fish.tier }}</p>
+                            </div>
+                        </div>
+                        {% if fish_data.biggest_fish_photo %}
+                            <img class="pez-pic" src="{{ fish_data.biggest_fish_photo.url }}" alt="">
+                        {% else %}
+                            <img class="pez-pic" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="">
+                        {% endif %}                    
+                    
+                        <div class="info">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                                    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                </svg>
+                                Ubicación
+                            </span>
+                            <div>
+                                <label>
+                                    <input class="text-inp" placeholder="{{ fish_data.biggest_fish_location }}" type="text" name="biggest_fish_location" value="{{ user.biggest_fish_location }}" maxlength="50">
+                                    <div>
+                                        <input type="checkbox" name="delete_biggest_fish_location"> Borrar
+
+                                    </div>
+                                </label>
+                            </div>
+                            
+                        </div>
+                        <div class="info">
+                            <span>
+                                <img class="icon" src="{% static '/img/iconos/rod.png' %}" alt="xd">
+                                Caña
+                            </span>
+                            <label>
+                                <input class="text-inp" placeholder="{{ fish_data.biggest_fish_rod }}" type="text" name="biggest_fish_rod" value="{{ user.biggest_fish_rod }}" maxlength="255">
+                                <div>
+                                    <input type="checkbox" name="delete_biggest_fish_rod"> Borrar
+                                </div>
+                            </label>
+                        </div>    
+                        <div class="info">
+                            <span>
+                                <img class="icon" src="{% static '/img/iconos/reel.png' %}" alt="xd">
+                                Carrete
+                            </span>
+                            <label>
+                                <input class="text-inp" placeholder="{{ fish_data.biggest_fish_reel }}" type="text" name="biggest_fish_reel" value="{{ user.biggest_fish_reel }}" maxlength="255">
+                                <div>
+                                    <input type="checkbox" name="delete_biggest_fish_reel"> Borrar
+                                </div>
+                            </label>
+                        </div>
+                        <div class="info">
+                            <span>
+                                <img class="icon" src="{% static '/img/iconos/lure.png' %}" alt="xd">
+                                Lure
+                            </span>
+                            <label>
+                                <input class="text-inp" placeholder="{{ fish_data.biggest_fish_lure }}" type="text" name="biggest_fish_lure" value="{{ user.biggest_fish_lure }}" maxlength="255">
+                                <div>
+                                    <input type="checkbox" name="delete_biggest_fish_lure"> Borrar señuelo
+
+                                </div>
+                            </label>
+                        </div>
+                        <div class="info-bottom">
+                            <div class="info-bottom-content">
+                                <span>
+                                    <img class="icon" src="{% static '/img/iconos/peso.png' %}" alt="xd">
+                                    Peso(gramos)
+                                </span>
+                                <label>
+                                    <input class="num-inp" placeholder="{{ fish_data.biggest_fish_weight }}" type="number" name="biggest_fish_weight" value="{{ user.biggest_fish_weight }}" min="1" max="50000">
+                                    <div>
+                                        <input type="checkbox" name="delete_biggest_fish_weight"> Borrar peso
+
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="info-bottom-content">
+                                <span>
+                                    <img class="icon" src="{% static '/img/iconos/medida.png' %}" alt="xd">
+                                    Tamaño(cm)
+                                </span>
+                                <label>
+                                    <input class="num-inp" placeholder="{{ fish_data.biggest_fish_size }}" type="number" name="biggest_fish_size" step="0.01" value="{{ user.biggest_fish_size }}" min="1" max="300">
+                                    <div>
+                                        <input type="checkbox" name="delete_biggest_fish_size"> Borrar tamaño
+
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h1 class="text-center">El más Pequeño</h1>
+                <div class="{{ user_fish.fish.tier }}">
+                    <div class="carta">
+                        <div class="header-carta">
+                            <span>{{user_fish.fish.name}}</span>
+                            <div class="tier-{{ user_fish.fish.tier }}">
+                                <p class="text-tier">{{ user_fish.fish.tier }}</p>
+                            </div>
+                        </div>
+                        {% if fish_data.smallest_fish_photo %}
+                            <img class="pez-pic" src="{{ fish_data.smallest_fish_photo.url }}" alt="">
+                        {% else %}
+                            <img class="pez-pic" src="{% static 'img/Pokemon-Magikarp-Silhouette-Stencil-thumb.jpg' %}" alt="">
+                        {% endif %}                    
+                    
+                        <div class="info">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
+                                    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                </svg>
+                                Ubicación
+                            </span>
+                            <div>
+                                <label>
+                                    <input class="text-inp" placeholder="{{ fish_data.smallest_fish_location }}" type="text" name="smallest_fish_location" value="{{ user.smallest_fish_location }}" maxlength="50">
+                                    <div>
+                                        <input type="checkbox" name="delete_smallest_fish_location"> Borrar
+
+                                    </div>
+                                </label>
+                            </div>
+                            
+                        </div>
+                        <div class="info">
+                            <span>
+                                <img class="icon" src="{% static '/img/iconos/rod.png' %}" alt="xd">
+                                Caña
+                            </span>
+                            <label>
+                                <input class="text-inp" placeholder="{{ fish_data.smallest_fish_rod }}" type="text" name="smallest_fish_rod" value="{{ user.smallest_fish_rod }}" maxlength="255">
+                                <div>
+                                    <input type="checkbox" name="delete_smallest_fish_rod"> Borrar
+                                </div>
+                            </label>
+                        </div>    
+                        <div class="info">
+                            <span>
+                                <img class="icon" src="{% static '/img/iconos/reel.png' %}" alt="xd">
+                                Carrete
+                            </span>
+                            <label>
+                                <input class="text-inp" placeholder="{{ fish_data.smallest_fish_reel }}" type="text" name="smallest_fish_reel" value="{{ user.smallest_fish_reel }}" maxlength="255">
+                                <div>
+                                    <input type="checkbox" name="delete_smallest_fish_reel"> Borrar
+                                </div>
+                            </label>
+                        </div>
+                        <div class="info">
+                            <span>
+                                <img class="icon" src="{% static '/img/iconos/lure.png' %}" alt="xd">
+                                Lure
+                            </span>
+                            <label>
+                                <input class="text-inp" placeholder="{{ fish_data.smallest_fish_lure }}" type="text" name="smallest_fish_lure" value="{{ user.smallest_fish_lure }}" maxlength="255">
+                                <div>
+                                    <input type="checkbox" name="delete_smallest_fish_lure"> Borrar señuelo
+
+                                </div>
+                            </label>
+                        </div>
+                        <div class="info-bottom">
+                            <div class="info-bottom-content">
+                                <span>
+                                    <img class="icon" src="{% static '/img/iconos/peso.png' %}" alt="xd">
+                                    Peso(gramos)
+                                </span>
+                                <label>
+                                    <input class="num-inp" placeholder="{{ fish_data.smallest_fish_weight }}" type="number" name="smallest_fish_weight" value="{{ user.smallest_fish_weight }}" min="1" max="50000">
+                                    <div>
+                                        <input type="checkbox" name="delete_smallest_fish_weight"> Borrar peso
+
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="info-bottom-content">
+                                <span>
+                                    <img class="icon" src="{% static '/img/iconos/medida.png' %}" alt="xd">
+                                    Tamaño(cm)
+                                </span>
+                                <label>
+                                    <input class="num-inp" placeholder="{{ fish_data.smallest_fish_size }}" type="number" name="smallest_fish_size" step="0.01" value="{{ user.smallest_fish_size }}" min="1" max="300">
+                                    <div>
+                                        <input type="checkbox" name="delete_smallest_fish_size"> Borrar tamaño
+
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        
+        </main>
+
+        <footer>
+            <div>
+
+            </div>
+        </footer>
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+
+        <script>
+            // JavaScript para enviar el formulario cuando se hace clic en el botón fuera
+            document.getElementById("submitBtn").addEventListener("click", function() {
+              document.getElementById("miFormulario").submit();
+            });
+          </script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
+    </body>
+</html>

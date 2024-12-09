@@ -3,22 +3,30 @@
     utline: 2px dashed black;
 }
 
-body{
-    background: #a5a5a5;
+main{
+    position: relative;
+    background: url(../img/7-noise-texture-overlays-3.png), rgb(182, 182, 182);
+    background-blend-mode: overlay;
+    background-size: 150%;
+    height:100vh;
+  }
+  
+main::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height:100vh;
+      background: inherit;  
+      filter: blur(8px);  /* Aplica el desenfoque */
+      z-index: -1;  /* Asegura que el pseudo-elemento esté detrás del contenido */
+  }
+
+p{
+    margin: 0;
+    padding: 0;
 }
-
-:root{
-
-    --metal: linear-gradient(
-      45deg,
-      #999 5%,
-      #fff 10%,
-      #ccc 30%,
-      #ddd 50%,
-      #ccc 70%,
-      #fff 80%,
-      #999 95%
-    );}
 
 header{
     color: white;
@@ -31,12 +39,143 @@ header{
     gap: 16px;
 }
 
-.titulo-pokedex{
+header a{
+    color: white;
+    margin: 0;
+}
+
+.boton-regresar{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: fit-content; 
+    margin: 0;
+}
+
+.nombre-pokedex{
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 100%;
     justify-content: space-between;
+}
+
+.titulo-foto-prestigo{
+    width: 100% ;
+    display: flex;
+    justify-content: start;
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
+
+}
+
+.user-pic{
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 10%;
+    border: 3px solid black;
+
+}
+
+.prestigios{
+    display: flex; /* Activa el modelo flexbox */
+    gap: 8px; /* Espaciado entre las imágenes */
+    flex-wrap: wrap;
+}
+
+.prestigios img{
+    height: 60px;
+    width: auto;
+}
+
+.descripcion-pokedex{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.totales{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    flex-wrap: wrap;
+    
+
+}
+
+.ordenar-peces{
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: fit-content;
+    width: fit-content;
+    }
+
+.cantidad-tier{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    background: white;
+    padding: 4px 16px;
+    border-radius: 6px;
+    
+}
+      
+.cantidad-tier span{
+    font-weight: bold;
+    width: fit-content;
+}
+      
+.cantidades{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 16px;
+    flex-wrap: wrap;
+
+  } 
+
+.tier{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+     gap: 4px;
+}
+      
+.tier span{
+    font-weight: bold;
+    width: 20px;
+}
+
+.text-tier{
+    width: 20px;
+    position: absolute;
+    top: 50%;         /* Lleva al hijo al 50% de la altura del padre */
+    left: 50%;        /* Lleva al hijo al 50% del ancho del padre */
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: bold;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;   
+}
+
+.form-ordenar{
+    width: 150px;
 }
 
 .circle-no {
@@ -65,46 +204,6 @@ header{
     align-items: center; /* Centra verticalmente */
 }
 
-.titulo-pokedex a{
-    color: white;
-    margin: 0;
-}
-
-.titulo-foto_prestigo{
-    width: 100% ;
-    display: flex;
-    justify-content: start;
-    flex-direction: row;
-    align-items: center;
-    gap: 32px;
-
-}
-
-.user-pic{
-    height: 150px;
-    width: 150px;
-    object-fit: cover;
-    border-radius: 10%;
-    border: 3px solid black;
-
-}
-
-.totales{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px;
-
-}
-
-.totales-p{
-    margin: 0;
-    font-size: 24px;
-    color: rgb(0, 0, 0);
-    font-weight: 500;
-}
-
 .contenedor{
     display: flex;
     flex-wrap: wrap;
@@ -112,15 +211,14 @@ header{
     justify-content:space-evenly;
     padding: 16px;
     gap: 32px;
-    width: 100%;
-    height: 100%;
-
+    height: 100vh;
 }
 
 .contenedor-pez{
     padding: 8px;
-    background: var(--metal);
-    border-radius: 13px;
+    height: fit-content;
+    width: fit-content;
+    border-radius: 16px;
 }
 
 .carta-pez{
@@ -128,28 +226,21 @@ header{
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    background: #5f5f5f;
+    background-image: linear-gradient(125deg,rgba(255, 255, 255, 0.274), rgba(255, 255, 255, 0.226),rgba(255, 255, 255, 0.438)), /* Más énfasis en el gris */
+                  url("../img/grano/grain.webp"); 
     padding: 8px;
     border-radius: 9px;
+    gap: 4px;
 
 }
 
 .img-pez{
-    height: 145px;
-    width: 234px;
+    width: 250px;
+    aspect-ratio: 1.6 / 1; 
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 2px;
     background-color: black;
    
-}
-
-.img-pregunta{
-    height: 180px;
-    width: 234px;
-    object-fit: contain;
-    border-radius: 5px;
-    background-color: white;
-    border: 3px solid black;
 }
 
 .info{
@@ -159,7 +250,10 @@ header{
     align-items: center;
     font-weight: bold;
     color: white;
-    width: 100%;
+    width: 250px;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    overflow: hidden; /* Oculta el texto que excede el área */
+    text-overflow: ellipsis; 
 }
 
 .info-bottom{
@@ -174,23 +268,14 @@ header{
 }
 
 .info-bottom div{
-    
     width: 100px;
-    
-}
-
-.icon{
-    font-weight: bold;
-    color: white;
-    height: 20px;
-    margin: 0;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    overflow: hidden; /* Oculta el texto que excede el área */
+    text-overflow: ellipsis; 
 }
 
 .SS {
-    
     position: relative;
-    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
-    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
     background-image: url("../img/grano/vmaxbg.jpg"), 
         url(../img/grano/glitter.png), 
         linear-gradient(120deg,#ff0084a0 10%,  /* Rosa vibrante */
@@ -207,20 +292,11 @@ header{
     background-size: 160%;
     justify-content: center;
     align-items: center;
-    
-  
-  
     border-radius: 15px;
-    
-    
-    
   }
   
 .S {
-    
     position: relative;
-    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
-    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
     background-image: url("../img/grano/angular.png"), 
         url(../img/grano/glitter.png), 
         linear-gradient(120deg,#fbf7fdec,       /* Blanco brillante */
@@ -239,20 +315,11 @@ header{
     background-size: 160%;
     justify-content: center;
     align-items: center;
-    
-  
-  
     border-radius: 15px;
-    
-    
-    
   }
   
 .A {
-    
     position: relative;
-    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
-    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
     background-image:
         url(../img/grano/glitter.png), 
         linear-gradient(120deg,
@@ -272,24 +339,11 @@ header{
     background-size: 160%;
     justify-content: center;
     align-items: center;
-    
-  
-  
     border-radius: 15px;
-    
-    
-    
   }
 
-  canvas {
-    display: none; /* Esconde el canvas */
-}
-  
 .B {
-    
     position: relative;
-    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
-    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
     background-image: url("../img/grano/wave.png"), 
         url(../img/grano/glitter.png), 
         linear-gradient(120deg,  #d9d9d9,       /* Gris claro */
@@ -303,20 +357,11 @@ header{
     background-size: 160%;
     justify-content: center;
     align-items: center;
-    
-  
-  
     border-radius: 15px;
-    
-    
-    
   }
   
 .C {
-    
     position: relative;
-    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
-    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
     background-image:
         url(../img/grano/grain.webp), 
         linear-gradient(120deg,#8c6239,       /* Marrón bronce opaco */
@@ -330,21 +375,22 @@ header{
     background-size: 160%;
     justify-content: center;
     align-items: center;
-    
-  
-  
     border-radius: 15px;
-    
-    
-    
+
   }
   
 .D {
-    
     position: relative;
-    transform-style: preserve-3d; /* Permite que las caras de la carta se mantengan en 3D */
-    transition: transform 0.6s; /* Transición suave para el efecto de volteo */
-    background: var(--metal);
+    background: linear-gradient(
+        45deg,
+        #999 5%,
+        #fff 10%,
+        #ccc 30%,
+        #ddd 50%,
+        #ccc 70%,
+        #fff 80%,
+        #999 95%
+      );
     background-blend-mode: overlay;
     display: flex;
     background-size: 160%;
@@ -358,99 +404,6 @@ header{
     
     
   }
-
-.prestigios {
-    display: flex; /* Activa el modelo flexbox */
-    gap: 8px; /* Espaciado entre las imágenes */
-    flex-wrap: wrap;
-}
-
-.prestigios img {
-    height: 60px;
-    width: auto;
-}
-
-
-p{
-    margin: 0;
-}
-
-h1{
-    margin: 0;
-}
-
-.boton-regresar{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    height: fit-content;
-    
-
-}
-
-.boton-regresar a{
-    color: white;
-    margin: 0;
-}
-
-
-.ordenar-peces{
-    padding: 16px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    }
-
-.cantidad-tier{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    background: white;
-    padding: 4px 16px;
-    border-radius: 6px;
-}
-      
-.cantidad-tier p{
-    font-weight: bold;
-}
-      
-.cantidades{
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    gap: 16px;
-  }
-  
-
-.tier{
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
-     gap: 4px;
-}
-      
-.tier span{
-    font-weight: bold;
-    }
-
-.text-tier{
-    position: absolute;
-    top: 50%;         /* Lleva al hijo al 50% de la altura del padre */
-    left: 50%;        /* Lleva al hijo al 50% del ancho del padre */
-    transform: translate(-50%, -50%);
-    font-size: 18px;
-    font-weight: bold;
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    color: #000;   
-      }
       
 .tier-SS {
     position: relative;
@@ -536,228 +489,110 @@ h1{
     }
 
 
-    .tiers{
-        display: flex;
-        flex-direction: row;
-        justify-content: start;
-        align-items: center;
-         gap: 4px;
+.tiers{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+     gap: 4px;
+}
+      
+.tiers span{
+    font-weight: bold;
     }
-          
-    .tiers span{
-        font-weight: bold;
-        }
-    
-    .text-tiers{
-        position: absolute;
-        top: 50%;         /* Lleva al hijo al 50% de la altura del padre */
-        left: 50%;        /* Lleva al hijo al 50% del ancho del padre */
-        transform: translate(-50%, -50%);
-        font-size: 12px;
-        font-weight: bold;
-        display:flex;
-        justify-content: center;
-        align-items: center;
-        color: #000;   
-          }
-          
-    .tiers-SS {
+
+.text-tiers{
+    position: absolute;
+    top: 50%;         /* Lleva al hijo al 50% de la altura del padre */
+    left: 50%;        /* Lleva al hijo al 50% del ancho del padre */
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: bold;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;   
+      }
+      
+.tiers-SS {
+    position: relative;
+    background: rgb(198, 252, 3);
+    padding: 4px;
+    border-radius: 50%;
+    border: 1px solid black;
+    height: 20px;
+    width: 20px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    }
+      
+.tiers-S {
         position: relative;
-        background: rgb(198, 252, 3);
+        background: rgb(255, 61, 61);
         padding: 4px;
         border-radius: 50%;
         border: 1px solid black;
         height: 20px;
         width: 20px;
         display:flex;
+        flex-direction: row;
         justify-content: center;
         align-items: center;
-        }
-          
-    .tiers-S {
-            position: relative;
-            background: rgb(255, 61, 61);
-            padding: 4px;
-            border-radius: 50%;
-            border: 1px solid black;
-            height: 20px;
-            width: 20px;
-            display:flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-        }
-          
-    .tiers-A {
-            position: relative;
-            background: rgb(255, 45, 244);
-            padding: 4px;
-            border-radius: 50%;
-            border: 1px solid black;
-            height: 20px;
-            width: 20px;  
-            display:flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-        }
-          
-    .tiers-B {
-            position: relative;
-            background: rgb(143, 17, 143);
-            padding: 4px;
-            border-radius: 50%;
-            border: 1px solid black;
-            height: 20px;
-            width: 20px;
-            display:flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-        }
-          
-    .tiers-C {
-            position: relative;
-            background: rgb(0, 119, 255);
-            padding: 4px;
-            border-radius: 50%;
-            border: 1px solid black;
-            height: 20px;
-            width: 20px; 
-            display:flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-        }
-          
-    .tiers-D {
-            position: relative;
-            background: rgb(39, 183, 240);
-            padding: 4px;
-            border-radius: 50%;
-            border: 1px solid black;
-            height: 20px;
-            width: 20px;
-            display:flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .holo {
-
-            position: relative;
-            overflow: hidden;
-            overflow: hidden;
-            z-index: 10;
-            touch-action: none;
-            transition: transform 0.5s ease, box-shadow 0.2s ease;
-            background-color: #040712;
-            background-size: cover;
-            height: 145px;
-            width: 234px;
-            border-radius: 5px;
-            
-            
-            }
-            
-            .holo:before,
-            .holo:after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            top: 0;
-            background-repeat: no-repeat;
-            opacity: .5;
-            mix-blend-mode: color-dodge;
-            transition: all .33s ease;
-            }
-            
-            .holo:before {
-            background-position: 50% 50%;
-            background-size: 300% 300%;
-            background-image: linear-gradient(
-              115deg,
-              transparent 0%,
-              var(--color1) 25%,
-              transparent 47%,
-              transparent 53%,
-              var(--color2) 75%,
-              transparent 100%
-            );
-            opacity: .5;
-            filter: brightness(.5) contrast(1);
-            z-index: 1;
-            }
-            
-            .holo:after {
-            opacity: 1;
-            background-image: url("https://assets.codepen.io/13471/sparkles.gif"), 
-              url(https://assets.codepen.io/13471/holo.png), 
-              linear-gradient(125deg, #ff008450 15%, #fca40040 30%, #ffff0030 40%, #00ff8a20 60%, #00cfff40 70%, #cc4cfa50 85%);
-            background-position: 50% 50%;
-            background-size: 160%;
-            background-blend-mode: overlay;
-            z-index: 2;
-            filter: brightness(2) contrast(6);
-            transition: all .33s ease;
-            mix-blend-mode: color-dodge;
-            opacity: .75;
-            }
-p{
-    margin: 0;
-    padding: 0;
-}
-
-
-
-
-/* Contenedor principal del carrusel */
-.carousel {
-    position: relative;
-    width: 100%;
-    height: 100%; /* Ajusta según tus necesidades */
-    overflow: hidden;
-  }
-  
-  /* Estilo de las diapositivas */
-  .carousel img{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    animation: swap 18s infinite;}
-  
-  
-/* Animación para mostrar cada imagen */
-.carousel img:nth-child(1) {
-    animation-delay: 0s;
-  }
-  
-  .carousel img:nth-child(2) {
-    animation-delay: 6s;
-  }
-  
-  .carousel img:nth-child(3) {
-    animation-delay: 12s;
-  }
-  
-  /* Keyframes para cambiar imágenes bruscamente */
-  @keyframes swap {
-    0% {
-        opacity: 0;
     }
-    5% {
-        opacity: 1; /* Imagen visible */
+      
+.tiers-A {
+        position: relative;
+        background: rgb(255, 45, 244);
+        padding: 4px;
+        border-radius: 50%;
+        border: 1px solid black;
+        height: 20px;
+        width: 20px;  
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
     }
-    33% {
-        opacity: 1; /* Permanece visible */
+      
+.tiers-B {
+        position: relative;
+        background: rgb(143, 17, 143);
+        padding: 4px;
+        border-radius: 50%;
+        border: 1px solid black;
+        height: 20px;
+        width: 20px;
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
     }
-    38% {
-        opacity: 0; /* Desvanecerse */
+      
+.tiers-C {
+        position: relative;
+        background: rgb(0, 119, 255);
+        padding: 4px;
+        border-radius: 50%;
+        border: 1px solid black;
+        height: 20px;
+        width: 20px; 
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
     }
-    100% {
-        opacity: 0; /* Mantener oculta */}}
+      
+.tiers-D {
+        position: relative;
+        background: rgb(39, 183, 240);
+        padding: 4px;
+        border-radius: 50%;
+        border: 1px solid black;
+        height: 20px;
+        width: 20px;
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }

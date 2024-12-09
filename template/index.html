@@ -16,45 +16,41 @@
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous"
         />
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style-index.css' %}">
     </head>
 
     <body>
 
-        <header>
-
-          <p>
-            <button class="boton-usuarios" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-              <img src="{% static 'img/juego2.png' %}" alt="" style="height: 100px;">
-            </button>
-            <strong>Pokédex Peces NG</strong>
-          </p>
-
-          <div class="collapse" id="collapseExample">
-            <div class="usuarios">
-              {% for user in usuarios %}
-                <div class="carta-usuarios">
-                  <a href="/detalle/usuario/{{user.id}}">
-                    <img class="user-img" src="{{ user.photo.url }}" alt="">
-                  </a>
-                  <h4>{{user.name}}</h4>
-                </div>
-              {% endfor %}
-            </div>
+      <header>
+        <span>
+          <button type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <img src="{% static 'img/assets/juego2.png' %}" alt="" style="height: 100px;">
+          </button>
+          <strong>Pokédex Peces NG</strong>
+        </span>
+        <div class="collapse" id="collapseExample">
+          <div class="usuarios">
+            {% for user in usuarios %}
+              <div class="carta-usuarios">
+                <a href="/user/{{user.id}}">
+                  <img class="user-img" src="{{ user.photo.url }}" alt="{{user.name}}">
+                </a>
+                <h4>{{user.name}}</h4>
+              </div>
+            {% endfor %}
           </div>
+        </div>
+      </header>
 
-        </header>
-
-        <main>
-
-          <div class="ordenar-peces">
+      <main>
+        <div class="ordenar-peces">
             <div class="cantidad-tier">
-              <p>Total de peces: {{ total_peces }}</p>
+              <span>Total de peces: {{ total_peces }}</span>
               <div class="cantidades">
                 {% for tier, count in contador_tiers.items %}
                   <div class="tier">
                     <div class="tier-{{ tier }}">
-                      <p class="text-tier">{{ tier }} </p>
+                      <span class="text-tier">{{ tier }} </span>
                     </div>
                     <span>: {{ count }}</span>
                   </div> 
@@ -62,7 +58,7 @@
               </div>      
             </div>
             
-            <form class="form-ordenar" method="GET" action="{% url 'mainmenu' %}">
+            <form class="form-ordenar" method="GET" action="{% url 'index' %}">
                 <select class="form-select" name="orden" onchange="this.form.submit()">
                     <option value="nombre_asc" {% if request.GET.orden == 'nombre_asc' %}selected{% endif %}>Nombre A-Z</option>
                     <option value="nombre_desc" {% if request.GET.orden == 'nombre_desc' %}selected{% endif %}>Nombre Z-A</option>
@@ -70,68 +66,49 @@
                     <option value="tier_desc" {% if request.GET.orden == 'tier_desc' %}selected{% endif %}>Tier Descendente</option>
                 </select>
             </form>
-          </div>
-
-          <div class="contenedor">
-            {% for fish_data in peces_nombre %}
-                <div class="card-container hover-item">
-                    <div class="carta-main {{ fish_data.fish.tier }}">
-                        <div class="front">
-                            <div class="titulo-carta">
-                                <span>{{ fish_data.fish.name }}</span>
-                                <div class="tier-{{ fish_data.fish.tier }}">
-                                  <p class="text-tier">{{ fish_data.fish.tier }}</p>
-                                </div>
-                            </div>
+        </div>
+        <div class="contenedor">
+          {% for fish_data in peces_nombre %}
+              <div class="card-container hover-item">
+                  <div class="{{ fish_data.fish.tier }}">
+                      <div class="front">
+                          <div class="titulo-carta">
+                              <span>{{ fish_data.fish.name }}</span>
+                              <div class="tier-{{ fish_data.fish.tier }}">
+                                <p class="text-tier">{{ fish_data.fish.tier }}</p>
+                              </div>
+                          </div>
+                          <a href="/fish_detail/{{ fish_data.fish.id }}">
                             <div class="holo">
                                 <img class="img-pez" src="{% if fish_data.fish.image %}{{ fish_data.fish.image.url }}{% else %}{{ 'path/to/default/image.jpg' }}{% endif %}" alt="{{ fish_data.fish.name }}">
                             </div>
-                            <div class="bottom-carta div-multi-line">
-                                <p>{{ fish_data.fish.description }}</p>
-                            </div>
-                        </div>
-                        <div class="back">
-                            <div class="users-poke-info">
-                              <a href="/detalle/{{ fish_data.fish.id }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16"  style="color: white;">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                                </svg>
-                              </a>
-                            </div>
-                             
-                            <img class="" src="{% static '/img/IMG_0604.png' %}" alt="" style="width: 250px;">
-                            <div class="users-poke">
-                                {% for user_capture in fish_data.captured_by_users %}
-                                    {% if user_capture.captured %}
-                                      <img class="users-poke-img" src="{{ user_capture.user.photo.url }}" alt="">    
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-          </div>
+                          </a>
+                          <div class="bottom-carta">
+                              <p>{{ fish_data.fish.description }}</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          {% endfor %}
+        </div>
+      </main>
 
-        </main>
-
-        <footer>
+      <footer>
 
           
-        </footer>
+      </footer>
 
-        <script
+      <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
             crossorigin="anonymous"
-        ></script>
+      ></script>
 
-        <script
+      <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"
-        ></script>
+      ></script>
   
     </body>
 </html>

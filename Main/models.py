@@ -1,5 +1,5 @@
 from django.db import models
-from PIL import Image
+from PIL import Image, ExifTags
 from django.contrib.auth.models import User
 import os
 from io import BytesIO
@@ -8,12 +8,25 @@ from PIL.Image import Resampling
 from django.core.files.storage import default_storage
 
 def compress_and_crop_image(image, quality=85, target_width=500, target_height=500):
-    from PIL import Image
-    from io import BytesIO
-    from django.core.files.base import ContentFile
-
     # Abrir la imagen con Pillow
     img = Image.open(image)
+
+    # Corregir la orientación basada en los metadatos EXIF
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == "Orientation":
+                break
+        exif = img._getexif()
+        if exif and orientation in exif:
+            if exif[orientation] == 3:
+                img = img.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                img = img.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                img = img.rotate(90, expand=True)
+    except (AttributeError, KeyError, IndexError):
+        # La imagen no tiene datos EXIF o no se pueden procesar
+        pass
 
     # Convertir a modo RGB si es necesario
     if img.mode in ("RGBA", "P"):
@@ -53,9 +66,25 @@ def compress_and_crop_image(image, quality=85, target_width=500, target_height=5
     return ContentFile(buffer.read(), name=image.name)
 
 def compress_and_crop_image_to_468x290(image, quality=85, target_width=468, target_height=290):
-
     # Abrir la imagen con Pillow
     img = Image.open(image)
+
+    # Corregir la orientación basada en los metadatos EXIF
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == "Orientation":
+                break
+        exif = img._getexif()
+        if exif and orientation in exif:
+            if exif[orientation] == 3:
+                img = img.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                img = img.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                img = img.rotate(90, expand=True)
+    except (AttributeError, KeyError, IndexError):
+        # La imagen no tiene datos EXIF o no se pueden procesar
+        pass
 
     # Convertir a modo RGB si es necesario
     if img.mode in ("RGBA", "P"):
@@ -66,7 +95,7 @@ def compress_and_crop_image_to_468x290(image, quality=85, target_width=468, targ
     original_ratio = original_width / original_height
     target_ratio = target_width / target_height
 
-    # Redimensionar para cubrir el área requerida
+    # Redimensionar para cubrir el área requerida sin cambiar la orientación
     if original_ratio > target_ratio:
         # La imagen es más ancha que el objetivo; ajustar altura y recortar ancho
         new_height = target_height
@@ -155,10 +184,21 @@ class User(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Guarda una referencia a la imagen original cargada
+        self._original_photo = self.photo
 
    
     def save(self, *args, **kwargs):
-        if self.photo:
+        # Verifica si la foto actual es diferente de la original
+        if self.photo and self.photo != self._original_photo:
+            # Borra la foto anterior si existe
+            if self._original_photo and default_storage.exists(self._original_photo.name):
+                default_storage.delete(self._original_photo.name)
+
+            # Comprime y recorta la nueva foto
             self.photo = compress_and_crop_image(self.photo)
 
         super().save(*args, **kwargs)
@@ -180,13 +220,15 @@ class UserFish(models.Model):
     biggest_fish_photo = models.ImageField(upload_to=get_media_path_userfish, null=True, blank=True, verbose_name="Foto del pez más grande")
     biggest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más grande (gramos)")
     biggest_fish_size = models.DecimalField(max_digits=5, decimal_places=1, null=True, blank=True, verbose_name="Tamaño del pez más grande (cm)")
-    biggest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más grande")
+    biggest_fish_rod = models.CharField(max_length=255, null=True, blank=True, verbose_name="Caña utilizado para el pez más grande")
+    biggest_fish_reel = models.CharField(max_length=255, null=True, blank=True, verbose_name="Carrete utilizado para el pez más grande")
     biggest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más grande")
     biggest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más grande")
 
     # Campos para el pez más bonito
     prettiest_fish_photo = models.ImageField(upload_to=get_media_path_userfish, null=True, blank=True, verbose_name="Foto del pez más bonito")
-    prettiest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más bonito")
+    prettiest_fish_rod = models.CharField(max_length=255, null=True, blank=True, verbose_name="Caña utilizado para el pez más bonito")
+    prettiest_fish_reel = models.CharField(max_length=255, null=True, blank=True, verbose_name="Carrete utilizado para el pez más bonito")
     prettiest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más bonito")
     prettiest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más bonito")
     prettiest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más bonito (gramos)")
@@ -196,7 +238,8 @@ class UserFish(models.Model):
     smallest_fish_photo = models.ImageField(upload_to=get_media_path_userfish, null=True, blank=True, verbose_name="Foto del pez más chico")
     smallest_fish_weight = models.IntegerField(null=True, blank=True, verbose_name="Peso del pez más chico (gramos)")
     smallest_fish_size = models.DecimalField(max_digits=5, decimal_places=1, null=True, blank=True, verbose_name="Tamaño del pez más chico (cm)")
-    smallest_fish_equipment = models.CharField(max_length=255, null=True, blank=True, verbose_name="Equipo utilizado para el pez más chico")
+    smallest_fish_rod = models.CharField(max_length=255, null=True, blank=True, verbose_name="Caña utilizado para el pez más chico")
+    smallest_fish_reel = models.CharField(max_length=255, null=True, blank=True, verbose_name="Carrete utilizado para el pez más chico")
     smallest_fish_lure = models.CharField(max_length=255, null=True, blank=True, verbose_name="Señuelo utilizado para el pez más chico")
     smallest_fish_location = models.CharField(max_length=255, null=True, blank=True, verbose_name="Ubicación del pez más chico")
 

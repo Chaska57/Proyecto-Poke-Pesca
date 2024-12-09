@@ -1,1 +1,76 @@
+.holo {
+    position: relative;
+    overflow: hidden;
+    overflow: hidden;
+    z-index: 10;
+    touch-action: none;
+    transition: transform 0.5s ease, box-shadow 0.2s ease;
+    background-color: #040712;
+    background-size: cover;
+    height: 145px;
+    width: 234px;
+    border-radius: 5px; 
+    }
+            
+.holo:before,
+.holo:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            background-repeat: no-repeat;
+            opacity: .5;
+            mix-blend-mode: color-dodge;
+            transition: all .33s ease;
+}
 
+.holo:before {
+            background-position: 50% 50%;
+            background-size: 300% 300%;
+            background-image: linear-gradient(
+              115deg,
+              transparent 0%,
+              var(--color1) 25%,
+              transparent 47%,
+              transparent 53%,
+              var(--color2) 75%,
+              transparent 100%
+            );
+            opacity: .5;
+            filter: brightness(.5) contrast(1);
+            z-index: 1;
+}
+
+.holo:after {
+            opacity: 1;
+            background-image: url("https://assets.codepen.io/13471/sparkles.gif"), 
+              url(https://assets.codepen.io/13471/holo.png), 
+              linear-gradient(125deg, #ff008450 15%, #fca40040 30%, #ffff0030 40%, #00ff8a20 60%, #00cfff40 70%, #cc4cfa50 85%);
+            background-position: 50% 50%;
+            background-size: 160%;
+            background-blend-mode: overlay;
+            z-index: 2;
+            filter: brightness(2) contrast(6);
+            transition: all .33s ease;
+            mix-blend-mode: color-dodge;
+            opacity: .75;
+}
+
+
+
+0% {
+    opacity: 0;
+}
+5% {
+    opacity: 1; /* Imagen visible */
+}
+33% {
+    opacity: 1; /* Permanece visible */
+}
+38% {
+    opacity: 0; /* Desvanecerse */
+}
+100% {
+    opacity: 0; /* Mantener oculta */}}
