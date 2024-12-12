@@ -455,7 +455,7 @@ header span button{
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5; /* Limita a 2 líneas */
   text-overflow: clip;
- 
+  text-align: justify;
 }
 
 /* PECES */

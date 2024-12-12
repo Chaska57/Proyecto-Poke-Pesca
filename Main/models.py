@@ -65,6 +65,64 @@ def compress_and_crop_image(image, quality=85, target_width=500, target_height=5
     # Retornar la imagen comprimida y recortada
     return ContentFile(buffer.read(), name=image.name)
 
+def compress_and_crop_image_banner(image, quality=85, target_width=1280, target_height=427):
+    # Abrir la imagen con Pillow
+    img = Image.open(image)
+
+    # Corregir la orientación basada en los metadatos EXIF
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == "Orientation":
+                break
+        exif = img._getexif()
+        if exif and orientation in exif:
+            if exif[orientation] == 3:
+                img = img.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                img = img.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                img = img.rotate(90, expand=True)
+    except (AttributeError, KeyError, IndexError):
+        # La imagen no tiene datos EXIF o no se pueden procesar
+        pass
+
+    # Convertir a modo RGB si es necesario
+    if img.mode in ("RGBA", "P"):
+        img = img.convert("RGB")
+
+    # Obtener dimensiones originales
+    original_width, original_height = img.size
+    original_ratio = original_width / original_height
+    target_ratio = target_width / target_height
+
+    # Redimensionar para que la imagen cubra el área requerida
+    if original_ratio > target_ratio:
+        # La imagen es más ancha que el objetivo; ajustar altura y recortar ancho
+        new_height = target_height
+        new_width = int(new_height * original_ratio)
+    else:
+        # La imagen es más alta que el objetivo; ajustar ancho y recortar altura
+        new_width = target_width
+        new_height = int(new_width / original_ratio)
+
+    # Redimensionar la imagen manteniendo el aspecto
+    img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+
+    # Calcular el recorte para centrar la imagen
+    left = (new_width - target_width) // 2
+    top = (new_height - target_height) // 2
+    right = left + target_width
+    bottom = top + target_height
+    img = img.crop((left, top, right, bottom))
+
+    # Guardar la imagen comprimida en un buffer
+    buffer = BytesIO()
+    img.save(buffer, format='JPEG', quality=quality)
+    buffer.seek(0)
+
+    # Retornar la imagen comprimida y recortada
+    return ContentFile(buffer.read(), name=image.name)
+
 def compress_and_crop_image_to_468x290(image, quality=85, target_width=468, target_height=290):
     # Abrir la imagen con Pillow
     img = Image.open(image)
@@ -177,7 +235,7 @@ class User(models.Model):
     description = models.CharField(max_length=500, verbose_name="Descripción")
     photo = models.ImageField(upload_to=get_media_path, verbose_name="Foto del Usuario")
     fishes = models.ManyToManyField('Fish', through='UserFish', related_name='users', verbose_name="Peces Capturados")
-
+    banner= models.ImageField(upload_to=get_media_path, verbose_name="Foto banner")
     class Meta:
         verbose_name = "Usuario"
         verbose_name_plural = "Usuarios"
@@ -189,6 +247,7 @@ class User(models.Model):
         super().__init__(*args, **kwargs)
         # Guarda una referencia a la imagen original cargada
         self._original_photo = self.photo
+        self._original_banner = self.banner
 
    
     def save(self, *args, **kwargs):
@@ -200,6 +259,14 @@ class User(models.Model):
 
             # Comprime y recorta la nueva foto
             self.photo = compress_and_crop_image(self.photo)
+
+        if self.banner and self.banner != self._original_banner:
+            # Borra la foto anterior si existe
+            if self._original_banner and default_storage.exists(self._original_banner.name):
+                default_storage.delete(self._original_banner.name)
+
+            # Comprime y recorta la nueva foto
+            self.banner = compress_and_crop_image_banner(self.banner)
 
         super().save(*args, **kwargs)
 

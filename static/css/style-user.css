@@ -120,6 +120,13 @@ main{
 
 }
 
+.banner-pic{
+    height: 213.5px;
+    width: 640px;
+    object-fit:cover ;
+ 
+}
+
 .carta-pez{
     display: flex;
     flex-direction: column;

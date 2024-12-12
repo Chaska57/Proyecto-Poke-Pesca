@@ -78,3 +78,38 @@ def user_poke_edit(request, user_id, fish_id):
   
   /* Keyframes para cambiar imágenes bruscamente */
   @keyframes swap {
+
+
+
+  <div class="prestigios">
+                    {% if captured_count >= 0 %}
+                        <img src="{% static '/img/prestigios/prestige_1.png' %}" alt="Prestigio 1">
+                    {% endif %}
+                    {% if captured_count >= 4 %}
+                        <img src="{% static '/img/prestigios/prestige_2.png' %}" alt="Prestigio 2">
+                    {% endif %}
+                    {% if captured_count >= 8 %}
+                        <img src="{% static '/img/prestigios/prestige_3.png' %}" alt="Prestigio 3">
+                    {% endif %}
+                    {% if captured_count >= 12 %}
+                        <img src="{% static '/img/prestigios/prestige_4.png' %}" alt="Prestigio 4">
+                    {% endif %}
+                    {% if captured_count >= 16 %}
+                        <img src="{% static '/img/prestigios/prestige_5.png' %}" alt="Prestigio 5">
+                    {% endif %}
+                    {% if captured_count >= 20 %}
+                        <img src="{% static '/img/prestigios/prestige_6.png' %}" alt="Prestigio 6">
+                    {% endif %}
+                    {% if captured_count >= 24 %}
+                        <img src="{% static '/img/prestigios/prestige_7.png' %}" alt="Prestigio 7">
+                    {% endif %}
+                    {% if captured_count >= 28 %}
+                        <img src="{% static '/img/prestigios/prestige_8.png' %}" alt="Prestigio 8">
+                    {% endif %}
+                    {% if captured_count >= 32 %}
+                        <img src="{% static '/img/prestigios/prestige_9.png' %}" alt="Prestigio 9">
+                    {% endif %}
+                    {% if captured_count >= 36 %}
+                        <img src="{% static '/img/prestigios/prestige_10.png' %}" alt="Prestigio 10">
+                    {% endif %}
+                </div>
