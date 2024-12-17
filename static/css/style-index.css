@@ -7,6 +7,9 @@
 }
 
 main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background: #e0e0e0;
 }
 
@@ -132,12 +135,15 @@ header span button{
 /* PECES */
 
 .contenedor{
-  padding:16px;
+  padding:32px;
   display: flex;
   flex-wrap: wrap; /* Asegura que los elementos bajen si no hay espacio */
   justify-content: center; /* Centra las tarjetas en su contenedor */
   gap: 16px; 
   height: 100%;
+  max-width: 1280px;
+  width: 100%;
+  align-items: start;
 }
 
 .card-container {

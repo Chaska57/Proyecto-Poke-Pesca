@@ -236,6 +236,8 @@ class User(models.Model):
     photo = models.ImageField(upload_to=get_media_path, verbose_name="Foto del Usuario")
     fishes = models.ManyToManyField('Fish', through='UserFish', related_name='users', verbose_name="Peces Capturados")
     banner= models.ImageField(upload_to=get_media_path, verbose_name="Foto banner")
+    background= models.ImageField(upload_to=get_media_path, verbose_name="background")
+    
     class Meta:
         verbose_name = "Usuario"
         verbose_name_plural = "Usuarios"

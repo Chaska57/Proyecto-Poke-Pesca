@@ -43,7 +43,9 @@
       </header>
 
       <main>
-        <div class="ordenar-peces">
+        
+        <div class="contenedor">
+          <div class="ordenar-peces">
             <div class="cantidad-tier">
               <span>Total de peces: {{ total_peces }}</span>
               <div class="cantidades">
@@ -67,7 +69,6 @@
                 </select>
             </form>
         </div>
-        <div class="contenedor">
           {% for fish_data in peces_nombre %}
               <div class="card-container hover-item">
                   <div class="{{ fish_data.fish.tier }}">

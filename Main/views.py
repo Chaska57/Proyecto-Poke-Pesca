@@ -402,7 +402,6 @@ def edit_user_profile(request, user_id):
 def info(request):
     return render(request, 'informacion.html')
 
-
 def copy(request,user_id, fish_id):
     user = get_object_or_404(User, id=user_id)
     fish = get_object_or_404(Fish, id=fish_id)
