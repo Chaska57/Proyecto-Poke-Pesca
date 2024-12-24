@@ -65,7 +65,7 @@ def compress_and_crop_image(image, quality=85, target_width=500, target_height=5
     # Retornar la imagen comprimida y recortada
     return ContentFile(buffer.read(), name=image.name)
 
-def compress_and_crop_image_banner(image, quality=85, target_width=1280, target_height=427):
+def compress_and_crop_image_banner(image, quality=85, target_width=1280, target_height=320):
     # Abrir la imagen con Pillow
     img = Image.open(image)
 
@@ -250,6 +250,7 @@ class User(models.Model):
         # Guarda una referencia a la imagen original cargada
         self._original_photo = self.photo
         self._original_banner = self.banner
+        self._original_background = self.background
 
    
     def save(self, *args, **kwargs):
@@ -269,6 +270,14 @@ class User(models.Model):
 
             # Comprime y recorta la nueva foto
             self.banner = compress_and_crop_image_banner(self.banner)
+
+        if self.background and self.background != self._original_background:
+            # Borra la foto anterior si existe
+            if self._original_background and default_storage.exists(self._original_background.name):
+                default_storage.delete(self._original_background.name)
+
+            # Comprime y recorta la nueva foto
+            self.background = self.background
 
         super().save(*args, **kwargs)
 

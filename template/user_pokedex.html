@@ -21,9 +21,9 @@
     </head>
 
     <body>
-        <header>
-            <img class="background" src="{{ user.background.url }}" alt="background de {{ user.name }}" >
+        <img class="background" src="{{ user.background.url }}" alt="background de {{ user.name }}" >
 
+        <header>
             <div class="btn-headers">
                 <a href="/">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
@@ -36,33 +36,36 @@
                     </svg>
                 </a>
             </div>
-            <div class="imgs-headers">
-                <img class="banner" src="{{ user.banner.url }}" alt="Banner de {{ user.name }}" >
-                <img class="user-pic" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}">
-                <span class="name">{{user.name}}</span>
-            </div>
+            <img id="banner" class="banner" src="{{ user.banner.url }}" alt="Banner de {{ user.name }}" >
 
+            <div id="info-headers" class="info-headers">
+                <div id="info" class="info">
+                    <img id="user-pic" class="user-pic" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}">
+                    <div>
+                        <span id="user-name" class="name">{{user.name}}</span>
+                        <span id="description" class="description">{{user.description}}</span>
+                    </div>
+                </div> 
+                <div id="totales" class="totales">
+                    <span class="lista" >Capturados: {{captured_count}} de {{total_count}}</span> 
+
+                    <span class="capturados">Capturados: {{captured_count}} de {{total_count}}</span> 
+                    
+                    
+                    <form class="form-ordenar" method="GET" action="">
+                        <select class="form-select" name="orden" onchange="this.form.submit()">
+                            <option value="nombre_asc" {% if request.GET.orden == 'nombre_asc' %}selected{% endif %}>Nombre A-Z</option>
+                            <option value="nombre_desc" {% if request.GET.orden == 'nombre_desc' %}selected{% endif %}>Nombre Z-A</option>
+                        </select>
+                    </form>
+                    
+                </div>
+            </div>
         </header>
 
         <main>
-            <div class="contenedor">
-                    
-                <div class="totales">
-                    <div class="ordenar-peces">
-                        <div class="cantidad-tier">
-                          <span>Capturados: {{captured_count}} de {{total_count}}</span> 
-                        </div>
-                    </div>
-                    <div class="ordenar-peces">
-                        <form class="form-ordenar" method="GET" action="">
-                            <select class="form-select" name="orden" onchange="this.form.submit()">
-                                <option value="nombre_asc" {% if request.GET.orden == 'nombre_asc' %}selected{% endif %}>Nombre A-Z</option>
-                                <option value="nombre_desc" {% if request.GET.orden == 'nombre_desc' %}selected{% endif %}>Nombre Z-A</option>
-                            </select>
-                        </form>
-                    </div>
-                </div>
-                   
+            
+            <div id="contenedor" class="contenedor">
                     {% for fish_data in user_fishes %}
                     <div class="contenedor-pez  {{ fish_data.fish.tier }} ">
                         {% if fish_data.captured.captured %}
@@ -108,6 +111,76 @@
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
             crossorigin="anonymous"
         ></script>
+
+        <script>
+            const banner = document.getElementById("banner");
+            const infoHeader = document.getElementById("info-headers");
+            const userPic = document.getElementById("user-pic");
+            const userName = document.getElementById("user-name");
+            const description = document.getElementById("description");
+            const info = document.getElementById("info");
+            const content = document.getElementById("contenedor");
+            const totales = document.getElementById("totales");
+
+            window.addEventListener("scroll", () => {
+            const scrollY = window.scrollY;
+            if (scrollY > 90) {
+                // Banner: Se fija y reduce el tamaño
+                banner.classList.add("fixed");
+                banner.classList.remove("default");
+
+                // Header: Desaparece al hacer scroll
+                infoHeader.classList.add("fixed");
+                infoHeader.classList.remove("default");
+
+                // Foto del usuario: Crece al hacer scroll
+                userPic.classList.add("fixed");
+                userPic.classList.remove("default");
+
+                // Nombre del usuario: Se queda fijo
+                userName.classList.add("fixed");
+                userName.classList.remove("default");
+
+                description.classList.add("fixed");
+                description.classList.remove("default");
+
+                info.classList.add("fixed");
+                info.classList.remove("default");
+
+                content.classList.add("fixed");
+                content.classList.remove("default");
+
+                totales.classList.add("fixed");
+                totales.classList.remove("default");
+            } 
+            else {
+                // Resetear estilos al subir
+                banner.classList.add("default");
+                banner.classList.remove("fixed");
+
+                infoHeader.classList.add("default");
+                infoHeader.classList.remove("fixed");
+
+                userPic.classList.add("default");
+                userPic.classList.remove("fixed");
+
+                userName.classList.add("default");
+                userName.classList.remove("fixed");
+
+                description.classList.add("default");
+                description.classList.remove("fixed");
+
+                info.classList.add("default");
+                info.classList.remove("fixed");
+
+                content.classList.add("default");
+                content.classList.remove("fixed");
+
+                totales.classList.add("default");
+                totales.classList.remove("fixed");
+            }
+            });
+        </script>
 
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"

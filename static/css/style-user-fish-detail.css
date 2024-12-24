@@ -484,3 +484,13 @@ svg{
 path{
   margin: 0;
 }
+
+.capturado{
+  color: white;
+  position: absolute;
+  background-color: black;
+  right: 16px;
+  top: 64px;
+  padding: 8px;
+  border-radius: 5px;
+}

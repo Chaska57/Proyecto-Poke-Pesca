@@ -48,50 +48,26 @@
           <div class="ordenar-peces">
             <div class="cantidad-tier">
               <span>Total de peces: {{ total_peces }}</span>
-              <div class="cantidades">
-                {% for tier, count in contador_tiers.items %}
-                  <div class="tier">
-                    <div class="tier-{{ tier }}">
-                      <span class="text-tier">{{ tier }} </span>
-                    </div>
-                    <span>: {{ count }}</span>
-                  </div> 
-                {% endfor %}
-              </div>      
             </div>
             
             <form class="form-ordenar" method="GET" action="{% url 'index' %}">
                 <select class="form-select" name="orden" onchange="this.form.submit()">
                     <option value="nombre_asc" {% if request.GET.orden == 'nombre_asc' %}selected{% endif %}>Nombre A-Z</option>
                     <option value="nombre_desc" {% if request.GET.orden == 'nombre_desc' %}selected{% endif %}>Nombre Z-A</option>
-                    <option value="tier_asc" {% if request.GET.orden == 'tier_asc' %}selected{% endif %}>Tier Ascendente</option>
-                    <option value="tier_desc" {% if request.GET.orden == 'tier_desc' %}selected{% endif %}>Tier Descendente</option>
                 </select>
             </form>
+          </div>
+
+            {% for fish_data in peces_nombre %}
+                <div class="fish-card hover-item">  
+                  <span>{{ fish_data.fish.name }}</span>      
+                  <a href="/fish_detail/{{ fish_data.fish.id }}">         
+                    <img class="img-pez" src="{% if fish_data.fish.image %}{{ fish_data.fish.image.url }}{% else %}{{ 'path/to/default/image.jpg' }}{% endif %}" alt="{{ fish_data.fish.name }}">        
+                  </a>        
+                </div>
+            {% endfor %}        
         </div>
-          {% for fish_data in peces_nombre %}
-              <div class="card-container hover-item">
-                  <div class="{{ fish_data.fish.tier }}">
-                      <div class="front">
-                          <div class="titulo-carta">
-                              <span>{{ fish_data.fish.name }}</span>
-                              <div class="tier-{{ fish_data.fish.tier }}">
-                                <p class="text-tier">{{ fish_data.fish.tier }}</p>
-                              </div>
-                          </div>
-                          <a href="/fish_detail/{{ fish_data.fish.id }}">
-                            <div class="holo">
-                                <img class="img-pez" src="{% if fish_data.fish.image %}{{ fish_data.fish.image.url }}{% else %}{{ 'path/to/default/image.jpg' }}{% endif %}" alt="{{ fish_data.fish.name }}">
-                            </div>
-                          </a>
-                          <div class="bottom-carta">
-                              <p>{{ fish_data.fish.description }}</p>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          {% endfor %}
-        </div>
+  
       </main>
 
       <footer>

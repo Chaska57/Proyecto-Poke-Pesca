@@ -40,8 +40,9 @@
             <form id="miFormulario" class="contenedor" method="post" enctype="multipart/form-data" action="/edit_user_fish/{{ user.id }}/{{ fish_data.fish.id }}/">
             {% csrf_token %}
             <div>
-                <label class="titulo-pokedex">
+                <label class="titulo-pokedex capturado">
                     <input type="checkbox" name="captured" value="true" {% if fish_data.captured  %}checked{% endif %} onchange="submitForm()">
+                    Capturado
                 </label>
                 <h1 class="text-center">El más Bonito</h1>
                 <div class="">
