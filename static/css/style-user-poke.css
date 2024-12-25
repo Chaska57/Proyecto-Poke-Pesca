@@ -1,16 +1,18 @@
 *{
     margin: 0;
-    outline: 2px dashed black;
+    utline: 2px dashed black;
 }
+
+
 
 body{
     background: black;
     overflow-x: hidden; 
-    position: relative;
+
 }
 
-main{    
-    height: 1000vh;
+main{
+    position: relative;
     background-size: 150%;
     display: flex;
     flex-direction: column;
@@ -20,32 +22,33 @@ main{
 }
 
 .btn-headers{
-    position: fixed;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    background-color: #5f5f5f;
-    height: 40px;
-    padding: 0px 16px;
-    z-index: 3;
+position: fixed;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: space-between;
+width: 100%;
+background-color: #5f5f5f;
+height: 40px;
+padding: 0px 16px;
+z-index: 3;
 }
 
 .banner{
-    top: 40px;
-    position: sticky;
+    position: absolute;
+    top: 0px;
+    left: 0;
     max-width: 1280px;
     width: 100%;
     margin-top: 40px;
-    z-index: 1;
+    z-index: 0;
     height: 320px;
     object-fit: cover;
-    transition: all 0.5s ease;
+    transition: all 1s ease-in-out;
 }
 
-.banner.sticky{
-    height: 175px;
+.banner.fixed{
+    height:175px;
     object-fit: cover;
 }
 
@@ -65,47 +68,69 @@ header{
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
 
 .info-headers{
-    top: 40px;
-    position: sticky;
+    position: fixed;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     max-width: 1280px;
     width: 100%;
-    height: fit-content;
     background-color: #00000050;
     backdrop-filter: blur(10px);
     z-index: 2;
+    height: 640px;
+    padding: 36px;
     color: white;
-    transition: all 0.5s ease;
-    
+    transition: all 1s ease-out
 }
 
-.info-headers.sticky{
+.info-headers.fixed{
+    padding: 0px;
+    padding-top: 36px;
     padding-left: 36px;
     height: 175px;
-    align-items: start;
-    justify-content: center;
-    background-color: #00000000;
+    align-items: center;
     backdrop-filter: none;
-    border-radius: 5px;
+    background-color: #00000000;
+
 
 }
 
 .info{
+    margin-top: 360px;
     display: flex;
-    padding:36px;
-    padding-bottom: 18px;
+    flex-direction: row;
     gap: 16px;
+    transition: all 1s ease-in-out;
+}
+
+
+.info.fixed{
+    align-items: center;
+    justify-content: start;
+    padding: 16px;
+    margin-top: 40px;
+    background-color: #00000050;
+    backdrop-filter: blur(10px);
+    border-radius: 3px;
+    height: fit-content;
+    width: 395px;
+    transition: all 1s ease-in-out;
 
 }
 
-.info.sticky{
-    padding:18px;
-    width: fit-content;
-    background-color: #00000050;
+.info.default{
+    backdrop-filter: none;
+    background-color: #00000000;
+
+}
+
+
+
+.info-headers.default{
+     background-color: #00000050;
 
 }
 
@@ -115,44 +140,30 @@ header a{
 }
 
 .user-pic{
-    height: 200px;
-    width: 200px;
+    width:200px ;
+    height:200px ;
     object-fit: cover;
     border-radius: 5px;
     border: 2px solid rgba(105, 105, 105, 0.863);
     z-index: 2;
-    transition: all 0.5s ease;
+    transition: all 1s ease-in-out;
+
+  
 }
 
-.user-pic.sticky{
-    height: 100px;
-    width: 100px;
+.user-pic.fixed{
+    width:100px ;
+    height:100px ;
+    top: 8px;
+
 }
 
 .user-pic.default{
-    max-width:200px ;
-    max-height:200px ;
-    height: 100%;
-    width: 100%;
-}
-
-.name{
-    font-weight: bold;
-    font-size: 36px;
-}
-
-.description{
-    display: flex;
-}
-
-.description.sticky{
-    display: none;
-}
-
-.description.default{
 }
 
 .contenedor{
+    top: 680px;
+    position: absolute;
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -164,10 +175,35 @@ header a{
     gap: 36px;
     justify-content: center;
     align-items: start;
-    margin-top: 16px;
     padding-top: 36px;
     border-radius: 2px;
+    transition: all 1s ease-in-out;
 
+}
+
+.contenedor.fixed{
+    top: 420px;
+}
+
+.name{
+    display: flex;
+    align-items: center;
+    font-size: 36px;
+    font-weight: bold;
+    max-width: 395px;
+    width:395px;
+    height: 42px;
+    transition: all 1s ease-in-out;
+
+}
+
+
+.name.fixed{
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;   
+    height: 100%;
+    width: fit-content;
 }
 
 .namepez{
@@ -179,6 +215,23 @@ header a{
     font-size: 24px;
     max-width: 260px;
     width: 100%;
+}
+
+.description{
+    display: flex;
+    max-width: 395px;
+    width: 100%;
+    height: 18px;
+    font-size: 14px;
+    opacity: 1; /* Totalmente visible */
+    transition: opacity 0.5s ease-out;
+
+
+}
+
+.description.fixed{
+    display: none;
+    opacity: 0;
 }
 
 .lista{
@@ -231,6 +284,27 @@ header a{
 
 }
 
+section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 853px;
+    width: 100%;
+    padding-top: 8px;
+
+   
+}
+
+.newpost{
+    display: flex;
+    flex-direction: row;
+    max-width: 821px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .btn-orden{
     color: white;
     display: flex;
@@ -246,6 +320,30 @@ header a{
     background: #5f5f5f;
     border: 0;
 
+}
+
+.btn-create{
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    max-width: 221px;
+    width: 100%;
+    height: 42px;
+    font-size: 24px;
+    border-radius: 5px;
+    gap: 16px;
+    background: black;
+    border: 0;
+}
+
+.post{
+    max-width: 821px;
+    max-height: 618px;
+    width: 100%;
+    height: 100%;
+    background: #5f5f5f;
 }
 
 .contenedor-pez{
@@ -303,7 +401,6 @@ border-radius: 5px;
     background-color: red;
     border-radius: 50%;
 }
-
 .totales{
     display: flex;
     flex-direction: row;
@@ -314,7 +411,19 @@ border-radius: 5px;
     height: 58px;
     gap: 0px 36px;
     padding-bottom: 18px;
-    transition: all 0.5s ease;
+}
+
+.totales.fixed{
+    position: absolute;
+    bottom: -60px;
+    left: 0;
+    height: 60px;
+    padding: 8px 36px;
+    background: #00000050;
+    width: 100%;
+    backdrop-filter: blur(10px);
+
+
 }
 
 .ordenar-peces{

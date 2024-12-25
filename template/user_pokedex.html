@@ -2,7 +2,7 @@
 {%load static%}
 <html lang="en">
     <head>
-        <title>Title</title>
+        <title>Acuario de {{user.name}}</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta
@@ -36,29 +36,25 @@
                     </svg>
                 </a>
             </div>
-        </header>
-
-        <main>
-
-            <img id="banner" class="banner" src="{{ user.banner.url }}" alt="Banner de {{ user.name }}" >
-
-            
             <div id="info-headers" class="info-headers">
+                <img id="banner" class="banner" src="{{ user.banner.url }}" alt="Banner de {{ user.name }}" >
 
                 <div id="info" class="info">
                     <img id="user-pic" class="user-pic" src="{{ user.photo.url }}" alt="Foto de {{ user.name }}">
-
-                    <div>
-                        <span class="name">{{user.name}}</span>
+                    <div class="trans">
+                        <span id="user-name" class="name">{{user.name}}</span>
                         <span id="description" class="description">{{user.description}}</span>
                     </div>
                 </div> 
-               
+                
             </div>
+        </header>
+        
+        <main>
 
             <div class="totales">
                 <span class="lista" >Capturados: {{captured_count}} de {{total_count}}</span> 
-
+    
                 <span class="capturados">Capturados: {{captured_count}} de {{total_count}}</span> 
                 
                 
@@ -70,7 +66,7 @@
                 </form>
                 
             </div>
-
+            
             <div id="contenedor" class="contenedor">
                     {% for fish_data in user_fishes %}
                     <div class="contenedor-pez  {{ fish_data.fish.tier }} ">
@@ -119,71 +115,73 @@
         ></script>
 
         <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const userPic = document.getElementById("user-pic");
-    const banner = document.getElementById("banner");
-    const description = document.getElementById("description");
-    const info = document.getElementById("info");
-    const infoh = document.getElementById("info-headers");
+            const banner = document.getElementById("banner");
+            const infoHeader = document.getElementById("info-headers");
+            const userPic = document.getElementById("user-pic");
+            const userName = document.getElementById("user-name");
+            const description = document.getElementById("description");
+            const info = document.getElementById("info");
+            const content = document.getElementById("contenedor");
+            const totales = document.getElementById("totales");
 
+            window.addEventListener("scroll", () => {
+            const scrollY = window.scrollY;
+            if (scrollY > 80) {
+                // Banner: Se fija y reduce el tamaño
+                banner.classList.add("fixed");
+                banner.classList.remove("default");
 
-    const stickyElement = document.querySelector(".info-headers");
+                // Header: Desaparece al hacer scroll
+                infoHeader.classList.add("fixed");
+                infoHeader.classList.remove("default");
 
-    let isSticky = false; // Estado de si el elemento está en modo fijo o no
-    const stickyOffset = stickyElement.offsetTop; // Donde comienza el sticky
-    const margin = 75; // Un margen para prevenir el parpadeo cuando está cerca del tope
+                // Foto del usuario: Crece al hacer scroll
+                userPic.classList.add("fixed");
+                userPic.classList.remove("default");
 
-    // Función que detecta cuando el usuario hace scroll
-    function onScroll() {
-        const scrollTop = window.scrollY;
+                // Nombre del usuario: Se queda fijo
+                userName.classList.add("fixed");
+                userName.classList.remove("default");
 
-        // Cuando el scroll baja del tope y pasa el límite más el margen
-        if (scrollTop > stickyOffset + margin && !isSticky) {
-            userPic.classList.add("sticky");
-            userPic.classList.remove("default");
+                description.classList.add("fixed");
+                description.classList.remove("default");
 
-            banner.classList.add("sticky");
-            banner.classList.remove("default");
+                info.classList.add("fixed");
+                info.classList.remove("default");
 
-            description.classList.add("sticky");
-            description.classList.remove("default");
+                content.classList.add("fixed");
+                content.classList.remove("default");
 
-            info.classList.add("sticky");
-            info.classList.remove("default");
+                totales.classList.add("fixed");
+                totales.classList.remove("default");
+            } 
+            else {
+                // Resetear estilos al subir
+                banner.classList.add("default");
+                banner.classList.remove("fixed");
 
-            infoh.classList.add("sticky");
-            infoh.classList.remove("default");
+                infoHeader.classList.add("default");
+                infoHeader.classList.remove("fixed");
 
-            isSticky = true; // Marcamos que está fijo
-        } 
-        // Cuando el scroll sube y el scroll es menor que el límite menos el margen
-        else if (scrollTop < stickyOffset - margin && isSticky) {
-            userPic.classList.add("default");
-            userPic.classList.remove("sticky");
+                userPic.classList.add("default");
+                userPic.classList.remove("fixed");
 
-            banner.classList.add("default");
-            banner.classList.remove("sticky");
+                userName.classList.add("default");
+                userName.classList.remove("fixed");
 
-            description.classList.add("default");
-            description.classList.remove("sticky");
+                description.classList.add("default");
+                description.classList.remove("fixed");
 
-            info.classList.add("default");
-            info.classList.remove("sticky");
+                info.classList.add("default");
+                info.classList.remove("fixed");
 
-            infoh.classList.add("default");
-            infoh.classList.remove("sticky");
+                content.classList.add("default");
+                content.classList.remove("fixed");
 
-            isSticky = false; // Marcamos que no está fijo
-        }
-    }
-
-    // Escuchar el evento de scroll
-    window.addEventListener('scroll', onScroll);
-
-    // Llamar la función al cargar la página para comprobar el estado inicial
-    onScroll();
-});
-
+                totales.classList.add("default");
+                totales.classList.remove("fixed");
+            }
+            });
         </script>
 
         <script
