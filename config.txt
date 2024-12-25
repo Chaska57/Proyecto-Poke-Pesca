@@ -113,3 +113,34 @@ def user_poke_edit(request, user_id, fish_id):
                         <img src="{% static '/img/prestigios/prestige_10.png' %}" alt="Prestigio 10">
                     {% endif %}
                 </div>
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const userPic = document.getElementById("user-pic");
+    const stickyElement = document.querySelector(".info-headers");
+    let isSticky = false; // Variable para controlar el estado de la fijación
+
+    // Función para comprobar si el usuario está haciendo scroll y el sticky debe activarse
+    function checkSticky() {
+        const scrollTop = window.scrollY; // Posición del scroll
+        const stickyOffset = stickyElement.offsetTop; // Cuando el sticky element llega al tope
+
+        if (scrollTop >= stickyOffset && !isSticky) {
+            // Cuando el scroll supera la posición del sticky element, activamos el sticky
+            userPic.classList.add("fixed");
+            userPic.classList.remove("default");
+            isSticky = true; // Marcamos que ya está en estado fijo
+        } else if (scrollTop < stickyOffset && isSticky) {
+            // Cuando el scroll vuelve arriba y el sticky estaba activo, lo desactivamos
+            userPic.classList.add("default");
+            userPic.classList.remove("fixed");
+            isSticky = false; // Marcamos que ya no está en estado fijo
+        }
+    }
+
+    // Escuchamos el evento de scroll para aplicar la lógica de sticky
+    window.addEventListener('scroll', checkSticky);
+
+    // Inicializamos el estado al cargar la página
+    checkSticky();
+});
